@@ -2,20 +2,20 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hana.app.repository.UserRepository">
-    <insert id="insert" parameterType="userEntity">
+<mapper namespace="com.claksion.app.repository.UserRepository">
+    <insert id="insert" parameterType="com.claksion.app.data.entity.UserEntity">
         INSERT INTO user VALUES (0, #{id},#{name},#{type},#{classroomId})
     </insert>
     <delete id="delete" parameterType="Integer">
         DELETE FROM user WHERE id=#{id}
     </delete>
-    <update id="update" parameterType="userEntity">
+    <update id="update" parameterType="com.claksion.app.data.entity.UserEntity">
         UPDATE user SET name=#{name}, type=#{type} WHERE id=#{id}
     </update>
-    <select id="select" resultType="userEntity">
+    <select id="select" resultType="com.claksion.app.data.entity.UserEntity">
         SELECT * FROM user
     </select>
-    <select id="selectOne" parameterType="Integer" resultType="userEntity">
+    <select id="selectOne" parameterType="Integer" resultType="com.claksion.app.data.entity.UserEntity">
         SELECT * FROM user WHERE id=#{id}
     </select>
 </mapper>
