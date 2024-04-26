@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hana.app.repository.SeatRepository">
+    <insert id="insert" parameterType="seatEntity">
+        INSERT INTO seat VALUES (0, #{id},#{zone},#{number},#{userId},#{classroomId})
+    </insert>
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM seat WHERE id=#{id}
+    </delete>
+    <update id="update" parameterType="seatEntity">
+        UPDATE seat SET zone=#{zone}, number=#{number}, userId=#{userId}, classroomId=#{classroomId} WHERE id=#{id}
+    </update>
+    <select id="select" resultType="seatEntity">
+        SELECT * FROM seat
+    </select>
+    <select id="selectOne" parameterType="Integer" resultType="seatEntity">
+        SELECT * FROM seat WHERE id=#{id}
+    </select>
+</mapper>
