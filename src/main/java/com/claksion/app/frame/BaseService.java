@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface CommonService<K, V> {
+public interface BaseService<K, V> {
     @Transactional
     int add(V v) throws Exception;
     @Transactional
