@@ -2,7 +2,7 @@ package com.claksion.app.frame;
 
 import java.util.List;
 
-public interface CommonRepository<K,V> {
+public interface BaseRepository<K,V> {
 
     int insert(V v) throws Exception;
     int delete(K k) throws Exception;
