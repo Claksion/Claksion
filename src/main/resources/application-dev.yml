@@ -28,7 +28,7 @@ spring:
     username: ENC(8zHAipN8VZRabgMYzlv+aQ==)
     password: ENC(pMfm/sTsuKdwEahE+DIoXqThtaSKXXdG)
 mybatis:
-  type-aliases-package: com.hana.app.data.dto
+  type-aliases-package: com.claksion.app.data.dto
   mapper-locations: classpath:/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true

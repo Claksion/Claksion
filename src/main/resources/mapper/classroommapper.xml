@@ -2,20 +2,20 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hana.app.repository.ClassroomRepository">
-    <insert id="insert" parameterType="classroomEntity">
-        INSERT INTO classroom VALUES (#{id},#{name})
+<mapper namespace="com.claksion.app.repository.ClassroomRepository">
+    <insert id="insert" parameterType="com.claksion.app.data.entity.ClassroomEntity">
+        INSERT INTO classroom VALUES (id=#{id},zone=#{zone},number=#{number},NOW(),NOW(),status=#{status})
     </insert>
     <delete id="delete" parameterType="Integer">
         DELETE FROM classroom WHERE id=#{id}
     </delete>
-    <update id="update" parameterType="classroomEntity">
-        UPDATE classroom SET name=#{name} WHERE id=#{id}
+    <update id="update" parameterType="com.claksion.app.data.entity.ClassroomEntity">
+        UPDATE classroom SET zone=#{zone}, number=#{number}, NOW(), NOW(),status=#{status} WHERE id=#{id}
     </update>
-    <select id="select" resultType="classroomEntity">
+    <select id="select" resultType="com.claksion.app.data.entity.ClassroomEntity">
         SELECT * FROM classroom
     </select>
-    <select id="selectOne" parameterType="Integer" resultType="classroomEntity">
+    <select id="selectOne" parameterType="Integer" resultType="com.claksion.app.data.entity.ClassroomEntity">
         SELECT * FROM classroom WHERE id=#{id}
     </select>
 </mapper>

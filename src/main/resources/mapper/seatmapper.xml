@@ -2,20 +2,20 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hana.app.repository.SeatRepository">
-    <insert id="insert" parameterType="seatEntity">
+<mapper namespace="com.claksion.app.repository.SeatRepository">
+    <insert id="insert" parameterType="com.claksion.app.data.entity.SeatEntity">
         INSERT INTO seat VALUES (0, #{id},#{zone},#{number},#{userId},#{classroomId})
     </insert>
     <delete id="delete" parameterType="Integer">
         DELETE FROM seat WHERE id=#{id}
     </delete>
-    <update id="update" parameterType="seatEntity">
+    <update id="update" parameterType="com.claksion.app.data.entity.SeatEntity">
         UPDATE seat SET zone=#{zone}, number=#{number}, userId=#{userId}, classroomId=#{classroomId} WHERE id=#{id}
     </update>
-    <select id="select" resultType="seatEntity">
+    <select id="select" resultType="com.claksion.app.data.entity.SeatEntity">
         SELECT * FROM seat
     </select>
-    <select id="selectOne" parameterType="Integer" resultType="seatEntity">
+    <select id="selectOne" parameterType="Integer" resultType="com.claksion.app.data.entity.SeatEntity">
         SELECT * FROM seat WHERE id=#{id}
     </select>
 </mapper>
