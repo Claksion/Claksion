@@ -15,8 +15,8 @@ public class SeatService implements BaseService<Integer, SeatEntity> {
     final SeatRepository seatRepository;
     
     @Override
-    public int add(SeatEntity SeatEntity) throws Exception {
-        return seatRepository.insert(SeatEntity);
+    public int add(SeatEntity seatEntity) throws Exception {
+        return seatRepository.insert(seatEntity);
     }
 
     @Override
@@ -25,8 +25,8 @@ public class SeatService implements BaseService<Integer, SeatEntity> {
     }
 
     @Override
-    public int modify(SeatEntity SeatEntity) throws Exception {
-        return seatRepository.update(SeatEntity);
+    public int modify(SeatEntity seatEntity) throws Exception {
+        return seatRepository.update(seatEntity);
     }
 
     @Override
