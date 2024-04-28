@@ -9,8 +9,8 @@
 
 #### 🌳 목표
 > 🧙 교실 속 필요한 다양한 소통에 Redis의 장점을 활용하며 탐구  
-- Redis의 Sorted Set을 활용해 '선착순 자리선택'기능을 개발하고 `redis-benchmark`를 통해 성능을 테스트한다.
-- Redis의 Pub/Sub 패턴과 Socket을 활용해 '실시간 채팅'기능을 개발한다.
-- Redis를 Session Storage로 사용함으로써 빠른 응답속도의 장점을 취하고, 현재 서비스에 로그인돼 있는 클라이언트 정보를 출력한다.
+- Redis의 **Sorted Set**을 활용해 '선착순 자리선택'기능을 개발하고 `redis-benchmark`를 통해 성능을 테스트한다.
+- Redis의 **Pub/Sub 패턴**과 **Socket**을 활용해 '실시간 채팅'기능을 개발한다.
+- **Redis를 Session Storage로 사용**함으로써 빠른 응답속도의 장점을 취하고, 현재 서비스에 로그인돼 있는 클라이언트 정보를 출력한다.
 
 
