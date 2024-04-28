@@ -13,7 +13,10 @@ public class MainController {
     public String main(Model model){
         return "index";
     }
-
+    @RequestMapping("/login")
+    public String login(Model model){
+        return "login";
+    }
     @RequestMapping("/testhayoung")
     public String testhayoung(Model model){
         return "seat_select";
