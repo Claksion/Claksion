@@ -133,7 +133,7 @@
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item active">
-              <a href="<c:url value="/index.html"/>" class="menu-link">
+              <a href="<c:url value="/"/>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">홈으로</div>
               </a>
@@ -141,7 +141,7 @@
 
             <!-- Layouts -->
             <li class="menu-item">
-              <a href="<c:url value="/javascript:void(0);"/>" class="menu-link menu-toggle">
+              <a href="<c:url value="testhayoung"/>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">자리배치</div>
               </a>
@@ -251,7 +251,7 @@
 
             <div class="container-xxl flex-grow-1 container-p-y">
               <div class="row">
-                <div class="col-lg-8 mb-4 order-0">
+                <div class="col-lg-12 mb-4 order-0">
                   <div class="card">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-7">
