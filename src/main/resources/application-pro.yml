@@ -22,7 +22,7 @@ spring:
       password: aaaa
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:mysql://127.0.0.1:3306/claksion?characterEncoding=utf8
+    url: jdbc:log4jdbc:mysql://${DB_URL}/claksion?characterEncoding=utf8
     username: ENC(8zHAipN8VZRabgMYzlv+aQ==)
     password: ENC(pMfm/sTsuKdwEahE+DIoXqThtaSKXXdG)
 mybatis:
