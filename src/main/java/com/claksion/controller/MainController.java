@@ -14,6 +14,11 @@ public class MainController {
         return "index";
     }
 
+    @RequestMapping("/testhayoung")
+    public String testhayoung(Model model){
+        return "seat_select";
+    }
+
     @RequestMapping("/testhyerm")
     public String testhyerm(Model model){
         return "seat_analysis";
