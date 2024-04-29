@@ -14,4 +14,6 @@ public class SeatController {
         // TODO : Redis 자리 선택 로직 작성
         return null;
     }
+
+
 }
