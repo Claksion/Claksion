@@ -47,6 +47,9 @@ public class SeatSelectService {
     }
 
     public void publish(String seatId){
+        if(this.seatSelectCount == null){
+            return;
+        }
         Set<Object> queue = redisTemplate.opsForZSet().range(seatId, 0, 0);
         log.info("******* "+queue);
         for (Object people : queue) {
