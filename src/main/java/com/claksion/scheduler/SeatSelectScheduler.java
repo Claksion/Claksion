@@ -15,8 +15,6 @@ public class SeatSelectScheduler {
 
     @Scheduled(fixedDelay = 1000)
     private void seatSelectScheduler(){
-        long n = seatSelectService.getSize("A01");
-        log.info(">>>>> (1) "+n);
         if(seatSelectService.validEnd()){
             log.info("===== 선착순 이벤트가 종료되었습니다. =====");
             return;

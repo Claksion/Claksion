@@ -7,9 +7,6 @@ server:
     session:
       timeout: 10m
 spring:
-  redis:
-    host: localhost
-    port: 6379
   mvc:
     view:
       prefix: /views/
