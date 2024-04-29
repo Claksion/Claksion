@@ -7,6 +7,9 @@ server:
     session:
       timeout: 10m
 spring:
+  config:
+    import:
+      file:.env[.properties]
   mvc:
     view:
       prefix: /views/
@@ -33,7 +36,10 @@ mybatis:
 logging:
   level:
     root: info
-
+app:
+  key:
+    encrypt_key: ${KEY}
+    encrypt_algorithm: ${ALGORITHM}
 
 
 
