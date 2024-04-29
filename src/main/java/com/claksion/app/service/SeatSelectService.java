@@ -16,14 +16,14 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class SeatSelectService {
-    private final RedisTemplate<String,Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
     private static final long FIRST_ELEMENT = 0;
     private static final long LAST_ELEMENT = -1;
     private final SeatService seatService;
     private SeatSelectCount seatSelectCount;
 
-    public void setEventCount(String seatId, int queue){
-        this.seatSelectCount = new SeatSelectCount(seatId, queue);
+    public void setEventCount(String seatId, int limit) {
+        this.seatSelectCount = new SeatSelectCount(seatId, limit);
     }
 
     public void addQueue(String seatId) {
@@ -34,7 +34,7 @@ public class SeatSelectService {
         log.info("대기열에 추가 - {} ({}초)", people, now);
     }
 
-    public void getOrder(String seatId){
+    public void getOrder(String seatId) {
         final long start = FIRST_ELEMENT;
         final long end = LAST_ELEMENT;
 
@@ -46,27 +46,26 @@ public class SeatSelectService {
         }
     }
 
-    public void publish(String seatId){
-        if(this.seatSelectCount == null){
+    public void publish(String seatId) {
+        if (this.seatSelectCount == null)
             return;
-        }
+
         Set<Object> queue = redisTemplate.opsForZSet().range(seatId, 0, 0);
-        log.info("******* "+queue);
+        log.info("******* " + queue);
         for (Object people : queue) {
-            log.info("'{}'님이 {} 자리 선택에 성공했습니다!",people, seatId);
+            log.info("'{}'님이 {} 자리 선택에 성공했습니다!", people, seatId);
             redisTemplate.opsForZSet().remove(seatId, people);
             this.seatSelectCount.decrease();
         }
     }
 
-    public boolean validEnd(){
-        // TODO : DB에 값 지정되어 있는지?
+    public boolean validEnd() {
         return this.seatSelectCount != null
                 ? this.seatSelectCount.end()
                 : false;
     }
 
-    public long getSize(String seatId){
+    public long getSize(String seatId) {
         return redisTemplate.opsForZSet().size(seatId);
     }
 }
