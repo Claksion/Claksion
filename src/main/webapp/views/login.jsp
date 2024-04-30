@@ -90,6 +90,9 @@
                                                              width="20px" height="20px">
                                                         네이버로그인</button>
                                                 </div>
+                                                <div>
+                                                    <a href="<c:url value="loginother.jsp"/> ">다른방법으로 로그인</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
