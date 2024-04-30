@@ -16,8 +16,8 @@ public class SeatSelectService {
 
     public void addQueue(String seatId) {
         // 이미 선택된 좌석이라면 대기열에 추가하지 않음
-        Set<Object> completedSeat = redisTemplate.opsForSet().members("completedSeat:"+seatId.split(":")[1]);
-        if(completedSeat.contains(seatId)){
+        Set<Object> completedSeat = redisTemplate.opsForSet().members("completedSeat:" + seatId.split(":")[1]);
+        if (completedSeat.contains(seatId)) {
             return;
         }
 
@@ -29,9 +29,10 @@ public class SeatSelectService {
     }
 
     public void publish(String seatKey) {
-        Object user = redisTemplate.opsForZSet().popMin(seatKey).getValue();
+        Set<Object> users = redisTemplate.opsForZSet().range(seatKey, 0, 0);
+        Object user = users.stream().toList().get(0);
         log.info("✅'{}'님이 {} 자리 선택에 성공했습니다!", user, seatKey);
         redisTemplate.delete(seatKey);
-        redisTemplate.opsForSet().add("completedSeat:"+seatKey.split(":")[1],seatKey);
+        redisTemplate.opsForSet().add("completedSeat:" + seatKey.split(":")[1], seatKey);
     }
 }
