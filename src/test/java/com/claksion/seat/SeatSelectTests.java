@@ -62,7 +62,8 @@ class SeatSelectTests {
 
         redisTemplate.delete("completedSeat:"+CLASSROOM_ID);
 
-        // 실행 전 redis에서 다음 명령어 칠 것 >> del completedSeat:1
+        // 실행 전 redis에서 다음 명령어 칠 것 >> FLUSHALL
+//        redisTemplate.getConnectionFactory().getConnection().flushAll();
 
         String[] seatKeyList = new String[]{"seat:1:A_1","seat:1:A_2","seat:1:A_3"};
         Random random = new Random();
