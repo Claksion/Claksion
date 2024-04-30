@@ -38,4 +38,9 @@ public class SeatService implements BaseService<Integer, SeatEntity> {
     public List<SeatEntity> get() throws Exception {
         return seatRepository.select();
     }
+
+    public boolean deleteByClassroomId(Integer classroomId) throws Exception {
+        seatRepository.deleteByClassroomId(classroomId);
+        return true;
+    }
 }
