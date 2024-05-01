@@ -8,26 +8,67 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style>
-    #all {
-        width: 400px;
-        height: 200px;
-        overflow: auto;
+    body {
+        font-family: Arial, sans-serif;
+    }
+    #status-indicator {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%; /* 원 모양으로 만들기 위해 */
+        display: inline-block;
+        float: right; /* 오른쪽으로 정렬 */
+        margin-left: 10px; /* 오른쪽 여백 추가 */
+    }
+
+    .connected {
+        background-color: green;
+    }
+
+    .disconnected {
+        background-color: red;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    #chat-window {
+        border: 1px solid #ccc;
+        padding: 10px;
+        height: 400px;
+        overflow-y: scroll;
+        margin-bottom: 10px;
+    }
+
+    #chat-messages {
+        overflow-y: auto;
         border: 2px solid red;
+        height: 350px;
     }
 
-    #me {
-        width: 400px;
-        height: 200px;
-        overflow: auto;
-        border: 2px solid blue;
+    #input-area {
+        display: flex;
+        justify-content: flex-end;
+
     }
 
-    #to {
-        width: 400px;
-        height: 200px;
-        overflow: auto;
-        border: 2px solid green;
+    #message-input {
+        flex: 1;
+        padding: 5px;
+        margin-right: 5px;
     }
+
+    #sendall {
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+
 </style>
 <!-- Core plugin JavaScript-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -40,16 +81,19 @@
         stompClient:null, //웹소켓의 클라이언트 소켓이된다. connect 누를때 만들어짐.
         init:function (){
             this.id = $('#adm_id').text();
-            $('#connect').click(()=>{
-                this.connect()
-            });
+            let statusIndicator = $('#status-indicator')[0];
+            this.connect()
+            statusIndicator.classList.remove("disconnected");
+            statusIndicator.classList.add("connected");
             $('#disconnect').click(()=>{
                 this.disconnect();
+                statusIndicator.classList.remove("connected");
+                statusIndicator.classList.add("disconnected");
             });
             $('#sendall').click(()=>{
                 var msg = JSON.stringify({
                     'sendid' : this.id,
-                    'content1' : $("#alltext").val()
+                    'content1' : $("#message-input").val()
                 });
                 this.stompClient.send("/receiveall", {}, msg);
             });
@@ -67,7 +111,7 @@
                 console.log('Connected: ' + frame);
                 this.subscribe('/send', function(msg) {
                     console.log(JSON.parse(msg.body))
-                    $("#all").prepend("<h4>" + JSON.parse(msg.body).sendid +":"+JSON.parse(msg.body).content1+ "</h4>");
+                    $("#chat-messages").prepend("<h4>" + JSON.parse(msg.body).sendid +":"+JSON.parse(msg.body).content1+ "</h4>");
                 });
             });
         },
@@ -91,15 +135,22 @@
     });
 </script>
 
-<div class="container">
-    <h2>Chat Page</h2>
+<div class=".container height: 100vh;
+    width: 100%;" >
     <div class="col-sm-5">
-        <h1 id="adm_id">${sessionScope.id}</h1>
-        <H1 id="status">Status</H1>
-        <button id="connect">Connect</button>
-        <button id="disconnect">Disconnect</button>
-        <h3>All</h3>
-        <input type="text" id="alltext"><button id="sendall">Send</button>
+        <h1 id="adm_id"></h1>
+        <button id="disconnect">채팅종료</button>
         <div id="all"></div>
+        <div id="chat-window">
+            <div>
+                <span style="vertical-align: middle;">실시간</span>
+                <div id="status-indicator" class="disconnected"></div>
+            </div>
+            <div id="chat-messages"></div>
+        </div>
+        <div id="input-area">
+            <input type="text" id="message-input" placeholder="메시지를 입력하세요...">
+            <button id="sendall">전송</button>
+        </div>
     </div>
 </div>

@@ -11,7 +11,7 @@ import java.util.Random;
 
 @Controller
 public class MainController {
-    @Value("${app.url.server-url}")
+    @Value("${app.url.serverurl}")
     String severurl;
 
     @RequestMapping("/")
@@ -35,6 +35,7 @@ public class MainController {
     public String chat(Model model, HttpSession httpSession){
         httpSession.setAttribute("id","hong");
         model.addAttribute("serverurl",severurl);
-        return "chat";
+        model.addAttribute("center","chat");
+        return "index";
     }
 }
