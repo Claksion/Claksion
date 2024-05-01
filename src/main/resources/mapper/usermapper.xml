@@ -4,7 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.claksion.app.repository.UserRepository">
     <insert id="insert" parameterType="com.claksion.app.data.entity.UserEntity">
-        INSERT INTO user VALUES (0, #{id},#{name},#{type},#{classroomId})
+        INSERT INTO user (name, type, oauth_id, profile_img, email)
+        VALUES (#{name}, #{type}, #{oauthId}, #{profileImg}, #{email})
+
     </insert>
     <delete id="delete" parameterType="Integer">
         DELETE FROM user WHERE id=#{id}
@@ -17,5 +19,8 @@
     </select>
     <select id="selectOne" parameterType="Integer" resultType="com.claksion.app.data.entity.UserEntity">
         SELECT * FROM user WHERE id=#{id}
+    </select>
+    <select id="selectByOauthId" parameterType="String" resultType="com.claksion.app.data.entity.UserEntity">
+        SELECT * FROM user WHERE oauth_id=#{oauth_id}
     </select>
 </mapper>
