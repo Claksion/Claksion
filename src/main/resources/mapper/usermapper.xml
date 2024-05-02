@@ -23,4 +23,7 @@
     <select id="selectByOauthId" parameterType="String" resultType="com.claksion.app.data.entity.UserEntity">
         SELECT * FROM user WHERE oauth_id=#{oauth_id}
     </select>
+    <select id="selectByClassroomId" parameterType="Integer" resultType="com.claksion.app.data.entity.UserEntity">
+        SELECT * FROM user WHERE classroom_id=#{classroom_id}
+    </select>
 </mapper>

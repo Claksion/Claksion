@@ -11,4 +11,7 @@ import java.util.List;
 @Mapper
 public interface UserRepository extends BaseRepository<Integer, UserEntity> {
     UserEntity selectByOauthId(String oauthId) throws Exception;
+
+    List<UserEntity> selectByClassroomId(int classroomId) throws Exception;
+
 }

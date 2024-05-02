@@ -15770,6 +15770,16 @@ html:not(.layout-footer-fixed) .content-wrapper {
   border-radius: 100%;
   box-shadow: 0 0 0 2px #fff;
 }
+.avatar.avatar-online.small:after, .avatar.avatar-offline.small:after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  box-shadow: 0 0 0 2px #fff;
+}
 .avatar.avatar-online:after {
   background-color: #71dd37;
 }
