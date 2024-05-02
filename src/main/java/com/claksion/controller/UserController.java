@@ -57,7 +57,6 @@ public class UserController {
                            @RequestParam(name = "email") String email,
                            @RequestParam(name = "classroomId") int classroomId
     ) throws Exception {
-        log.info(">>>>>classroomId"+classroomId);
         UserEntity userEntity = UserEntity.builder()
                 .name(name)
                 .type(type)
@@ -68,8 +67,10 @@ public class UserController {
                 .build();
         userService.add(userEntity);
 
-        int userId = userService.getByOauthId(oauthId).getId();
-        httpSession.setAttribute("userId", userId);
+        UserEntity user = userService.getByOauthId(oauthId);
+        httpSession.setAttribute("userId", user.getId());
+        httpSession.setAttribute("userName", user.getName());
+        httpSession.setAttribute("userProfileImg", user.getProfileImg());
 
         return "redirect:/";
     }
@@ -83,10 +84,10 @@ public class UserController {
         String accessToken = kakaoService.getAccessToken(code);
         UserInfo userInfo = kakaoService.getUserInfo(accessToken);
 
-        UserEntity userEntity = userService.getByOauthId(userInfo.getOauthId());
+        UserEntity user = userService.getByOauthId(userInfo.getOauthId());
 
         // 회원가입 전 > 회원가입 화면으로 이동
-        if (userEntity == null) {
+        if (user == null) {
             model.addAttribute("userInfo", userInfo);
 
             List<ClassroomEntity> classrooms = classroomService.get();
@@ -96,7 +97,9 @@ public class UserController {
         }
 
         // 회원가입 후 > 홈 화면으로 이동
-        httpSession.setAttribute("userId", userEntity.getId());
+        httpSession.setAttribute("userId", user.getId());
+        httpSession.setAttribute("userName", user.getName());
+        httpSession.setAttribute("userProfileImg", user.getProfileImg());
         return "redirect:/";
     }
 }
