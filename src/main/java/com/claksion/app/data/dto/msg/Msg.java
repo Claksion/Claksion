@@ -12,7 +12,8 @@ public class Msg {
     private String receiveid;
     private String message;
     private String ChannelId;
-    MessageType type;
+    private MessageType type;
+    private int roomId;
 
     public enum MessageType {
         ENTER,  // 입장 메시지

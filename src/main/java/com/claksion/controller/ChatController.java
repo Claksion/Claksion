@@ -1,17 +1,26 @@
 package com.claksion.controller;
 
 import com.claksion.app.data.dto.msg.Msg;
+import com.claksion.app.data.dto.request.ChatMessageRequest;
 import com.claksion.app.service.ChatRoomRepository;
 import com.claksion.app.service.RedisPublisher;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @RequiredArgsConstructor
 @Controller
+@Slf4j
 public class ChatController {
     private final RedisPublisher redisPublisher;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChannelTopic channelTopic;
+
+    private final SimpMessagingTemplate template;
 
     /**
      * websocket "/pub/chat/message"로 들어오는 메시징을 처리한다.
@@ -24,5 +33,15 @@ public class ChatController {
         }
         // Websocket에 발행된 메시지를 redis로 발행한다(publish)
         redisPublisher.publish(chatRoomRepository.getTopic(message.getChannelId()), message);
+    }
+
+    @MessageMapping("/chat/send")// 경로를 "/pub/chat/send"로 변경해야 할 수 있음
+    public void sendMessage(Msg message) {
+        String id = message.getSendid();
+        String target = message.getMessage();
+        log.info(id,target);
+        template.convertAndSend("/sub/chat/room/1",message);
+        log.info(">>>>>>>>>>>>>>");
+        redisPublisher.publish(channelTopic, message);
     }
 }

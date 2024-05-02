@@ -98,20 +98,18 @@
                 this.stompClient.send("/receiveall", {}, msg);
             });
         },
-
         connect:function (){
             // 소켓생성
             let sid = this.id; //보내는사람의 아이디
             let socket = new SockJS('${serverurl}/ws'); //소켓 객체를 준비/ ws 는 채널 역할을 한다.
             this.stompClient = Stomp.over(socket);
-
             this.stompClient.connect({}, function(frame) {
                 // 화면에 커넥트가 되었음을 알림
                 websocket.setConnected(true);
                 console.log('Connected: ' + frame);
                 this.subscribe('/send', function(msg) {
-                    console.log(JSON.parse(msg.body))
-                    $("#chat-messages").prepend("<h4>" + JSON.parse(msg.body).sendid +":"+JSON.parse(msg.body).content1+ "</h4>");
+                    console.log("xxxxxxxxx=>")
+                    $("#chat-messages").prepend("<h4>" + JSON.parse(msg.body.sendid) +":"+JSON.parse(msg.body.content1)+ "</h4>");
                 });
             });
         },
@@ -138,12 +136,12 @@
 <div class=".container height: 100vh;
     width: 100%;" >
     <div class="col-sm-5">
-        <h1 id="adm_id"></h1>
         <button id="disconnect">채팅종료</button>
         <div id="all"></div>
         <div id="chat-window">
             <div>
                 <span style="vertical-align: middle;">실시간</span>
+                <h4 id="adm_id">${sessionScope.id}</h4>
                 <div id="status-indicator" class="disconnected"></div>
             </div>
             <div id="chat-messages"></div>
