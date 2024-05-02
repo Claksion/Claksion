@@ -44,6 +44,7 @@ public class UserController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(Model model,
+                           HttpSession httpSession,
                            @RequestParam(name = "name") String name,
                            @RequestParam(name = "type") UserType type,
                            @RequestParam(name = "oauthId") String oauthId,
@@ -58,7 +59,11 @@ public class UserController {
                 .email(email)
                 .build();
         userService.add(userEntity);
-        return "index";
+
+        int userId = userService.getByOauthId(oauthId).getId();
+        httpSession.setAttribute("userId", userId);
+
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/login/kakao/oauth", method = RequestMethod.GET)
