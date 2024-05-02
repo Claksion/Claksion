@@ -1,7 +1,7 @@
 package com.claksion.controller;
 
 import com.claksion.app.data.dto.msg.Msg;
-import com.claksion.app.repository.ChatRoomRepository;
+import com.claksion.app.service.ChatRoomRepository;
 import com.claksion.app.service.RedisPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;

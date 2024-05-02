@@ -7,6 +7,8 @@ server:
     session:
       timeout: 10m
 spring:
+  profiles:
+    active: local
   config:
     import:
       file:.env[.properties]
