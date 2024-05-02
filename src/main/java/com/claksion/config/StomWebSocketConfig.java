@@ -3,12 +3,14 @@ package com.claksion.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-@EnableWebSocketMessageBroker
+@EnableWebSocketMessageBroker// Stomp use
 @Configuration
+@EnableWebSocket // websocket server use
 @RequiredArgsConstructor
 public class StomWebSocketConfig implements WebSocketMessageBrokerConfigurer{
 
@@ -31,4 +33,8 @@ public class StomWebSocketConfig implements WebSocketMessageBrokerConfigurer{
         registry.enableSimpleBroker("/sub");
         registry.setApplicationDestinationPrefixes("/pub");
     }
+//    @Override // (6)
+//    public void configureClientInboundChannel (ChannelRegistration registration){
+//        registration.interceptors(stompHandler);
+//    }
 }
