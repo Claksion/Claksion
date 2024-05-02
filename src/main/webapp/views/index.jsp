@@ -3,6 +3,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
+<%-- Favicon --%>
+<link rel="icon" type="image/x-icon" href="<c:url value="/assets/img/favicon/favicon.ico"/> "/>
+
 <!-- Core CSS -->
 <link rel="stylesheet" href="<c:url value="/assets/vendor/css/core.css"/>" class="template-customizer-core-css"/>
 <link rel="stylesheet" href="<c:url value="/assets/vendor/css/theme-default.css"/>"
