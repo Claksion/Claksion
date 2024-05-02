@@ -1,5 +1,7 @@
 package com.claksion.controller;
 
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +11,9 @@ import java.util.Random;
 
 @Controller
 public class MainController {
+    @Value("${app.url.serverurl}")
+    String severurl;
+
     @RequestMapping("/")
     public String main(Model model){
         return "index";
@@ -25,5 +30,12 @@ public class MainController {
     @RequestMapping("/testhyerm")
     public String testhyerm(Model model){
         return "seat_analysis";
+    }
+    @RequestMapping("/chat")
+    public String chat(Model model, HttpSession httpSession){
+        httpSession.setAttribute("id","hong");
+        model.addAttribute("serverurl",severurl);
+        model.addAttribute("center","chat");
+        return "index";
     }
 }

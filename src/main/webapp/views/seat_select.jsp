@@ -19,7 +19,28 @@
 <script src="../assets/vendor/libs/popper/popper.js"></script>
 <script src="../assets/vendor/js/bootstrap.js"></script>
 <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#userInfoButton').on('click', function() {
+            // 사용자 ID를 세션, 쿠키 또는 로컬 스토리지에서 가져옴
+            var userId = sessionStorage.getItem('userId'); // 예시로 세션 스토리지 사용
 
+            $.ajax({
+                url: '<c:url value="seat/userinfo"/>',
+                type: 'POST',
+                data: { userId: userId },
+                success: function(response) {
+                    console.log('Server response:', response);
+                    alert('사용자 정보가 서버로 전송되었습니다.');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', status, error);
+                    alert('오류가 발생했습니다. 다시 시도해 주세요.');
+                }
+            });
+        });
+    });
+</script>
 <style>
     .row {
 
@@ -78,6 +99,7 @@
                     <tbody>
                     <tr>
                         <td><button
+                                id="userInfoButton"
                                 type="button"
                                 class="btn seat mine"
                                 data-bs-toggle="modal"
