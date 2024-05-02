@@ -89,19 +89,22 @@
             <div class="menu-inner-shadow"></div>
 
             <ul class="menu-inner py-1">
-                <!-- Dashboard -->
-                <li class="menu-item active">
+                <li class="${center == null?"menu-item active":"menu-item"}">
                     <a href="<c:url value="/"/>" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                        <div data-i18n="Analytics">홈으로</div>
+                        <div data-i18n="Analytics">홈</div>
                     </a>
                 </li>
-
-                <!-- Layouts -->
                 <li class="menu-item">
                     <a href="<c:url value="testhayoung"/>" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
                         <div data-i18n="Layouts">자리배치</div>
+                    </a>
+                </li>
+                <li class="${center == "chat"?"menu-item active":"menu-item"}">
+                    <a href="<c:url value="chat"/>" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-chat"></i>
+                        <div data-i18n="Layouts">단체채팅방</div>
                     </a>
                 </li>
             </ul>
@@ -127,12 +130,12 @@
                             </a>
                         </li>
                         <li class="nav-item lh-1 me-3">
-                            <span style="font-weight:bold;">${user.name}</span>님
+                            <span style="font-weight:bold;">${userName}</span>님
                         </li>
                         <li class="nav-item lh-1 me-3">
                             <div class="avatar avatar-online">
                                 <img
-                                        src="${user.profileImg}" alt=""
+                                        src="${userProfileImg}" alt=""
                                         class="w-px-40 h-auto rounded-circle">
                             </div>
                         </li>
@@ -144,99 +147,17 @@
             <!-- Content wrapper -->
             <div class="content-wrapper">
                 <!-- Content -->
-
-
                 <div class="container-xxl flex-grow-1 container-p-y">
-                    <div class="row">
-
-                        <!-- About Me -->
-                        <div class="col-lg">
-                            <div class="card mb-4">
-                                <h5 class="card-header">About Me</h5>
-                                <div class="card-body">
-                                    <h3 class="card-title text-primary">반갑습니다! <span
-                                            class="fw-bold">${user.name}</span>님 👋
-                                    </h3>
-                                    <div class="row">
-                                        <div class="p-2">
-                                            <span class="badge bg-label-warning rounded">Name</span> ${user.name}
-                                        </div>
-                                        <div class="p-2">
-                                            <span class="badge bg-label-INFO rounded">Email</span> ${user.email}
-                                        </div>
-                                        <div class="p-2">
-                                            <span class="badge bg-label-SUCCESS rounded">Type</span> ${user.type}
-                                        </div>
-                                        <div class="p-2">
-                                            <span class="badge bg-label-PRIMARY rounded">Class</span> ${classroom.name}
-
-                                        </div>
-                                        <%--                                        <div class="text-center">--%>
-                                        <div class="card-body ">
-                                            <img
-                                                    src="<c:url value="/assets/img/illustrations/man-with-laptop-light.png"/>"
-                                                    height="140"
-                                                    alt="View Badge User"
-                                                    style="float:right;"
-                                                    data-app-dark-img="illustrations/man-with-laptop-dark.png"
-                                                    data-app-light-img="illustrations/man-with-laptop-light.png"
-                                            />
-                                        </div>
-                                        <%--                                        </div>--%>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Classroom Mates -->
-                        <div class="col-lg">
-                            <div class="card mb-4">
-                                <h5 class="card-header">Classroom Mates</h5>
-                                <div class="card-body">
-                                    <div class="table-responsive text-nowrap">
-                                        <table class="table">
-                                            <thead class="table-light">
-                                            <tr>
-                                                <th>Profile</th>
-                                                <th>Email</th>
-                                                <th>Status</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody class="table-border-bottom-0">
-                                            <c:forEach var="mate" items="${classroomMates}">
-                                                <tr>
-                                                    <td>
-                                                        <ul class="navbar-nav flex-row align-items-center ms-auto">
-                                                            <li class="nav-item lh-1 me-3">
-                                                                <div class="avatar avatar-online small"
-                                                                     style="width: 30px; height: 30px;">
-                                                                    <img
-                                                                            src="${mate.profileImg}" alt=""
-                                                                            class="w-px-30 h-auto rounded-circle"
-                                                                    >
-                                                                </div>
-                                                            </li>
-                                                            <li class="nav-item lh-1 me-3">
-                                                                <span>${mate.name}</span>
-                                                            </li>
-                                                        </ul>
-                                                    </td>
-                                                    <td>${mate.email}</td>
-                                                    <td><span class="badge bg-label-success me-1">Active</span></td>
-                                                </tr>
-                                            </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                    <c:choose>
+                        <c:when test="${center == null}">
+                            <jsp:include page="home.jsp"/>
+                        </c:when>
+                        <c:otherwise>
+                            <jsp:include page="${center}.jsp"/>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <!-- / Content -->
-
-                <!-- Footer -->
-                <div class="content-backdrop fade"></div>
             </div>
             <!-- Content wrapper -->
         </div>
