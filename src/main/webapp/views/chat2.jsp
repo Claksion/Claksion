@@ -20,7 +20,7 @@
                     let messageContent = $('#message-input').val();
                     if (messageContent && websocket.stompClient) {
                         let chatMessage = {
-                            sendid: ${sessionScope.userName},
+                            sendid: "${sessionScope.userName}",
                             message: messageContent,
                             type: 'TALK'
                         };

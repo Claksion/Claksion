@@ -57,14 +57,12 @@ public class MainController {
     }
     @RequestMapping("/chat")
     public String chat(Model model, HttpSession httpSession){
-        httpSession.setAttribute("id","hong");
         model.addAttribute("serverurl",severurl);
         model.addAttribute("center","chat");
         return "index";
     }
     @RequestMapping("/chat2")
     public String chat2(Model model, HttpSession httpSession){
-        httpSession.setAttribute("id","hong");
         model.addAttribute("serverurl",severurl);
         model.addAttribute("center","chat2");
         return "chat2";
