@@ -22,7 +22,7 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class KakaoService {
 
-    @Value("${app.key.kakao.rest_api_key}")
+    @Value("${app.key.kakao.rest-api-key}")
     String kakaoRestApiKey;
 
     public String getAccessToken(String authorize_code) {
