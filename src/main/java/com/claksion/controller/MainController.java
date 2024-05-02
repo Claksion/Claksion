@@ -7,6 +7,8 @@ import com.claksion.app.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,9 @@ public class MainController {
     final private UserService userService;
     private final HttpSession httpSession;
     private final ClassroomService classroomService;
+  
+    @Value("${app.url.serverurl}")
+    String severurl;
 
     @RequestMapping("/")
     public String main(Model model, HttpSession session) throws Exception {
@@ -49,5 +54,12 @@ public class MainController {
     @RequestMapping("/testhyerm")
     public String testhyerm(Model model) {
         return "seat_analysis";
+    }
+    @RequestMapping("/chat")
+    public String chat(Model model, HttpSession httpSession){
+        httpSession.setAttribute("id","hong");
+        model.addAttribute("serverurl",severurl);
+        model.addAttribute("center","chat");
+        return "index";
     }
 }

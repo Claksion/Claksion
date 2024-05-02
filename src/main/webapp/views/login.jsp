@@ -44,6 +44,7 @@
                            href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=525aa8be9e038a0dccd36d35dca909d8&redirect_uri=http://localhost:80/member/login/kakao/oauth">
                             <img src="/assets/img/login_btn_naver.png" style="height:40px">
                         </a>
+
                     </div>
                 </div>
             </div>

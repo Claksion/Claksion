@@ -37,6 +37,9 @@ logging:
   level:
     root: info
 app:
+  url:
+    serverurl: http://127.0.0.1:80
+    chatboturl: http://172.16.21.147
   key:
     encrypt_key: ${KEY}
     encrypt_algorithm: ${ALGORITHM}
