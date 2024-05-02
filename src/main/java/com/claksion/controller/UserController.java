@@ -1,8 +1,10 @@
 package com.claksion.controller;
 
 import com.claksion.app.data.dto.UserInfo;
+import com.claksion.app.data.entity.ClassroomEntity;
 import com.claksion.app.data.entity.UserEntity;
 import com.claksion.app.data.entity.UserType;
+import com.claksion.app.service.ClassroomService;
 import com.claksion.app.service.UserService;
 import com.claksion.app.service.oauth.KakaoService;
 import jakarta.servlet.http.HttpSession;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -26,6 +30,7 @@ public class UserController {
 
     final private KakaoService kakaoService;
     final private UserService userService;
+    final private ClassroomService classroomService;
 
     @RequestMapping("/login")
     public String login(Model model) {
@@ -49,14 +54,17 @@ public class UserController {
                            @RequestParam(name = "type") UserType type,
                            @RequestParam(name = "oauthId") String oauthId,
                            @RequestParam(name = "profileImg") String profileImg,
-                           @RequestParam(name = "email") String email
+                           @RequestParam(name = "email") String email,
+                           @RequestParam(name = "classroomId") int classroomId
     ) throws Exception {
+        log.info(">>>>>classroomId"+classroomId);
         UserEntity userEntity = UserEntity.builder()
                 .name(name)
                 .type(type)
                 .oauthId(oauthId)
                 .profileImg(profileImg)
                 .email(email)
+                .classroomId(classroomId)
                 .build();
         userService.add(userEntity);
 
@@ -80,18 +88,15 @@ public class UserController {
         // 회원가입 전 > 회원가입 화면으로 이동
         if (userEntity == null) {
             model.addAttribute("userInfo", userInfo);
+
+            List<ClassroomEntity> classrooms = classroomService.get();
+            model.addAttribute("classrooms", classrooms);
+
             return "register";
         }
 
-        // 회원가입 후 > 로그인 정보 세션 저장
+        // 회원가입 후 > 홈 화면으로 이동
         httpSession.setAttribute("userId", userEntity.getId());
-
-        // 반을 선택하지 않았다면 반 선택 화면으로 이동
-        if (userEntity.getClassroomId() == 0) {
-            return "redirect:/";
-        }
-
-        // 모든 설정이 완료되었다면 홈화면으로 이동
         return "redirect:/";
     }
 }

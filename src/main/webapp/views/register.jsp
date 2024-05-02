@@ -57,12 +57,20 @@
                             <input type="text" class="form-control" id="email" name="email"
                                    placeholder="Enter your email" value="${userInfo.email}" readonly/>
                         </div>
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3">
                             <label for="type" class="form-label">유형</label>
                             <select id="type" name="type" class="select2 form-select">
-                                <option value="">Select User Type</option>
                                 <option value="STUDENT">학생</option>
                                 <option value="TEACHER">선생님</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="classroomId" class="form-label">반</label>
+                            <select id="classroomId" name="classroomId" class="select2 form-select">
+                                <c:forEach var="classroom" items="${classrooms}">
+                                    <option value="${classroom.id}">${classroom.name}</option>
+                                </c:forEach>
                             </select>
                         </div>
                         <input type="text" name="oauthId" value="${userInfo.oauthId}" hidden/>
