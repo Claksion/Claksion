@@ -4,7 +4,6 @@ import com.claksion.app.data.dto.OauthType;
 import com.claksion.app.data.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 
 
 @Slf4j
@@ -22,7 +20,7 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class KakaoService {
 
-    @Value("${app.key.kakao.rest-api-key}")
+    @Value("${app.oauth.kakao.rest-api-key}")
     String kakaoRestApiKey;
 
     public String getAccessToken(String authorize_code) {
