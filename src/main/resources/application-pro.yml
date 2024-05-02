@@ -44,7 +44,7 @@ app:
     encrypt-key: ${KEY}
     encrypt-algorithm: ${ALGORITHM}
     kakao:
-      rest-api-key: ${KAKAO_CLIENT_SECRET_KEY}
+      client-secret: ${KAKAO_CLIENT_SECRET_KEY}
     naver:
       client-secret: ${NAVER_CLIENT_SECRET_KEY}
 
