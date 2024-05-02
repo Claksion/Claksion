@@ -1,6 +1,5 @@
 package com.claksion.app.service;
 
-import com.claksion.app.data.dto.SeatSelectCount;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;

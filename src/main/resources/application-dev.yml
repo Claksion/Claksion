@@ -43,6 +43,8 @@ app:
   key:
     encrypt_key: ${KEY}
     encrypt_algorithm: ${ALGORITHM}
+    kakao:
+      rest_api_key: ${KAKAO_RESP_API_KEY}
 
 
 
