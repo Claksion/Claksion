@@ -37,11 +37,16 @@ logging:
   level:
     root: info
 app:
+  url:
+    serverurl: http://127.0.0.1:80
+    chatboturl: http://172.16.21.147
   key:
-    encrypt_key: ${KEY}
-    encrypt_algorithm: ${ALGORITHM}
+    encrypt-key: ${KEY}
+    encrypt-algorithm: ${ALGORITHM}
     kakao:
-      rest_api_key: ${KAKAO_RESP_API_KEY}
+      rest-api-key: ${KAKAO_CLIENT_SECRET_KEY}
+    naver:
+      client-secret: ${NAVER_CLIENT_SECRET_KEY}
 
 
 

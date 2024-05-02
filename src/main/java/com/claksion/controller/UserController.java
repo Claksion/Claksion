@@ -25,7 +25,7 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    @Value("${app.key.kakao.rest_api_key}")
+    @Value("${app.key.kakao.rest-api-key}")
     String kakaoRestApiKey;
 
     final private KakaoService kakaoService;
