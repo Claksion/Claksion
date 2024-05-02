@@ -4,9 +4,11 @@ import com.claksion.app.service.RedisService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
+@Controller
 public class RedisController {
     private RedisService service = new RedisService();
 
