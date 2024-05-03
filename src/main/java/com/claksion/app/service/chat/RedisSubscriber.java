@@ -1,4 +1,4 @@
-package com.claksion.app.service;
+package com.claksion.app.service.chat;
 
 import com.claksion.app.data.dto.enums.MessageType;
 import com.claksion.app.data.dto.request.ChatMessageRequest;

@@ -1,9 +1,10 @@
-package com.claksion.app.service;
+package com.claksion.app.service.chat;
 
 import com.claksion.app.data.dto.msg.Msg;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +13,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class RedisPublisher {
     private final RedisTemplate<String, Object> redisTemplate;
-
+    private final StringRedisTemplate stringRedisTemplate;
     public void publish(ChannelTopic topic, Msg message){
         redisTemplate.convertAndSend(topic.getTopic(), message);
+
     }
 }

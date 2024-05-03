@@ -1,4 +1,4 @@
-package com.claksion.app.service;
+package com.claksion.app.service.chat;
 
 import redis.clients.jedis.Jedis;
 
