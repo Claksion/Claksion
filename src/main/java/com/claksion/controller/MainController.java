@@ -7,14 +7,12 @@ import com.claksion.app.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Random;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -65,6 +63,12 @@ public class MainController {
     public String chatroom(Model model, HttpSession httpSession){
         model.addAttribute("serverurl",severurl);
         model.addAttribute("center","chatroom");
+        return "index";
+    }
+    @RequestMapping("/chatroomdetail")
+    public String chatroomdetail(Model model, HttpSession httpSession){
+        model.addAttribute("serverurl",severurl);
+        model.addAttribute("center","chatroomdetail");
         return "index";
     }
 }

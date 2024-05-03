@@ -1,7 +1,6 @@
-package com.claksion.app.service;
+package com.claksion.app.service.chat;
 
 import com.claksion.app.data.dto.msg.ChatRoom;
-import com.claksion.app.service.RedisSubscriber;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
@@ -10,7 +9,6 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
