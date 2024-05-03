@@ -1,5 +1,6 @@
 package com.claksion.config;
 
+import com.claksion.app.data.dto.msg.Msg;
 import com.claksion.app.service.chat.RedisService;
 import com.claksion.app.service.chat.RedisSubscriber;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 
@@ -67,6 +69,16 @@ public class RedisConfig {
     @Bean
     public ChannelTopic channelTopic() { // (4)
         return new ChannelTopic("chatroom");
+    }
+    // Redis 에 메시지 내역을 저장하기 위한 RedisTemplate 을 설정
+    @Bean
+    public RedisTemplate<String, Msg> redisTemplateMessage(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, Msg> redisTemplateMessage = new RedisTemplate<>();
+        redisTemplateMessage.setConnectionFactory(connectionFactory);
+        redisTemplateMessage.setKeySerializer(new StringRedisSerializer());        // Key Serializer
+        redisTemplateMessage.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));      // Value Serializer
+
+        return redisTemplateMessage;
     }
 
 

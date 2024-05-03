@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<c:url value="//maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>">
     <script src="<c:url value="//cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"/>"></script>
     <script src="<c:url value="//cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"/>"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="<c:url value="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"/>"></script>
 
     <style>
         body {
@@ -42,7 +42,7 @@
         #chat-window {
             border: 1px solid #ccc;
             padding: 10px;
-            height: 400px;
+            height: 360px;
             overflow-y: scroll;
             margin-bottom: 10px;
         }
@@ -52,7 +52,7 @@
             border: 2px solid gray;
             border-radius: 10px;
             flex-direction: column-reverse; /* 컨텐츠를 역순으로 정렬 */
-            height: 350px;
+            height: 390px;
         }
 
         #input-area {
@@ -98,15 +98,53 @@
                         let msg = JSON.parse(message.body);
                         console.log("Received message:", msg);
                         let chatMessages = $("#chat-messages");
-                        chatMessages.append("<h5>" +msg.sendid +":"+msg.message+ "</h5>");
+                        chatMessages.prepend("<h5>" +msg.sendid +":"+msg.message+ "</h5>");
                         chatMessages.scrollTop(chatMessages[0].scrollHeight);
                     });
                 });
             },
         };
-        $(function (){
+        let fetchPreviousMessages = {
+            channelName: 'chatroom',  // 채널 이름을 객체 속성으로 저장
+            init: function () {
+                console.log("Initializing fetch for previous messages...");
+                $.ajax({
+                    url: `/api/messages`,  // 서버의 메시지 요청 API
+                    type: 'GET',  // HTTP GET 메소드 사용
+                    data: {channel: this.channelName},  // 채널 이름을 'channel' 파라미터로 전달
+                    success: function (messages) {
+                        let chatMessages = $("#chat-messages");
+                        messages.reverse().forEach(function (messageString) {
+                            // 문자열 메시지를 객체로 파싱
+                            let message = parseMsgObject(messageString);
+                            // 파싱된 객체에서 필요한 데이터 추출 및 화면에 표시
+                            if (message.sendid && message.message) {
+                                chatMessages.append("<h5>" + message.sendid + ": " + message.message + "</h5>");
+                            }
+                        });
+                        chatMessages.scrollTop(chatMessages[0].scrollHeight);  // 스크롤을 하단으로 이동
+                    },
+                    error: function (error) {
+                        console.log('Error fetching previous messages:', error);
+                    }
+                });
+            }
+
+        };
+        $(document).ready(function (){
+            fetchPreviousMessages.init();
             websocket.init();
         });
+        function parseMsgObject(msgStr) {
+            const content = msgStr.slice(msgStr.indexOf('(') + 1, msgStr.lastIndexOf(')'));
+            const properties = content.split(', ');
+            const msgObject = {};
+            properties.forEach(prop => {
+                const [key, value] = prop.split('=');
+                msgObject[key.trim()] = value ? value.trim() : null;
+            });
+            return msgObject;
+        }
     </script>
 
 </head>
