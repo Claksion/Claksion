@@ -20,12 +20,12 @@ public class SeatSelectScheduler {
 
     @Scheduled(fixedDelay = 1000)
     private void seatSelectScheduler() {
-        // 스케줄러가 참고해야 하는 빈 자리 key 가져오기
-        Set<String> keys = redisTemplate.keys("seat:*");
-        log.info("* seat keys > " + keys.toString());
-
-        for (String seatKey : keys) {
-            seatSelectService.publish(seatKey);
-        }
+//        // 스케줄러가 참고해야 하는 빈 자리 key 가져오기
+//        Set<String> keys = redisTemplate.keys("seat:*");
+//        log.info("* seat keys > " + keys.toString());
+//
+//        for (String seatKey : keys) {
+//            seatSelectService.publish(seatKey);
+//        }
     }
 }
