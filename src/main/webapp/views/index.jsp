@@ -116,6 +116,12 @@
                         <div data-i18n="Layouts">채팅방만들기</div>
                     </a>
                 </li>
+                <li class="${center == "poll_list"?"menu-item active":"menu-item"}">
+                    <a href="<c:url value="poll"/>" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-box"></i>
+                        <div data-i18n="Layouts">투표</div>
+                    </a>
+                </li>
             </ul>
         </aside>
         <!-- / Menu -->
