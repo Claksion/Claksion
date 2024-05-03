@@ -104,7 +104,7 @@ public class NaverService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            log.info("*** response body : " + result);
+//            log.info("*** response body : " + result);
 
             JSONParser jsonParser = new JSONParser();
             JSONObject resultObject = (JSONObject) jsonParser.parse(result);
