@@ -21,7 +21,7 @@ spring:
     redis:
       host: localhost
       port: 6379
-      password: aaaa
+      password: aaaaa
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: jdbc:log4jdbc:mysql://${DB_URL}/claksion?characterEncoding=utf8
@@ -44,7 +44,7 @@ app:
     encrypt-algorithm: ${ALGORITHM}
   oauth:
     kakao:
-      rest-api-key: ${KAKAO_REST-API_KEY}
+      rest-api-key: ${KAKAO_REST_API_KEY}
     naver:
       client-id: ${NAVER_CLIENT_ID}
       client-secret-key: ${NAVER_CLIENT_SECRET_KEY}
