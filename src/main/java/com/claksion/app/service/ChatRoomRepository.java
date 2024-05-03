@@ -1,4 +1,4 @@
-package com.claksion.app.repository;
+package com.claksion.app.service;
 
 import com.claksion.app.data.dto.msg.ChatRoom;
 import com.claksion.app.service.RedisSubscriber;

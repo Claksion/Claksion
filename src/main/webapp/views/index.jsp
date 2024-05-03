@@ -110,6 +110,12 @@
                         <div data-i18n="Layouts">단체채팅방</div>
                     </a>
                 </li>
+                <li class="${center == "chatrooms"?"menu-item active":"menu-item"}">
+                    <a href="<c:url value="chatroom"/>" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-chat"></i>
+                        <div data-i18n="Layouts">채팅방만들기</div>
+                    </a>
+                </li>
             </ul>
         </aside>
         <!-- / Menu -->
