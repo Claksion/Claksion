@@ -41,7 +41,7 @@
 
                         <!-- 네이버 로그인 -->
                         <a class="p-2"
-                           href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=525aa8be9e038a0dccd36d35dca909d8&redirect_uri=http://localhost:80/member/login/kakao/oauth">
+                           href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&state=1234&redirect_uri=http://localhost/user/login/naver/oauth">
                             <img src="/assets/img/login_btn_naver.png" style="height:40px">
                         </a>
 
