@@ -67,7 +67,7 @@
                                                  style="width: 30px; height: 30px;">
                                                 <img
                                                         src="${mate.profileImg}" alt=""
-                                                        class="w-px-30 h-auto rounded-circle"
+                                                        class="w-px-30 rounded-circle prifile-img-full"
                                                 >
                                             </div>
                                         </li>

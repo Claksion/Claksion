@@ -7,6 +7,7 @@ import com.claksion.app.data.entity.UserType;
 import com.claksion.app.service.ClassroomService;
 import com.claksion.app.service.UserService;
 import com.claksion.app.service.oauth.KakaoService;
+import com.claksion.app.service.oauth.NaverService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +26,15 @@ import java.util.List;
 @Controller
 public class UserController {
 
+    private final NaverService naverService;
     @Value("${app.oauth.kakao.rest-api-key}")
     String kakaoRestApiKey;
+
+    @Value("${app.oauth.naver.client-secret-key}")
+    String naverClientSecretKey;
+
+    @Value("${app.oauth.naver.client-id}")
+    String naverClientId;
 
     final private KakaoService kakaoService;
     final private UserService userService;
@@ -35,6 +43,8 @@ public class UserController {
     @RequestMapping("/login")
     public String login(Model model) {
         model.addAttribute("kakaoRestApiKey", kakaoRestApiKey);
+        model.addAttribute("naverClientSecretKey", naverClientSecretKey);
+        model.addAttribute("naverClientId", naverClientId);
         return "login";
     }
 
@@ -83,6 +93,34 @@ public class UserController {
     ) throws Exception {
         String accessToken = kakaoService.getAccessToken(code);
         UserInfo userInfo = kakaoService.getUserInfo(accessToken);
+
+        UserEntity user = userService.getByOauthId(userInfo.getOauthId());
+
+        // 회원가입 전 > 회원가입 화면으로 이동
+        if (user == null) {
+            model.addAttribute("userInfo", userInfo);
+
+            List<ClassroomEntity> classrooms = classroomService.get();
+            model.addAttribute("classrooms", classrooms);
+
+            return "register";
+        }
+
+        // 회원가입 후 > 홈 화면으로 이동
+        httpSession.setAttribute("userId", user.getId());
+        httpSession.setAttribute("userName", user.getName());
+        httpSession.setAttribute("userProfileImg", user.getProfileImg());
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/login/naver/oauth", method = RequestMethod.GET)
+    public String naverOauth(
+            Model model,
+            HttpSession httpSession,
+            @RequestParam(value = "code", required = false) String code
+    ) throws Exception {
+        String accessToken = naverService.getAccessToken(code);
+        UserInfo userInfo = naverService.getUserInfo(accessToken);
 
         UserEntity user = userService.getByOauthId(userInfo.getOauthId());
 

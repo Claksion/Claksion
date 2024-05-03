@@ -139,7 +139,8 @@
                             <div class="avatar avatar-online">
                                 <img
                                         src="${userProfileImg}" alt=""
-                                        class="w-px-40 h-auto rounded-circle">
+                                        class="w-px-40 rounded-circle prifile-img-full"
+                                >
                             </div>
                         </li>
                     </ul>
