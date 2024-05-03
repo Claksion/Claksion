@@ -24,9 +24,13 @@ public class PollController {
     final private PollService pollService;
     final private PollContentService pollContentService;
     final private RedisTemplate<String, Object> redisTemplate;
-    @RequestMapping("/")
-    public void poll() {
-
+    @RequestMapping("")
+    public String poll(Model model) throws Exception {
+        pollService.get();
+        List<PollEntity> pollList = pollService.get();
+        model.addAttribute("pollList", pollList);
+        model.addAttribute("center", "poll_list");
+        return "index";
     }
     @RequestMapping("/creation")
     public String pollcreation(Model model){
