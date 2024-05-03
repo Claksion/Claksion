@@ -61,10 +61,10 @@ public class MainController {
         model.addAttribute("center","chat");
         return "index";
     }
-    @RequestMapping("/chat2")
-    public String chat2(Model model, HttpSession httpSession){
+    @RequestMapping("/chatroom")
+    public String chatroom(Model model, HttpSession httpSession){
         model.addAttribute("serverurl",severurl);
-        model.addAttribute("center","chat2");
-        return "chat2";
+        model.addAttribute("center","chatroom");
+        return "index";
     }
 }
