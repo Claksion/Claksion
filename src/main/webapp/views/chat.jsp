@@ -51,6 +51,7 @@
             overflow-y: auto;
             border: 2px solid gray;
             border-radius: 10px;
+            flex-direction: column-reverse; /* 컨텐츠를 역순으로 정렬 */
             height: 350px;
         }
 
@@ -96,7 +97,9 @@
                     websocket.stompClient.subscribe('/sub/chat/room/1', function(message) {
                         let msg = JSON.parse(message.body);
                         console.log("Received message:", msg);
-                        $("#chat-messages").prepend("<h5>" +msg.sendid +":"+msg.message+ "</h5>");
+                        let chatMessages = $("#chat-messages");
+                        chatMessages.append("<h5>" +msg.sendid +":"+msg.message+ "</h5>");
+                        chatMessages.scrollTop(chatMessages[0].scrollHeight);
                     });
                 });
             },
@@ -117,7 +120,7 @@
                 <span style="vertical-align: middle;">실시간</span>
                 <div id="status-indicator" class="disconnected"></div>
             </div>
-            <div id="chat-messages"></div>
+            <div id="chat-messages" style="display: flex; flex-direction: column-reverse; max-height: 300px; overflow-y: auto;"></div>
         </div>
         <div id="input-area">
             <input type="text" id="message-input" placeholder="메시지를 입력하세요...">

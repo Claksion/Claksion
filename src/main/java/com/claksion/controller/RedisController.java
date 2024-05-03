@@ -1,6 +1,6 @@
 package com.claksion.controller;
 
-import com.claksion.app.service.RedisService;
+import com.claksion.app.service.chat.RedisService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

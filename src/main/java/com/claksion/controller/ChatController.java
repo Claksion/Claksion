@@ -1,12 +1,10 @@
 package com.claksion.controller;
 
 import com.claksion.app.data.dto.msg.Msg;
-import com.claksion.app.data.dto.request.ChatMessageRequest;
-import com.claksion.app.service.ChatRoomRepository;
-import com.claksion.app.service.RedisPublisher;
+import com.claksion.app.service.chat.ChatRoomRepository;
+import com.claksion.app.service.chat.RedisPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -44,4 +42,12 @@ public class ChatController {
         log.info(">>>>>>>>>>>>>>");
         redisPublisher.publish(channelTopic, message);
     }
+//    @MessageMapping("/chat/send")
+//    @SendTo("/topic/messages")
+//    public Msg sendMessage(Msg chatMessage) {
+//        // Optionally save the message to Redis here
+//        return chatMessage;
+//    }
+
+
 }
