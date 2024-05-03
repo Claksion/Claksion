@@ -16,7 +16,7 @@ spring:
       suffix: .jsp
   session:
     redis:
-      namespace: spring:session
+      namespace: claksion:session
     store-type: redis
   data:
     redis:

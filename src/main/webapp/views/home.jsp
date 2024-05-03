@@ -58,13 +58,15 @@
                         </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
-                        <c:forEach var="mate" items="${classroomMates}">
+                        <c:forEach var="mate" items="${classMates}">
                             <tr>
                                 <td>
                                     <ul class="navbar-nav flex-row align-items-center ms-auto">
                                         <li class="nav-item lh-1 me-3">
-                                            <div class="avatar avatar-online small"
-                                                 style="width: 30px; height: 30px;">
+                                            <div
+                                                    <c:if test="${mate.online}">class="avatar small avatar-online"</c:if>
+                                                    <c:if test="${!mate.online}">class="avatar small avatar-offline"</c:if>
+                                                    style="width: 30px; height: 30px;">
                                                 <img
                                                         src="${mate.profileImg}" alt=""
                                                         class="w-px-30 rounded-circle prifile-img-full"
@@ -77,7 +79,10 @@
                                     </ul>
                                 </td>
                                 <td>${mate.email}</td>
-                                <td><span class="badge bg-label-success me-1">Active</span></td>
+                                <td>
+                                    <c:if test="${mate.online}"><span class="badge bg-label-success me-1">Active</span></c:if>
+                                    <c:if test="${!mate.online}"><span class="badge bg-label-secondary">Inactive</span></c:if>
+                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>

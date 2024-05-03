@@ -1,25 +1,17 @@
 package com.claksion.app.service;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import com.claksion.app.data.dto.ClassMate;
 
 import com.claksion.app.data.entity.UserEntity;
 import com.claksion.app.frame.BaseService;
 import com.claksion.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.List;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.URL;
 
 
 @Slf4j
@@ -28,6 +20,7 @@ import java.net.URL;
 public class UserService implements BaseService<Integer, UserEntity> {
 
     final UserRepository userRepository;
+    final RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public int add(UserEntity userEntity) throws Exception {
@@ -60,5 +53,16 @@ public class UserService implements BaseService<Integer, UserEntity> {
 
     public List<UserEntity> getByClassroomId(int classroomId) throws Exception {
         return userRepository.selectByClassroomId(classroomId);
+    }
+
+    public List<ClassMate> getClassMates(int classroomId) throws Exception {
+        List<UserEntity> users = userRepository.selectByClassroomId(classroomId);
+        List<ClassMate> classMates = new ArrayList<>();
+        for (UserEntity user : users) {
+            int userId = user.getId();
+            boolean online = Boolean.TRUE.equals(redisTemplate.hasKey("loginUser:" + userId));
+            classMates.add(new ClassMate(user.getId(), user.getName(), user.getType(), user.getProfileImg(), user.getEmail(), online));
+        }
+        return classMates;
     }
 }

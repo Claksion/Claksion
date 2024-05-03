@@ -6,6 +6,7 @@ server:
       force: true
     session:
       timeout: 10m
+      name: JSESSIONID
 spring:
   config:
     import:
@@ -16,7 +17,7 @@ spring:
       suffix: .jsp
   session:
     redis:
-      namespace: spring:session
+      namespace: claksion:session
     store-type: redis
   data:
     redis:

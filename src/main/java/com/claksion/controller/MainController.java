@@ -1,5 +1,6 @@
 package com.claksion.controller;
 
+import com.claksion.app.data.dto.ClassMate;
 import com.claksion.app.data.entity.ClassroomEntity;
 import com.claksion.app.data.entity.UserEntity;
 import com.claksion.app.service.ClassroomService;
@@ -38,8 +39,8 @@ public class MainController {
         ClassroomEntity classroom = classroomService.get(user.getClassroomId());
         model.addAttribute("classroom", classroom);
 
-        List<UserEntity> classroomMates = userService.getByClassroomId(user.getClassroomId());
-        model.addAttribute("classroomMates", classroomMates);
+        List<ClassMate> classMates = userService.getClassMates(user.getClassroomId());
+        model.addAttribute("classMates", classMates);
 
         return "index";
     }

@@ -1,9 +1,11 @@
 package com.claksion.controller;
 
+import com.claksion.app.data.dto.LoginUser;
 import com.claksion.app.data.dto.UserInfo;
 import com.claksion.app.data.entity.ClassroomEntity;
 import com.claksion.app.data.entity.UserEntity;
 import com.claksion.app.data.entity.UserType;
+import com.claksion.app.repository.LoginUserRepository;
 import com.claksion.app.service.ClassroomService;
 import com.claksion.app.service.UserService;
 import com.claksion.app.service.oauth.KakaoService;
@@ -27,6 +29,9 @@ import java.util.List;
 public class UserController {
 
     private final NaverService naverService;
+    private final LoginUserRepository loginUserRepository;
+
+
     @Value("${app.oauth.kakao.rest-api-key}")
     String kakaoRestApiKey;
 
@@ -51,7 +56,7 @@ public class UserController {
     @RequestMapping("/logout")
     public String logout(Model model, HttpSession httpSession) {
         if (httpSession != null) {
-//            loginCustRepository.deleteById((String) httpSession.getAttribute("id"));
+            loginUserRepository.deleteById((int) httpSession.getAttribute("userId"));
             httpSession.invalidate();
         }
         return "redirect:/";
@@ -81,6 +86,7 @@ public class UserController {
         httpSession.setAttribute("userId", user.getId());
         httpSession.setAttribute("userName", user.getName());
         httpSession.setAttribute("userProfileImg", user.getProfileImg());
+        loginUserRepository.save(new LoginUser(user.getId()));
 
         return "redirect:/";
     }
@@ -110,6 +116,7 @@ public class UserController {
         httpSession.setAttribute("userId", user.getId());
         httpSession.setAttribute("userName", user.getName());
         httpSession.setAttribute("userProfileImg", user.getProfileImg());
+        loginUserRepository.save(new LoginUser(user.getId()));
         return "redirect:/";
     }
 
@@ -138,6 +145,7 @@ public class UserController {
         httpSession.setAttribute("userId", user.getId());
         httpSession.setAttribute("userName", user.getName());
         httpSession.setAttribute("userProfileImg", user.getProfileImg());
+        loginUserRepository.save(new LoginUser(user.getId()));
         return "redirect:/";
     }
 }
