@@ -3,6 +3,8 @@ package com.claksion.app.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -34,4 +36,32 @@ public class SeatSelectService {
         redisTemplate.delete(seatKey);
         redisTemplate.opsForSet().add("completedSeat:" + seatKey.split(":")[1], seatKey);
     }
-}
+
+//    public void changeKey(String key) {
+//        ZSetOperations<String, Object> ops = redisTemplate.opsForZSet();
+
+//        return zSetOps.rangeWithScores(key, 0, -1);
+
+//        Set<String> value = ops.rangeWithScores()
+//        log.info(value.toString());
+//        if (value != null) {
+//            ops.set(key+":complete", value);
+//            redisTemplate.delete(key);
+//        }
+
+
+//        ZSetOperations<String, String> zSetOps = redisTemplate.opsForZSet();
+//        Set<ZSetOperations.TypedTuple<String>> members = zSetOps.rangeWithScores(oldKey, 0, -1);
+//
+//        if (members != null && !members.isEmpty()) {
+//            for (ZSetOperations.TypedTuple<String> member : members) {
+//                zSetOps.add(newKey, member.getValue(), member.getScore());
+//            }
+        }
+//    }
+
+
+
+
+
+

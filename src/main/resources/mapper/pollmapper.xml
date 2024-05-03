@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.claksion.app.repository.PollRepository">
+    <insert id="insert" parameterType="com.claksion.app.data.entity.PollEntity">
+        INSERT INTO poll (classroom_id, title, anonymity, select_type, deadline, created_at, updated_at, status) VALUES (#{classroomId},#{title},#{anonymity},#{selectType},#{deadline},NOW(),NOW(),'ACTIVE')
+    </insert>
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM poll WHERE id=#{id}
+    </delete>
+    <update id="update" parameterType="com.claksion.app.data.entity.PollEntity">
+        UPDATE poll SET classroom_id=#{classroomId}, title=#{title}, anonymity=#{anonymity}, select_type=#{selectType}, deadline=#{deadline} WHERE id=#{id}
+    </update>
+    <select id="select" resultType="com.claksion.app.data.entity.PollEntity">
+        SELECT * FROM poll
+    </select>
+    <select id="selectOne" parameterType="Integer" resultType="com.claksion.app.data.entity.PollEntity">
+        SELECT * FROM poll WHERE id=#{id}
+    </select>
+    <select id="selectPollId" parameterType="com.claksion.app.data.entity.PollEntity" resultType="Integer">
+        SELECT id FROM poll WHERE classroom_id=#{classroomId} AND title=#{title} AND anonymity=#{anonymity} AND select_type=#{selectType}
+    </select>
+</mapper>

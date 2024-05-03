@@ -91,5 +91,18 @@ class SeatSelectTests {
             seatSelectService.addQueue(seatId);
             countDownLatch.countDown();
         }
+
     }
+
+
+
+//    @Test
+//    void 좌석_랭킹() {
+//        Set<String> seats = redisTemplate.keys("seat:1:*");
+//        for(String s:seats) {
+//            log.info("=====================seat: "+s);
+//            seatSelectService.changeKey(s);
+//        }
+//    }
+
 }
