@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-@RedisHash(value = "loginUser", timeToLive = 600) // redis에 존재하는 시간 = 600초
+@RedisHash(value = "loginUser", timeToLive = 18000) // session ttl과 동일하게 맞춤 (5시간)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

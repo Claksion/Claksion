@@ -4,9 +4,6 @@ server:
     encoding:
       charset: UTF-8
       force: true
-    session:
-      timeout: 10m
-      name: JSESSIONID
 spring:
   config:
     import:
@@ -19,6 +16,7 @@ spring:
     redis:
       namespace: claksion:session
     store-type: redis
+    timeout: 18000
   data:
     redis:
       host: localhost
