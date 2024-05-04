@@ -58,7 +58,7 @@
                     <h3 class="card-title text-primary">
                         <span class="fw-bold">개발2기</span>의 자리배치도 입니다! 🪑
                     </h3>
-                    <div class="p-5" style="margin: 50px 100px;">
+                    <div class="p-5" style="margin: 20px 100px;">
                         <table class="table" style="text-align: center;">
                             <thead>
                             <tr class="">
