@@ -1,6 +1,5 @@
 package com.claksion.poll;
 
-import com.claksion.app.service.PollPubSubService;
 import com.claksion.app.service.RedisMessageSubscriber;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,7 @@ class SseRedisTests {
     private SseEmitter mockEmitter;
 
     @Autowired
-    private PollPubSubService publisher;
+//    private PollPubSubService publisher;
 
     @MockBean
     private StringRedisTemplate redisTemplate;
@@ -49,7 +48,7 @@ class SseRedisTests {
         String testMessage = "Test message";
 
         // 메시지 발행 시뮬레이션
-        publisher.publishMessage(testChannel, testMessage);
+//        publisher.publishMessage(testChannel, testMessage);
 
         // RedisTemplate을 통해 메시지가 발행되었는지 확인
         Mockito.verify(redisTemplate, Mockito.times(1)).convertAndSend(testChannel, testMessage);
