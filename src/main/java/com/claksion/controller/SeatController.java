@@ -46,9 +46,4 @@ public class SeatController {
         model.addAttribute("center", "seat");
         return "index";
     }
-
-    @RequestMapping("/testhyerm")
-    public String testhyerm(Model model) {
-        return "seat_analysis";
-    }
 }
