@@ -29,7 +29,7 @@
 
     $().ready(function () {
         $("#success").click(success_modal);
-        $("#error").click(fail_modal);
+        $("#fail").click(fail_modal);
 
         $(".seat").click(function () {
             let seatId = $(this).attr("seatId");
@@ -77,30 +77,6 @@
         })
     })
 </script>
-
-
-<%--<script>--%>
-<%--    $(document).ready(function () {--%>
-<%--        $('#userInfoButton').on('click', function () {--%>
-<%--            // 사용자 ID를 세션, 쿠키 또는 로컬 스토리지에서 가져옴--%>
-<%--            var userId = sessionStorage.getItem('userId'); // 예시로 세션 스토리지 사용--%>
-
-<%--            $.ajax({--%>
-<%--                url: '<c:url value="seat/userinfo"/>',--%>
-<%--                type: 'POST',--%>
-<%--                data: {userId: userId},--%>
-<%--                success: function (response) {--%>
-<%--                    console.log('Server response:', response);--%>
-<%--                    alert('사용자 정보가 서버로 전송되었습니다.');--%>
-<%--                },--%>
-<%--                error: function (xhr, status, error) {--%>
-<%--                    console.error('Error:', status, error);--%>
-<%--                    alert('오류가 발생했습니다. 다시 시도해 주세요.');--%>
-<%--                }--%>
-<%--            });--%>
-<%--        });--%>
-<%--    });--%>
-<%--</script>--%>
 
 <div class="row">
     <div class="col-lg-12 mb-1 order-0">
@@ -185,88 +161,7 @@
         </div>
 
 
-        <button id="success">Success</button>
-        <button id="error">Error</button>
-
-
-        <!-- Modal -->
-        <div class="modal fade" id="modalMine" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalScrollableTitle">자리 선택</h5>
-                        <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                        ></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            내 자리입니다. 🤡
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary"
-                                data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="modalEmpty" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalScrollableTitle">자리 선택</h5>
-                        <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                        ></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            자리 선택이 완료되었습니다.
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary"
-                                data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="modalSelected" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalScrollableTitle">자리 선택</h5>
-                        <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                        ></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            이미 선택된 자리입니다.
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary"
-                                data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <button id="success">Success Test</button>
+        <button id="fail">Fail Test</button>
     </div>
 </div>
