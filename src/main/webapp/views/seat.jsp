@@ -13,6 +13,7 @@
                 text: '자리 선택에 성공했습니다!',
             });
         });
+
         $("#error").click(function () {
             Swal.fire({
                 icon: 'error',
@@ -20,7 +21,38 @@
                 text: '이미 선택된 좌석입니다.',
             });
         });
-    });
+
+        $(".seat").click(function () {
+            Swal.fire({
+                icon: 'error',
+                title: '실패',
+                text: '이미 선택된 좌석입니다.',
+            });
+        });
+
+        $("#btn-reset").click(function () {
+            Swal.fire({
+                title: '좌석 정보를 초기화하겠습니까?',
+                showCancelButton: true,
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    return $.ajax({
+                        url: '<c:url value="seat/reset"/>',
+                        data: {classroomId: ${classroom.id}},
+                        type: 'POST'
+                    });
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '좌석이 초기화되었습니다.'
+                    }).then(() => {location.reload(true)});
+                }
+            })
+        })
+    })
 </script>
 
 
@@ -56,91 +88,71 @@
                 <h5 class="card-header">Seat</h5>
                 <div class="card-body">
                     <h3 class="card-title text-primary">
-                        <span class="fw-bold">개발2기</span>의 자리배치도 입니다! 🪑
+                        <span class="fw-bold">${classroom.name}</span>의 자리배치도 입니다! 🪑
                     </h3>
+
+                    <div class="btn-group" role="group">
+                        <a type="button" class="btn btn-outline-secondary" id="btn-reset"><i
+                                class="tf-icons bx bx-reset"></i> 초기화</a>
+                        <a type="button" class="btn btn-outline-secondary" id="btn-time"><i
+                                class="tf-icons bx bx-time"></i> 시간설정</a>
+                    </div>
+
                     <div class="p-5" style="margin: 20px 100px;">
                         <table class="table" style="text-align: center;">
                             <thead>
                             <tr class="">
                                 <th colspan="2"><h3>칠판 👨🏻‍🏫</h3></th>
+
                             </tr>
                             </thead>
                             <tbody class="table-border-bottom-0">
-                            <tr>
-                                <td>
-                                    <div class="p-3">
-                                        <button class="btn seat-selected btn-lg" type="button">A1</button>
-                                        <button class="btn btn-primary btn-lg" type="button">A2</button>
-                                        <button class="btn seat-selected btn-lg" type="button">A3</button>
-                                        <button class="btn seat-selected btn-lg" type="button">A4</button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="p-3">
-                                        <button class="btn seat-selected btn-lg" type="button">B1</button>
-                                        <button class="btn btn-primary btn-lg" type="button">B2</button>
-                                        <button class="btn seat-selected btn-lg" type="button">B3</button>
-                                        <button class="btn seat-selected btn-lg" type="button">B4</button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <div class="p-3">
-                                        <button class="btn seat-selected btn-lg" type="button">A1</button>
-                                        <button class="btn btn-primary btn-lg" type="button">A2</button>
-                                        <button class="btn seat-selected btn-lg" type="button">A3</button>
-                                        <button class="btn seat-selected btn-lg" type="button">A4</button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="p-3">
-                                        <button class="btn seat-selected btn-lg" type="button">B1</button>
-                                        <button class="btn btn-primary btn-lg" type="button">B2</button>
-                                        <button class="btn seat-selected btn-lg" type="button">B3</button>
-                                        <button class="btn seat-selected btn-lg" type="button">B4</button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <div class="p-3">
-                                        <button class="btn seat-selected btn-lg" type="button">A1</button>
-                                        <button class="btn btn-primary btn-lg" type="button">A2</button>
-                                        <button class="btn seat-selected btn-lg" type="button">A3</button>
-                                        <button class="btn seat-selected btn-lg" type="button">A4</button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="p-3">
-                                        <button class="btn seat-selected btn-lg" type="button">B1</button>
-                                        <button class="btn btn-primary btn-lg" type="button">B2</button>
-                                        <button class="btn seat-selected btn-lg" type="button">B3</button>
-                                        <button class="btn seat-selected btn-lg" type="button">B4</button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <div class="p-3">
-                                        <button class="btn seat-selected btn-lg" type="button">A1</button>
-                                        <button class="btn btn-primary btn-lg" type="button">A2</button>
-                                        <button class="btn seat-selected btn-lg" type="button">A3</button>
-                                        <button class="btn seat-selected btn-lg" type="button">A4</button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="p-3">
-                                        <button class="btn seat-selected btn-lg" type="button">B1</button>
-                                        <button class="btn btn-primary btn-lg" type="button">B2</button>
-                                        <button class="btn seat-selected btn-lg" type="button">B3</button>
-                                        <button class="btn seat-selected btn-lg" type="button">B4</button>
-                                    </div>
-                                </td>
-                            </tr>
+                            <c:forEach var="seat" items="${seatList}" varStatus="status" step="2">
+                                <tr>
+                                    <td>
+                                        <div class="p-3">
+                                            <c:forEach var="seat"
+                                                       items="${seat}">
+                                                <c:choose>
+                                                    <c:when test="${seat.userId == 0}">
+                                                        <button class="btn btn-primary seat btn-lg" type="button"
+                                                                seatId="${seat.id}">
+                                                                ${seat.zone}${seat.number}
+                                                        </button>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <button class="btn seat-selected btn-lg" type="button"
+                                                                seatId="${seat.id}">
+                                                                ${seat.zone}${seat.number}
+                                                        </button>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="p-3">
+                                            <c:forEach var="seat"
+                                                       items="${seatList[status.index+1]}">
+                                                <c:choose>
+                                                    <c:when test="${seat.userId == 0}">
+                                                        <button class="btn btn-primary seat btn-lg" type="button"
+                                                                seatId="${seat.id}">
+                                                                ${seat.zone}${seat.number}
+                                                        </button>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <button class="btn seat-selected btn-lg" type="button"
+                                                                seatId="${seat.id}">
+                                                                ${seat.zone}${seat.number}
+                                                        </button>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
 

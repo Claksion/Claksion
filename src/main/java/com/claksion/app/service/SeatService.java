@@ -43,4 +43,8 @@ public class SeatService implements BaseService<Integer, SeatEntity> {
         seatRepository.deleteByClassroomId(classroomId);
         return true;
     }
+
+    public List<SeatEntity> getByClassroomId(Integer classroomId) throws Exception {
+        return seatRepository.selectByClassroomId(classroomId);
+    }
 }

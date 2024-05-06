@@ -21,4 +21,7 @@
     <select id="selectOne" parameterType="Integer" resultType="com.claksion.app.data.entity.SeatEntity">
         SELECT * FROM seat WHERE id=#{id}
     </select>
+    <select id="selectByClassroomId" parameterType="Integer" resultType="com.claksion.app.data.entity.SeatEntity">
+        SELECT * FROM seat WHERE classroom_id=#{id}
+    </select>
 </mapper>

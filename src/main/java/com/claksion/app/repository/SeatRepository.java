@@ -5,8 +5,11 @@ import com.claksion.app.frame.BaseRepository;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Mapper
 public interface SeatRepository extends BaseRepository<Integer, SeatEntity> {
     void deleteByClassroomId(int classroomId);
+    List<SeatEntity> selectByClassroomId(int classroomId);
 }

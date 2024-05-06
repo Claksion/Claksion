@@ -1,10 +1,12 @@
 package com.claksion.app.data.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Getter
+@ToString
 public class SeatEntity extends BaseEntity {
     private int id;
     private String zone;
