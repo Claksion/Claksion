@@ -5,51 +5,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 
 <script>
-    let success_modal = function () {
-        Swal.fire({
-            icon: 'success',
-            title: '성공',
-            text: '자리 선택에 성공했습니다!',
-        });
-    };
-    let fail_modal = function () {
-        Swal.fire({
-            icon: 'error',
-            title: '실패',
-            text: '이미 선택된 좌석입니다.',
-        });
-    };
-    let error_modal = function () {
-        Swal.fire({
-            icon: 'warning',
-            title: '오류',
-            text: '잠시 후 다시 시도해주세요.',
-        });
-    };
-
     $().ready(function () {
-        $("#success").click(success_modal);
-        $("#fail").click(fail_modal);
-
-        $(".seat").click(function () {
-            let seatId = $(this).attr("seatId");
-            $.ajax({
-                url: '<c:url value="seat/select"/>',
-                type: 'POST',
-                data: {seatId: seatId},
-                success: function (response) {
-                    if (response) {
-                        success_modal();
-                    } else {
-                        fail_modal();
-                    }
-                    console.log('Server response:', response);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error:', status, error);
-                }
-            });
-        });
 
         $("#btn-reset").click(function () {
             Swal.fire({
@@ -75,6 +31,14 @@
                 }
             })
         })
+
+        $("#btn-result").click(function () {
+            location.href = "<c:url value="/seat/result"/> ";
+        })
+
+        $("#btn-back").click(function () {
+            location.href = "<c:url value="/seat"/> ";
+        })
     })
 </script>
 
@@ -91,77 +55,23 @@
                     </h3>
 
                     <div class="btn-group" role="group">
-                        <a type="button" class="btn btn-outline-secondary" id="btn-reset"><i
-                                class="tf-icons bx bx-reset"></i> 초기화</a>
-                        <a type="button" class="btn btn-outline-secondary" id="btn-time"><i
-                                class="tf-icons bx bx-time"></i> 시간설정</a>
+                        <c:if test="${detail == 'seat_select'}">
+                            <a type="button" class="btn btn-outline-secondary" id="btn-reset"><i
+                                    class="tf-icons bx bx-reset"></i> 초기화</a>
+                            <a type="button" class="btn btn-outline-secondary" id="btn-result"><i
+                                    class="tf-icons bx bx-receipt"></i> 결과화면</a>
+                        </c:if>
+                        <c:if test="${detail == 'seat_result'}">
+                            <a type="button" class="btn btn-outline-secondary" id="btn-back"><i
+                                    class="tf-icons bx bx-arrow-back"></i> 선택화면</a>
+                        </c:if>
                     </div>
 
                     <div class="p-5" style="margin: 20px 100px;">
-                        <table class="table" style="text-align: center;">
-                            <thead>
-                            <tr class="">
-                                <th colspan="2"><h3>칠판 👨🏻‍🏫</h3></th>
-
-                            </tr>
-                            </thead>
-                            <tbody class="table-border-bottom-0">
-                            <c:forEach var="seat" items="${seatList}" varStatus="status" step="2">
-                                <tr>
-                                    <td>
-                                        <div class="p-3">
-                                            <c:forEach var="seat"
-                                                       items="${seat}">
-                                                <c:choose>
-                                                    <c:when test="${seat.userId == 0}">
-                                                        <button class="btn btn-primary seat btn-lg" type="button"
-                                                                seatId="${seat.id}">
-                                                                ${seat.zone}${seat.number}
-                                                        </button>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <button class="btn seat-selected btn-lg" type="button"
-                                                                seatId="${seat.id}">
-                                                                ${seat.zone}${seat.number}
-                                                        </button>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="p-3">
-                                            <c:forEach var="seat"
-                                                       items="${seatList[status.index+1]}">
-                                                <c:choose>
-                                                    <c:when test="${seat.userId == 0}">
-                                                        <button class="btn btn-primary seat btn-lg" type="button"
-                                                                seatId="${seat.id}">
-                                                                ${seat.zone}${seat.number}
-                                                        </button>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <button class="btn seat-selected btn-lg" type="button"
-                                                                seatId="${seat.id}">
-                                                                ${seat.zone}${seat.number}
-                                                        </button>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:forEach>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
-
+                        <jsp:include page="${detail}.jsp"/>
                     </div>
                 </div>
             </div>
         </div>
-
-
-        <button id="success">Success Test</button>
-        <button id="fail">Fail Test</button>
     </div>
 </div>
