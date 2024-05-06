@@ -5,28 +5,48 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 
 <script>
-    $().ready(function () {
-        $("#success").click(function () {
-            Swal.fire({
-                icon: 'success',
-                title: '성공',
-                text: '자리 선택에 성공했습니다!',
-            });
+    let success_modal = function () {
+        Swal.fire({
+            icon: 'success',
+            title: '성공',
+            text: '자리 선택에 성공했습니다!',
         });
+    };
+    let fail_modal = function () {
+        Swal.fire({
+            icon: 'error',
+            title: '실패',
+            text: '이미 선택된 좌석입니다.',
+        });
+    };
+    let error_modal = function () {
+        Swal.fire({
+            icon: 'warning',
+            title: '오류',
+            text: '잠시 후 다시 시도해주세요.',
+        });
+    };
 
-        $("#error").click(function () {
-            Swal.fire({
-                icon: 'error',
-                title: '실패',
-                text: '이미 선택된 좌석입니다.',
-            });
-        });
+    $().ready(function () {
+        $("#success").click(success_modal);
+        $("#error").click(fail_modal);
 
         $(".seat").click(function () {
-            Swal.fire({
-                icon: 'error',
-                title: '실패',
-                text: '이미 선택된 좌석입니다.',
+            $.ajax({
+                url: '<c:url value="seat/select"/>',
+                type: 'POST',
+                data: {seatId: 'A1'},
+                success: function (response) {
+                    if (response) {
+                        success_modal();
+                    } else {
+                        fail_modal();
+                    }
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', status, error);
+                }
             });
         });
 
@@ -48,7 +68,9 @@
                     Swal.fire({
                         icon: 'success',
                         title: '좌석이 초기화되었습니다.'
-                    }).then(() => {location.reload(true)});
+                    }).then(() => {
+                        location.reload(true)
+                    });
                 }
             })
         })
@@ -56,28 +78,28 @@
 </script>
 
 
-<script>
-    $(document).ready(function () {
-        $('#userInfoButton').on('click', function () {
-            // 사용자 ID를 세션, 쿠키 또는 로컬 스토리지에서 가져옴
-            var userId = sessionStorage.getItem('userId'); // 예시로 세션 스토리지 사용
+<%--<script>--%>
+<%--    $(document).ready(function () {--%>
+<%--        $('#userInfoButton').on('click', function () {--%>
+<%--            // 사용자 ID를 세션, 쿠키 또는 로컬 스토리지에서 가져옴--%>
+<%--            var userId = sessionStorage.getItem('userId'); // 예시로 세션 스토리지 사용--%>
 
-            $.ajax({
-                url: '<c:url value="seat/userinfo"/>',
-                type: 'POST',
-                data: {userId: userId},
-                success: function (response) {
-                    console.log('Server response:', response);
-                    alert('사용자 정보가 서버로 전송되었습니다.');
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error:', status, error);
-                    alert('오류가 발생했습니다. 다시 시도해 주세요.');
-                }
-            });
-        });
-    });
-</script>
+<%--            $.ajax({--%>
+<%--                url: '<c:url value="seat/userinfo"/>',--%>
+<%--                type: 'POST',--%>
+<%--                data: {userId: userId},--%>
+<%--                success: function (response) {--%>
+<%--                    console.log('Server response:', response);--%>
+<%--                    alert('사용자 정보가 서버로 전송되었습니다.');--%>
+<%--                },--%>
+<%--                error: function (xhr, status, error) {--%>
+<%--                    console.error('Error:', status, error);--%>
+<%--                    alert('오류가 발생했습니다. 다시 시도해 주세요.');--%>
+<%--                }--%>
+<%--            });--%>
+<%--        });--%>
+<%--    });--%>
+<%--</script>--%>
 
 <div class="row">
     <div class="col-lg-12 mb-1 order-0">

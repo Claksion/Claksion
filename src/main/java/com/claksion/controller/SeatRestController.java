@@ -1,13 +1,18 @@
 package com.claksion.controller;
 
 import com.claksion.app.data.entity.SeatEntity;
+import com.claksion.app.service.SeatSelectService;
 import com.claksion.app.service.SeatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -16,9 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class SeatRestController {
 
     final SeatService seatService;
+    final SeatSelectService seatSelectService;
+
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
 
     @PostMapping("/reset")
     public boolean resetSeat(@RequestParam(name = "classroomId") int classroomId) throws Exception {
+        // REDIS reset
+        Set<String> keys = redisTemplate.keys("seat:"+classroomId+":*");
+        for(String key : keys) {
+            redisTemplate.delete(key);
+        }
+        redisTemplate.delete("completedSeat:"+classroomId);
+
+        // SQL reset
         seatService.deleteByClassroomId(classroomId);
 
         String[] zoneArray = new String[]{"A", "B", "C", "D", "E", "F", "G", "H"};
@@ -36,6 +53,13 @@ public class SeatRestController {
             }
         }
 
+        return true;
+    }
+
+
+    @PostMapping("/select")
+    public boolean selectSeat(@RequestParam(name = "seatId") String seatId) throws Exception {
+//        seatSelectService.addQueue(seatId);
         return true;
     }
 }
