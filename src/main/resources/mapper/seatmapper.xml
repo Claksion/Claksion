@@ -24,4 +24,8 @@
     <select id="selectByClassroomId" parameterType="Integer" resultType="com.claksion.app.data.entity.SeatEntity">
         SELECT * FROM seat WHERE classroom_id=#{id}
     </select>
+    <select id="updateUserId" parameterType="com.claksion.app.data.dto.request.UpdateSeatUserRequest">
+        UPDATE seat SET user_id=#{userId} WHERE id=#{seatId}
+    </select>
+
 </mapper>

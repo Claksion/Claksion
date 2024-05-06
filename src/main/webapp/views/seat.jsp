@@ -32,10 +32,11 @@
         $("#error").click(fail_modal);
 
         $(".seat").click(function () {
+            let seatId = $(this).attr("seatId");
             $.ajax({
                 url: '<c:url value="seat/select"/>',
                 type: 'POST',
-                data: {seatId: 'A1'},
+                data: {seatId: seatId},
                 success: function (response) {
                     if (response) {
                         success_modal();

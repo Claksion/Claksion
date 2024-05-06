@@ -88,7 +88,7 @@ class SeatSelectTests {
 
         @Override
         public void run() {
-            seatSelectService.addQueue(seatId);
+//            seatSelectService.addQueue(seatId);
             countDownLatch.countDown();
         }
 

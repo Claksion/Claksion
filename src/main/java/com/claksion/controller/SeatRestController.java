@@ -3,6 +3,7 @@ package com.claksion.controller;
 import com.claksion.app.data.entity.SeatEntity;
 import com.claksion.app.service.SeatSelectService;
 import com.claksion.app.service.SeatService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,11 @@ public class SeatRestController {
     @PostMapping("/reset")
     public boolean resetSeat(@RequestParam(name = "classroomId") int classroomId) throws Exception {
         // REDIS reset
-        Set<String> keys = redisTemplate.keys("seat:"+classroomId+":*");
-        for(String key : keys) {
+        Set<String> keys = redisTemplate.keys("seat:" + classroomId + ":*");
+        for (String key : keys) {
             redisTemplate.delete(key);
         }
-        redisTemplate.delete("completedSeat:"+classroomId);
+        redisTemplate.delete("completedSeat:" + classroomId);
 
         // SQL reset
         seatService.deleteByClassroomId(classroomId);
@@ -41,8 +42,8 @@ public class SeatRestController {
         String[] zoneArray = new String[]{"A", "B", "C", "D", "E", "F", "G", "H"};
         int numberMax = 4;
 
-        for(String zone: zoneArray) {
-            for(int number = 1; number <= numberMax; number++) {
+        for (String zone : zoneArray) {
+            for (int number = 1; number <= numberMax; number++) {
                 seatService.add(
                         SeatEntity.builder()
                                 .classroomId(classroomId)
@@ -58,8 +59,13 @@ public class SeatRestController {
 
 
     @PostMapping("/select")
-    public boolean selectSeat(@RequestParam(name = "seatId") String seatId) throws Exception {
-//        seatSelectService.addQueue(seatId);
-        return true;
+    public boolean selectSeat(@RequestParam(name = "seatId") int seatId, HttpSession session) throws Exception {
+        log.info("seatId:" + seatId);
+        SeatEntity seat = seatService.get(seatId);
+        return seatSelectService.addQueue(
+                seat.getClassroomId(),
+                seatId,
+                (Integer) session.getAttribute("userId")
+        );
     }
 }
