@@ -1,12 +1,15 @@
 package com.claksion.seat;
 
 import com.claksion.app.data.dto.request.UpdateSeatUserRequest;
+import com.claksion.app.data.dto.response.GetSeatAndUserResponse;
 import com.claksion.app.service.SeatService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
@@ -35,6 +38,15 @@ public class SeatServiceTests {
         log.info("user 10 > "+result2);
         log.info("======================");
 
+    }
+
+    @DisplayName("Seat Service - getSeatAndUserResponse")
+    @Test
+    public void testString3() throws Exception {
+        List<GetSeatAndUserResponse> list = seatService.getSeatAndUserByClassroomId(1);
+        for(GetSeatAndUserResponse getSeatAndUserResponse : list) {
+            log.info(">"+getSeatAndUserResponse.toString());
+        }
     }
 
 }

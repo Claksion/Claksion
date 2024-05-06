@@ -1,6 +1,7 @@
 package com.claksion.app.service;
 
 import com.claksion.app.data.dto.request.UpdateSeatUserRequest;
+import com.claksion.app.data.dto.response.GetSeatAndUserResponse;
 import com.claksion.app.data.entity.SeatEntity;
 import com.claksion.app.frame.BaseService;
 import com.claksion.app.repository.SeatRepository;
@@ -47,6 +48,10 @@ public class SeatService implements BaseService<Integer, SeatEntity> {
 
     public List<SeatEntity> getByClassroomId(Integer classroomId) throws Exception {
         return seatRepository.selectByClassroomId(classroomId);
+    }
+
+    public List<GetSeatAndUserResponse> getSeatAndUserByClassroomId(Integer classroomId) throws Exception {
+        return seatRepository.selectSeatAndUserByClassroomId(classroomId);
     }
 
     public void modifyUserId(UpdateSeatUserRequest request) throws Exception {

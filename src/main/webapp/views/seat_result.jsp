@@ -15,107 +15,197 @@
 <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
 
+<%--<div class="layout-page">--%>
+<%--    <div class="col-lg-4 col-md-3">--%>
+<%--        <!-- Button -->--%>
+<%--        <button--%>
+<%--                type="button"--%>
+<%--                class="btn btn-primary"--%>
+<%--                data-bs-toggle="modal"--%>
+<%--                data-bs-target="#modalScrollable"--%>
+<%--        >--%>
+<%--            Option 2--%>
+<%--        </button>--%>
 
 
-<div class="layout-page">
-    <div class="col-lg-4 col-md-3">
-        <!-- Button -->
-        <button
-                type="button"
-                class="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#modalScrollable"
-        >
-            Option 2
-        </button>
+<%--    </div>--%>
+<%--</div>--%>
 
+<h5>* 좌석 클릭 시 좌석을 선택한 멤버 리스트를 확인할 수 있습니다.</h5>
 
-        <!-- Modal -->
-        <div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalScrollableTitle">좌석 선택 현황</h5>
-                        <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                        ></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            A1 좌석 선택 현황입니다.
-                        </p>
+<table class="table" style="text-align: center;">
+    <thead>
+    <tr class="">
+        <th colspan="2"><h3>칠판 👨🏻‍🏫</h3></th>
 
-                        <ul class="p-0 m-0">
-                            <li class="d-flex mb-4 pb-1">
-                                <div class="avatar flex-shrink-0 me-3">
-                                    <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-mobile-alt"></i></span>
-                                </div>
-                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                    <div class="me-2">
-                                        <h6 class="mb-0" style="text">황혜림</h6>
-                                        <small class="text-muted">2024.04.28 13:23:02</small>
-                                    </div>
-                                    <div class="user-progress">
-                                        <span class="badge bg-success">성공</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="d-flex mb-4 pb-1">
-                                <div class="avatar flex-shrink-0 me-3">
-                                    <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
-                                </div>
-                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                    <div class="me-2">
-                                        <h6 class="mb-0">김민수</h6>
-                                        <small class="text-muted">2024.04.28 13:23:06</small>
-                                    </div>
-                                    <div class="user-progress">
-                                        <span class="badge bg-danger rounded-pill">실패</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="d-flex mb-4 pb-1">
-                                <div class="avatar flex-shrink-0 me-3">
-                                    <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>
-                                </div>
-                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                    <div class="me-2">
-                                        <h6 class="mb-0">이지은</h6>
-                                        <small class="text-muted">2024.04.28 13:23:17</small>
-                                    </div>
-                                    <div class="user-progress">
-                                        <span class="badge bg-danger rounded-pill">실패</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="d-flex">
-                                <div class="avatar flex-shrink-0 me-3">
-                                    <span class="avatar-initial rounded bg-label-secondary"><i class="bx bx-football"></i></span>
-                                </div>
-                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                    <div class="me-2">
-                                        <h6 class="mb-0">박준호</h6>
-                                        <small class="text-muted">2024.04.28 13:23:29</small>
-                                    </div>
-                                    <div class="user-progress">
-                                        <span class="badge bg-danger rounded-pill">실패</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary"
-                                data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
+    </tr>
+    </thead>
+    <tbody class="table-border-bottom-0">
+    <c:forEach var="seat" items="${seatList}" varStatus="status" step="2">
+        <tr>
+            <td>
+                <div class="p-3">
+                    <c:forEach var="seat"
+                               items="${seat}">
+                        <c:choose>
+                            <c:when test="${seat.userId == 0}">
+                                <button class="btn btn-primary seat btn-lg"
+                                        type="button"
+                                        canSelect="${canSelect}"
+                                        seatId="${seat.id}"
+                                        style="width: 100px; height: 100px;"
+                                        disabled
+                                >
+                                    <p class="card-text">
+                                            ${seat.zone}${seat.number}
+                                    </p>
+                                </button>
+                            </c:when>
+                            <c:otherwise>
+                                <button class="btn btn-primary btn-lg"
+                                        type="button"
+                                        style="width: 100px; height: 100px;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalScrollable"
+                                >
+                                    <p class="card-text">
+                                            ${seat.zone}${seat.number}
+                                    </p>
+                                    <p class="card-text">
+                                        <span class="badge bg-white text-gray ms-1">${seat.userName}</span>
+                                    </p>
+                                </button>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
                 </div>
+            </td>
+            <td>
+                <div class="p-3">
+                    <c:forEach var="seat"
+                               items="${seatList[status.index+1]}">
+                        <c:choose>
+                            <c:when test="${seat.userId == 0}">
+                                <button class="btn btn-primary seat btn-lg"
+                                        type="button"
+                                        canSelect="${canSelect}"
+                                        seatId="${seat.id}"
+                                        style="width: 100px; height: 100px;"
+                                        disabled
+                                >
+                                    <p class="card-text">
+                                            ${seat.zone}${seat.number}
+                                    </p>
+                                </button>
+                            </c:when>
+                            <c:otherwise>
+                                <button class="btn btn-primary btn-lg"
+                                        type="button"
+                                        style="width: 100px; height: 100px;"
+                                >
+                                    <p class="card-text">
+                                            ${seat.zone}${seat.number}
+                                    </p>
+                                    <p class="card-text">
+                                        <span class="badge bg-white text-gray ms-1">${seat.userName}</span>
+                                    </p>
+                                </button>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </div>
+            </td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalScrollableTitle">좌석 선택 현황</h5>
+                <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    A1 좌석 선택 현황입니다.
+                </p>
+
+                <ul class="p-0 m-0">
+                    <li class="d-flex mb-4 pb-1">
+                        <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-primary"><i
+                                    class="bx bx-mobile-alt"></i></span>
+                        </div>
+                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                                <h6 class="mb-0" style="text">황혜림</h6>
+                                <small class="text-muted">2024.04.28 13:23:02</small>
+                            </div>
+                            <div class="user-progress">
+                                <span class="badge bg-success">성공</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="d-flex mb-4 pb-1">
+                        <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
+                        </div>
+                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                                <h6 class="mb-0">김민수</h6>
+                                <small class="text-muted">2024.04.28 13:23:06</small>
+                            </div>
+                            <div class="user-progress">
+                                <span class="badge bg-danger rounded-pill">실패</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="d-flex mb-4 pb-1">
+                        <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>
+                        </div>
+                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                                <h6 class="mb-0">이지은</h6>
+                                <small class="text-muted">2024.04.28 13:23:17</small>
+                            </div>
+                            <div class="user-progress">
+                                <span class="badge bg-danger rounded-pill">실패</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="d-flex">
+                        <div class="avatar flex-shrink-0 me-3">
+                            <span class="avatar-initial rounded bg-label-secondary"><i
+                                    class="bx bx-football"></i></span>
+                        </div>
+                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                            <div class="me-2">
+                                <h6 class="mb-0">박준호</h6>
+                                <small class="text-muted">2024.04.28 13:23:29</small>
+                            </div>
+                            <div class="user-progress">
+                                <span class="badge bg-danger rounded-pill">실패</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+                    Close
+                </button>
             </div>
         </div>
-
     </div>
 </div>

@@ -1,5 +1,6 @@
 package com.claksion.controller;
 
+import com.claksion.app.data.dto.response.GetSeatAndUserResponse;
 import com.claksion.app.data.entity.ClassroomEntity;
 import com.claksion.app.data.entity.SeatEntity;
 import com.claksion.app.data.entity.UserEntity;
@@ -14,9 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,15 +34,12 @@ public class SeatController {
 
         ClassroomEntity classroom = classroomService.get(user.getClassroomId());
         List<SeatEntity> seats = seatService.getByClassroomId(user.getClassroomId());
-        Map<String, List<SeatEntity>> seatMap = seats.stream().collect(Collectors.groupingBy(SeatEntity::getZone, HashMap::new, Collectors.toList()));
-
         List<List<SeatEntity>> seatList = new ArrayList<>(seats.stream().collect(Collectors.groupingBy(SeatEntity::getZone)).values());
 
         boolean existSeat = seatService.existSeatByUserId(user.getId());
 
         model.addAttribute("user", user);
         model.addAttribute("classroom", classroom);
-        model.addAttribute("seatMap", seatMap);
         model.addAttribute("seatList", seatList);
         model.addAttribute("canSelect", !existSeat);
 
@@ -57,14 +53,11 @@ public class SeatController {
         UserEntity user = userService.get((Integer) session.getAttribute("userId"));
 
         ClassroomEntity classroom = classroomService.get(user.getClassroomId());
-        List<SeatEntity> seats = seatService.getByClassroomId(user.getClassroomId());
-        Map<String, List<SeatEntity>> seatMap = seats.stream().collect(Collectors.groupingBy(SeatEntity::getZone, HashMap::new, Collectors.toList()));
-
-        List<List<SeatEntity>> seatList = new ArrayList<>(seats.stream().collect(Collectors.groupingBy(SeatEntity::getZone)).values());
+        List<GetSeatAndUserResponse> seats = seatService.getSeatAndUserByClassroomId(user.getClassroomId());
+        List<List<GetSeatAndUserResponse>> seatList = new ArrayList<>(seats.stream().collect(Collectors.groupingBy(GetSeatAndUserResponse::getZone)).values());
 
         model.addAttribute("user", user);
         model.addAttribute("classroom", classroom);
-        model.addAttribute("seatMap", seatMap);
         model.addAttribute("seatList", seatList);
 
         model.addAttribute("center", "seat");
