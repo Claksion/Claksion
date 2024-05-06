@@ -14,4 +14,5 @@ public interface SeatRepository extends BaseRepository<Integer, SeatEntity> {
     void deleteByClassroomId(int classroomId);
     List<SeatEntity> selectByClassroomId(int classroomId);
     void updateUserId(UpdateSeatUserRequest request);
+    int getCountByUserId(Integer userId);
 }

@@ -39,10 +39,13 @@ public class SeatController {
 
         List<List<SeatEntity>> seatList = new ArrayList<>(seats.stream().collect(Collectors.groupingBy(SeatEntity::getZone)).values());
 
+        boolean existSeat = seatService.existSeatByUserId(user.getId());
+
         model.addAttribute("user", user);
         model.addAttribute("classroom", classroom);
         model.addAttribute("seatMap", seatMap);
         model.addAttribute("seatList", seatList);
+        model.addAttribute("canSelect", !existSeat);
 
         model.addAttribute("center", "seat");
         model.addAttribute("detail", "seat_select");

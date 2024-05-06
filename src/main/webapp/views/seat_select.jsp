@@ -26,29 +26,41 @@
             text: '잠시 후 다시 시도해주세요.',
         });
     };
+    let alert_modal = function () {
+        Swal.fire({
+            icon: 'warning',
+            title: '오류',
+            text: '이미 선택한 좌석이 있습니다.',
+        });
+    };
 
     $().ready(function () {
         $("#success").click(success_modal);
         $("#fail").click(fail_modal);
 
         $(".seat").click(function () {
-            let seatId = $(this).attr("seatId");
-            $.ajax({
-                url: '<c:url value="seat/select"/>',
-                type: 'POST',
-                data: {seatId: seatId},
-                success: function (response) {
-                    if (response) {
-                        success_modal();
-                    } else {
-                        fail_modal();
+            let canSelect = $(this).attr("canSelect");
+            if (canSelect == "false") {
+                alert_modal();
+            } else {
+                let seatId = $(this).attr("seatId");
+                $.ajax({
+                    url: '<c:url value="seat/select"/>',
+                    type: 'POST',
+                    data: {seatId: seatId},
+                    success: function (response) {
+                        if (response) {
+                            success_modal();
+                        } else {
+                            fail_modal();
+                        }
+                        console.log('Server response:', response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', status, error);
                     }
-                    console.log('Server response:', response);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error:', status, error);
-                }
-            });
+                });
+            }
         });
 
         $("#btn-reset").click(function () {
@@ -99,14 +111,16 @@
                                items="${seat}">
                         <c:choose>
                             <c:when test="${seat.userId == 0}">
-                                <button class="btn btn-primary seat btn-lg" type="button"
+                                <button class="btn btn-primary seat btn-lg"
+                                        type="button"
+                                        canSelect="${canSelect}"
                                         seatId="${seat.id}">
                                         ${seat.zone}${seat.number}
                                 </button>
                             </c:when>
                             <c:otherwise>
-                                <button class="btn seat-selected btn-lg" type="button"
-                                        seatId="${seat.id}">
+                                <button class="btn seat-selected btn-lg"
+                                        type="button">
                                         ${seat.zone}${seat.number}
                                 </button>
                             </c:otherwise>
@@ -120,14 +134,16 @@
                                items="${seatList[status.index+1]}">
                         <c:choose>
                             <c:when test="${seat.userId == 0}">
-                                <button class="btn btn-primary seat btn-lg" type="button"
+                                <button class="btn btn-primary seat btn-lg"
+                                        type="button"
+                                        canSelect="${canSelect}"
                                         seatId="${seat.id}">
                                         ${seat.zone}${seat.number}
                                 </button>
                             </c:when>
                             <c:otherwise>
-                                <button class="btn seat-selected btn-lg" type="button"
-                                        seatId="${seat.id}">
+                                <button class="btn seat-selected btn-lg"
+                                        type="button">
                                         ${seat.zone}${seat.number}
                                 </button>
                             </c:otherwise>

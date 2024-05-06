@@ -12,9 +12,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SeatService implements BaseService<Integer, SeatEntity> {
-    
+
     final SeatRepository seatRepository;
-    
+
     @Override
     public int add(SeatEntity seatEntity) throws Exception {
         return seatRepository.insert(seatEntity);
@@ -51,5 +51,9 @@ public class SeatService implements BaseService<Integer, SeatEntity> {
 
     public void modifyUserId(UpdateSeatUserRequest request) throws Exception {
         seatRepository.updateUserId(request);
+    }
+
+    public boolean existSeatByUserId(Integer userId) throws Exception {
+        return seatRepository.getCountByUserId(userId) > 0;
     }
 }
