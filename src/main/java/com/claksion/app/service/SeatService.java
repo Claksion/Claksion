@@ -1,5 +1,7 @@
 package com.claksion.app.service;
 
+import com.claksion.app.data.dto.request.UpdateSeatUserRequest;
+import com.claksion.app.data.dto.response.GetSeatAndUserResponse;
 import com.claksion.app.data.entity.SeatEntity;
 import com.claksion.app.frame.BaseService;
 import com.claksion.app.repository.SeatRepository;
@@ -11,9 +13,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SeatService implements BaseService<Integer, SeatEntity> {
-    
+
     final SeatRepository seatRepository;
-    
+
     @Override
     public int add(SeatEntity seatEntity) throws Exception {
         return seatRepository.insert(seatEntity);
@@ -42,5 +44,21 @@ public class SeatService implements BaseService<Integer, SeatEntity> {
     public boolean deleteByClassroomId(Integer classroomId) throws Exception {
         seatRepository.deleteByClassroomId(classroomId);
         return true;
+    }
+
+    public List<SeatEntity> getByClassroomId(Integer classroomId) throws Exception {
+        return seatRepository.selectByClassroomId(classroomId);
+    }
+
+    public List<GetSeatAndUserResponse> getSeatAndUserByClassroomId(Integer classroomId) throws Exception {
+        return seatRepository.selectSeatAndUserByClassroomId(classroomId);
+    }
+
+    public void modifyUserId(UpdateSeatUserRequest request) throws Exception {
+        seatRepository.updateUserId(request);
+    }
+
+    public boolean existSeatByUserId(Integer userId) throws Exception {
+        return seatRepository.getCountByUserId(userId) > 0;
     }
 }

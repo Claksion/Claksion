@@ -1,10 +1,9 @@
 package com.claksion.app.service;
 
+import com.claksion.app.data.dto.request.UpdateSeatUserRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -14,51 +13,38 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class SeatSelectService {
     private final RedisTemplate<String, Object> redisTemplate;
+    private final SeatService seatService;
 
-    public void addQueue(String seatId) {
+    public boolean addQueue(int classroomId, int seatId, int userId) {
+        String seatRedisKey = "seat:"+classroomId+":"+seatId;
+
         // 이미 선택된 좌석이라면 대기열에 추가하지 않음
-        Set<Object> completedSeat = redisTemplate.opsForSet().members("completedSeat:" + seatId.split(":")[1]);
-        if (completedSeat.contains(seatId)) {
-            return;
+        Set<Object> completedSeat = redisTemplate.opsForSet().members("completedSeat:" + classroomId);
+        if (completedSeat.contains(seatRedisKey)) {
+            return false;
         }
 
-        final String people = Thread.currentThread().getName();
         final long now = System.currentTimeMillis();
+        redisTemplate.opsForZSet().add(seatRedisKey, String.valueOf(userId), (int) now);
+        log.info("{} 유저가 {} 자리를 선택했습니다. ({}초)", userId, seatId, now);
 
-        redisTemplate.opsForZSet().add(seatId, people, (int) now);
-        log.info("{} 유저가 {} 자리를 선택했습니다. ({}초)", people, seatId, now);
+        return true;
     }
 
-    public void publish(String seatKey) {
+    public void publish(String seatKey) throws Exception {
         Set<Object> users = redisTemplate.opsForZSet().range(seatKey, 0, 0);
-        Object user = users.stream().toList().get(0);
-        log.info("✅'{}'님이 {} 자리 선택에 성공했습니다!", user, seatKey);
+        log.info("users :: "+users.toString());
+        Object userId = users.stream().toList().get(0);
+        int seatId = Integer.parseInt(seatKey.split(":")[2]);
+
+        UpdateSeatUserRequest request = new UpdateSeatUserRequest(seatId, Integer.parseInt((String) userId));
+        seatService.modifyUserId(request);
+
+        log.info("✅'{}'님이 {} 자리 선택에 성공했습니다!", userId, seatKey);
         redisTemplate.delete(seatKey);
         redisTemplate.opsForSet().add("completedSeat:" + seatKey.split(":")[1], seatKey);
     }
-
-//    public void changeKey(String key) {
-//        ZSetOperations<String, Object> ops = redisTemplate.opsForZSet();
-
-//        return zSetOps.rangeWithScores(key, 0, -1);
-
-//        Set<String> value = ops.rangeWithScores()
-//        log.info(value.toString());
-//        if (value != null) {
-//            ops.set(key+":complete", value);
-//            redisTemplate.delete(key);
-//        }
-
-
-//        ZSetOperations<String, String> zSetOps = redisTemplate.opsForZSet();
-//        Set<ZSetOperations.TypedTuple<String>> members = zSetOps.rangeWithScores(oldKey, 0, -1);
-//
-//        if (members != null && !members.isEmpty()) {
-//            for (ZSetOperations.TypedTuple<String> member : members) {
-//                zSetOps.add(newKey, member.getValue(), member.getScore());
-//            }
-        }
-//    }
+}
 
 
 

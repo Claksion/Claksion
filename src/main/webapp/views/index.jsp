@@ -99,7 +99,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="<c:url value="/testhayoung"/>" class="menu-link">
+                    <a href="<c:url value="seat"/>" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
                         <div data-i18n="Layouts">자리배치</div>
                     </a>

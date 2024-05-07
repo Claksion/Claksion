@@ -21,4 +21,16 @@
     <select id="selectOne" parameterType="Integer" resultType="com.claksion.app.data.entity.SeatEntity">
         SELECT * FROM seat WHERE id=#{id}
     </select>
+    <select id="selectByClassroomId" parameterType="Integer" resultType="com.claksion.app.data.entity.SeatEntity">
+        SELECT * FROM seat WHERE classroom_id=#{id}
+    </select>
+    <select id="selectSeatAndUserByClassroomId" parameterType="Integer" resultType="com.claksion.app.data.dto.response.GetSeatAndUserResponse">
+        SELECT *, user.name as userName FROM seat LEFT JOIN user on seat.user_id=user.id WHERE seat.classroom_id=#{id}
+    </select>
+    <select id="updateUserId" parameterType="com.claksion.app.data.dto.request.UpdateSeatUserRequest">
+        UPDATE seat SET user_id=#{userId} WHERE id=#{seatId}
+    </select>
+    <select id="getCountByUserId" parameterType="Integer">
+        SELECT count(*) FROM seat WHERE user_id=#{userId}
+    </select>
 </mapper>

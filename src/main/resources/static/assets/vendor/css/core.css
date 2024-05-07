@@ -6300,6 +6300,13 @@ label.btn {
   border-radius: 0.125rem;
 }
 
+.seat-selected {
+  color: #697a8d;
+  background-color: #f0f2f4;
+  border-color: #f0f2f4;
+  pointer-events: none;
+}
+
 .btn-secondary {
   color: #fff;
   background-color: #8592a3;
