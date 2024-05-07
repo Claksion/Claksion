@@ -37,7 +37,7 @@
 
         #sidebar {
             width: 240px;
-            background-color: #696cff;;
+            background-color: #797cf5;;
             color: white;
             overflow-y: auto;
         }
@@ -46,7 +46,7 @@
             width: 100%;
             padding: 10px;
             box-sizing: border-box;
-            border:  1px solid #696cff;
+            border:  1px solid #7577fc;
             background-color: white;;
             color: white;
         }
@@ -87,7 +87,7 @@
             flex-grow: 1; /* This allows the area to expand with the available space */
             overflow-y: auto; /* Enables scrolling */
             padding: 10px;
-            max-height: 36vw; /* Set this to your desired maximum height */
+            height: calc(100vh - 200px);
             background: #ffffff;
             display: flex;
             flex-direction: column-reverse;
@@ -108,7 +108,7 @@
         #input-area {
             display: flex;
             padding: 10px;
-            background-color: #696cff5c;
+            background-color: white;
         }
 
         #input-area input {
@@ -214,9 +214,9 @@
                             // 파싱된 객체에서 필요한 데이터 추출 및 화면에 표시
                             if (message.sendid && message.message) {
                                 if(message.sendid === "${sessionScope.userName}") {
-                                    messageElement = "<div class='message other-message'>" + message.sendid + " : " + message.message + "</div>";
-                                } else {
                                     messageElement = "<div class='message my-message'>" + message.sendid + " : " + message.message + "</div>";
+                                } else {
+                                    messageElement = "<div class='message other-message'>" + message.sendid + " : " + message.message + "</div>";
                                 }
                                 chatMessages.append(messageElement);
                             }
@@ -270,7 +270,7 @@
         </div>
         <div id="input-area">
             <input type="text" id="message-input" placeholder="메세지를 입력하세요">
-            <button id="send-btn" type="button">보내기</button>
+            <button id="send-btn" type="button" class="btn btn-primary"><i class="bx bx-paper-plane mx-1"></i></button>
         </div>
     </div>
 </div>
