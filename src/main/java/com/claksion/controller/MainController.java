@@ -46,9 +46,16 @@ public class MainController {
     }
 
     @RequestMapping("/chat")
-    public String chat(Model model, HttpSession httpSession){
+    public String chat(Model model, HttpSession session) throws Exception {
         model.addAttribute("serverurl",severurl);
         model.addAttribute("center","chat");
+
+        int userId = (int) session.getAttribute("userId");
+        UserEntity user = userService.get(userId);
+        model.addAttribute("user", user);
+
+        List<ClassMate> classMates = userService.getClassMates(user.getClassroomId());
+        model.addAttribute("classMates", classMates);
         return "index";
     }
     @RequestMapping("/chatroom")

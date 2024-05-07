@@ -31,15 +31,18 @@
         }
 
         #wrapper {
+            border-radius: 10px;
             display: flex;
             height: 100%;
         }
 
         #sidebar {
-            width: 240px;
-            background-color: #797cf5;;
+            width: 20vw;
+            background-color: white;;
             color: white;
             overflow-y: auto;
+            border-radius: 15px;
+            margin-right: 20px;
         }
 
         #search-bar input {
@@ -54,17 +57,12 @@
         .contact {
             display: flex;
             padding: 10px;
-            border-bottom: 1px solid white;;
+            border-bottom: 2px solid gray;;
             cursor: pointer;
+            align-items: center; /* 수직 중앙 정렬 */
+            margin-bottom: 2px;
         }
 
-        .contact-avatar {
-            width: 40px;
-            height: 40px;
-            background-color: #16a085;
-            border-radius: 20px;
-            margin-right: 10px;
-        }
 
         .contact-info .contact-name {
             margin: 0;
@@ -81,6 +79,7 @@
             display: flex;
             flex-direction: column;
             background-color: white;
+            border-radius: 15px;
         }
 
         #chat-messages {
@@ -250,20 +249,41 @@
 <body>
 <div id="wrapper">
     <div id="sidebar">
-        <div id="search-bar">
-            <input type="text" placeholder="Search...">
-        </div>
-        <div id="contact-list">
-            <!-- Repeat this block for each contact -->
-            <div class="contact">
-                <div class="contact-avatar"><!-- Avatar --></div>
-                <div class="contact-info">
-                    <p class="contact-name">Name</p>
-                    <p class="contact-last-msg">Last message...</p>
-                </div>
+        <div class="contact">
+            <div class="avatar avatar-online">
+                <img
+                        src="${userProfileImg}" alt=""
+                        class="w-px-40 rounded-circle prifile-img-full"
+                >
             </div>
-            <!-- End contact block -->
+            <p style="font-weight:bold;">${userName}</p>
         </div>
+        <table class="table">
+            <tbody class="table-border-bottom-0">
+            <c:forEach var="mate" items="${classMates}">
+                <tr style="background: #95b6de">
+                    <td>
+                        <div class="d-flex justify-content-start align-items-center user-name">
+                            <div class="avatar-wrapper" style="margin-right: 10px">
+                                <div
+                                        <c:if test="${mate.online}">class="avatar small avatar-online"</c:if>
+                                        <c:if test="${!mate.online}">class="avatar small avatar-offline"</c:if>
+                                        class="avatar avatar-sm me-2">
+                                    <img src="${mate.profileImg}" alt=""
+                                            class="w-px-35 rounded-circle prifile-img-full"
+                                />
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column" style="margin-right: 10px">
+                                <span class="fw-medium">${mate.name}</span>
+                            </div>
+                        <c:if test="${mate.online}"><span class="badge bg-label-success me-1">Active</span></c:if>
+                        <c:if test="${!mate.online}"><span class="badge bg-label-secondary">Inactive</span></c:if>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
     </div>
     <div id="chat-window">
         <div id="chat-messages" >
@@ -276,3 +296,4 @@
 </div>
 </body>
 </html>
+
