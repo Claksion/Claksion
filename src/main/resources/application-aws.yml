@@ -42,7 +42,7 @@ logging:
     root: info
 app:
   url:
-    serverurl: http://127.0.0.1:80
+    serverurl: http://3.38.190.162:80
     server-url: http://3.38.190.162:80
 
   key:

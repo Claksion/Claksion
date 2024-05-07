@@ -24,7 +24,8 @@
         }
 
         body, html {
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
         }
@@ -36,7 +37,7 @@
 
         #sidebar {
             width: 240px;
-            background-color: #2c3e50;
+            background-color: #696cff;;
             color: white;
             overflow-y: auto;
         }
@@ -45,15 +46,15 @@
             width: 100%;
             padding: 10px;
             box-sizing: border-box;
-            border: none;
-            background-color: #34495e;
+            border:  1px solid #696cff;
+            background-color: white;;
             color: white;
         }
 
         .contact {
             display: flex;
             padding: 10px;
-            border-bottom: 1px solid #34495e;
+            border-bottom: 1px solid white;;
             cursor: pointer;
         }
 
@@ -79,16 +80,15 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            background-color: #ecf0f1;
+            background-color: white;
         }
 
         #chat-messages {
             flex-grow: 1; /* This allows the area to expand with the available space */
             overflow-y: auto; /* Enables scrolling */
             padding: 10px;
-            max-height: 500px; /* Set this to your desired maximum height */
-            height: 100%;
-            background: var(--bg-color);
+            max-height: 36vw; /* Set this to your desired maximum height */
+            background: #ffffff;
             display: flex;
             flex-direction: column-reverse;
         }
@@ -97,18 +97,18 @@
             background-color: black;
         }
         #chat-messages::-webkit-scrollbar-thumb {
-            background: rgb(3, 6, 116); /* 스크롤바 색상 */
+            background: #696cff;; /* 스크롤바 색상 */
             border-radius: 10px; /* 스크롤바 둥근 테두리 */
         }
 
         #chat-messages::-webkit-scrollbar-track {
-            background: rgba(220, 20, 60, .1);  /*스크롤바 뒷 배경 색상*/
+            background: white;  /*스크롤바 뒷 배경 색상*/
         }
 
         #input-area {
             display: flex;
             padding: 10px;
-            background-color: #bdc3c7;
+            background-color: #696cff5c;
         }
 
         #input-area input {
@@ -121,7 +121,7 @@
         #input-area button {
             padding: 10px 20px;
             border: none;
-            background-color: #3498db;
+            background-color: #696cff;
             color: white;
             cursor: pointer;
         }
@@ -137,15 +137,16 @@
             display: flex;
             align-items: center; /* 수직 중앙 정렬 */
             justify-content: center; /* 수평 중앙 정렬 */
-            color: white;
         }
         .my-message {
-            background-color: #3498db;
+            color: white;
+            background-color: #696cff;
             align-self: flex-end; /* 오른쪽 정렬 */
         }
 
         .other-message {
-            background-color: #ecf0f1;
+            color:  #696cff;
+            background-color: rgba(105, 108, 255, 0.16);
             align-self: flex-start; /* 왼쪽 정렬 */
         }
 
@@ -213,9 +214,9 @@
                             // 파싱된 객체에서 필요한 데이터 추출 및 화면에 표시
                             if (message.sendid && message.message) {
                                 if(message.sendid === "${sessionScope.userName}") {
-                                    messageElement = "<div class='message my-message'>" + message.sendid + " : " + message.message + "</div>";
-                                } else {
                                     messageElement = "<div class='message other-message'>" + message.sendid + " : " + message.message + "</div>";
+                                } else {
+                                    messageElement = "<div class='message my-message'>" + message.sendid + " : " + message.message + "</div>";
                                 }
                                 chatMessages.append(messageElement);
                             }
@@ -265,7 +266,7 @@
         </div>
     </div>
     <div id="chat-window">
-        <div id="chat-messages">
+        <div id="chat-messages" >
         </div>
         <div id="input-area">
             <input type="text" id="message-input" placeholder="메세지를 입력하세요">

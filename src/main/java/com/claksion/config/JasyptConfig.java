@@ -11,16 +11,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableEncryptableProperties
 public class JasyptConfig {
-    @Value("${app.key.encrypt-key}")
-    String KEY;
-    @Value("${app.key.encrypt-algorithm}")
-    String ALGORITHM;
+//    @Value("${app.key.encrypt-key}")
+//    String KEY;
+//    @Value("${app.key.encrypt-algorithm}")
+//    String ALGORITHM;
 
 
 
 
-//    private static final String KEY = "claksionkey";
-//    private static final String ALGORITHM =  "PBEWithMD5AndDES";
+    private static final String KEY = "claksionkey";
+    private static final String ALGORITHM =  "PBEWithMD5AndDES";
 
     @Bean("jasyptStringEncryptor")
     public StringEncryptor stringEncryptor() {
