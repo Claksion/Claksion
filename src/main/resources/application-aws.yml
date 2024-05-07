@@ -24,7 +24,7 @@ spring:
     timeout: 18000
   data:
     redis:
-      host: localhost
+      host: 3.38.190.162
       port: 6379
       password: aaaaa
   datasource:
@@ -42,7 +42,6 @@ logging:
     root: info
 app:
   url:
-    serverurl: http://127.0.0.1:80
     server-url: http://3.38.190.162:80
 
   key:
