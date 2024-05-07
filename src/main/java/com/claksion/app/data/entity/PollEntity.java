@@ -16,6 +16,9 @@ public class PollEntity extends BaseEntity {
     private Boolean anonymity;
     private SelectType selectType;
     private LocalDateTime deadline;
+    private Boolean finished;
+    private String madeById;
+    private String madeByName;
     public enum SelectType {
         SINGLE, MULTI
     };

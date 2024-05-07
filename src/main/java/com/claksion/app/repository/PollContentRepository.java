@@ -10,7 +10,12 @@ import java.util.List;
 @Repository
 @Mapper
 public interface PollContentRepository extends BaseRepository<Integer, PollContentEntity> {
+    int updateCntAndRanking(PollContentEntity pollContentEntity);
     List<PollContentEntity> selectCheckedContents();
 
     List<PollContentEntity> selectPollContents(Integer integer);
+
+    int selectRecentlyAddedPollContentId();
+
+    String findNameById(int id);
 }

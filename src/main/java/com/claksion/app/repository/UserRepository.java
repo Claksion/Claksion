@@ -14,4 +14,5 @@ public interface UserRepository extends BaseRepository<Integer, UserEntity> {
 
     List<UserEntity> selectByClassroomId(int classroomId) throws Exception;
 
+    String findNameById(int id);
 }

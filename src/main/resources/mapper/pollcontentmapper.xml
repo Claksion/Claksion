@@ -4,13 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.claksion.app.repository.PollContentRepository">
     <insert id="insert" parameterType="com.claksion.app.data.entity.PollContentEntity">
-        INSERT INTO poll_content (id, poll_id, name, num_of_vote, selected, created_at, updated_at, status) VALUES (#{id},#{pollId},#{name},0,#{selected},NOW(),NOW(),'ACTIVE')
+        INSERT INTO poll_content (id, poll_id, name, cnt, selected, ranking, created_at, updated_at, status) VALUES (#{id},#{pollId},#{name},0,#{selected},0,NOW(),NOW(),'ACTIVE')
     </insert>
     <delete id="delete" parameterType="Integer">
         DELETE FROM poll_content WHERE id=#{id}
     </delete>
     <update id="update" parameterType="com.claksion.app.data.entity.PollContentEntity">
-        UPDATE poll_content SET poll_id=#{pollId}, name=#{name}, selected=#{selected} WHERE id=#{id}
+        UPDATE poll_content SET cnt=#{cnt}, selected=#{selected}, ranking=#{ranking} WHERE id=#{id}
     </update>
     <select id="select" resultType="com.claksion.app.data.entity.PollContentEntity">
         SELECT * FROM poll_content
@@ -18,10 +18,19 @@
     <select id="selectOne" parameterType="Integer" resultType="com.claksion.app.data.entity.PollContentEntity">
         SELECT * FROM poll_content WHERE id=#{id}
     </select>
+    <update id="updateCntAndRanking" parameterType="com.claksion.app.data.entity.PollContentEntity">
+        UPDATE poll_content SET cnt=#{cnt} AND ranking=#{ranking} WHERE id=#{id}
+    </update>
     <select id="selectPollContents" parameterType="Integer" resultType="com.claksion.app.data.entity.PollContentEntity">
         SELECT * FROM poll_content WHERE poll_id=#{pollId}
     </select>
     <select id="selectCheckedContents" resultType="com.claksion.app.data.entity.PollContentEntity">
         SELECT * FROM poll_content WHERE selected=true
+    </select>
+    <select id="selectRecentlyAddedPollContentId" resultType="Integer">
+        SELECT MAX(id) AS max_id FROM poll_content
+    </select>
+    <select id="findNameById" parameterType="Integer" resultType="String">
+        SELECT name FROM poll_content WHERE id=#{id}
     </select>
 </mapper>
