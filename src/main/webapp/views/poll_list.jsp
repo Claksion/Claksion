@@ -19,9 +19,10 @@ let poll_list = {
     });
 </script>
 
-<h2 class="card-header">투표 목록</h2>
 <div class="card mb-4">
     <div class="card-body">
+        <h2 class="card-title text-primary">투표 목록</h2>
+        <hr class="m-0"><br/>
         <div class="table-responsive text-nowrap">
                 <table class="table table-hover">
                     <thead>
