@@ -46,7 +46,6 @@ logging:
 app:
   url:
     serverurl: http://127.0.0.1:80
-    chatboturl: http://172.16.21.147
   key:
     encrypt-key: ${KEY}
     encrypt-algorithm: ${ALGORITHM}

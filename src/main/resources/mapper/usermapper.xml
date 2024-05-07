@@ -26,4 +26,7 @@
     <select id="selectByClassroomId" parameterType="Integer" resultType="com.claksion.app.data.entity.UserEntity">
         SELECT * FROM user WHERE classroom_id=#{classroom_id}
     </select>
+    <select id="findNameById" parameterType="Integer" resultType="String">
+        SELECT name FROM user WHERE id=#{id}
+    </select>
 </mapper>
