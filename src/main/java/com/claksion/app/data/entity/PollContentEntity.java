@@ -11,6 +11,7 @@ public class PollContentEntity extends BaseEntity {
     private int id;
     private int pollId;
     private String name;
-    private int numOfVote;
+    private int cnt;
     private Boolean selected;
+    private int ranking;
 }

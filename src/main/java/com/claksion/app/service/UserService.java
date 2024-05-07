@@ -65,4 +65,8 @@ public class UserService implements BaseService<Integer, UserEntity> {
         }
         return classMates;
     }
+
+    public String findNameById(int id) {
+        return userRepository.findNameById(id);
+    }
 }
