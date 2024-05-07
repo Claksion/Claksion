@@ -45,14 +45,6 @@ public class RedisConfig {
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
-//    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
-//        RedisTemplate<Object, Object> template = new RedisTemplate<>();
-//        template.setConnectionFactory(connectionFactory);
-//        template.setKeySerializer(new StringRedisSerializer());
-//        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-//        return template;
-//    }
-
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
