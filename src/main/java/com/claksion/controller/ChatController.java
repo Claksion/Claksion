@@ -72,7 +72,6 @@ public class ChatController {
 
     @GetMapping("/api/messages")
     public ResponseEntity<List<Object>> getMessages(@RequestParam("channel") String channel) {
-        log.info("FFFFFFFFFFFFFFFFFFFFFFF");
         List<Object> messages = redisTemplate.opsForList().range("history:" + channel, 0, -1);
         log.info(">>>>>>>>>"+redisTemplate.opsForList().range("history:" + channel, 0, -1));
         return ResponseEntity.ok(messages);
