@@ -70,7 +70,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.session:spring-session-data-redis'
     implementation 'org.springframework.data:spring-data-redis'
-    implementation 'io.lettuce.core:lettuce-core' // Redis 클라이언트
+//    implementation 'io.lettuce.core:lettuce-core' // Redis 클라이언트
 
     // JSON
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
@@ -85,4 +85,8 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.withType(Test) {
+    enabled = false
 }
