@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -57,7 +54,6 @@ public class SeatRestController {
         return true;
     }
 
-
     @PostMapping("/select")
     public boolean selectSeat(@RequestParam(name = "seatId") int seatId, HttpSession session) throws Exception {
         log.info("seatId:" + seatId);
@@ -67,5 +63,11 @@ public class SeatRestController {
                 seatId,
                 (Integer) session.getAttribute("userId")
         );
+    }
+
+    @GetMapping("/result/detail")
+    public boolean resultDetail(@RequestParam(name = "seatId") int seatId, HttpSession session) throws Exception {
+        log.info("seatId:" + seatId);
+        return true;
     }
 }

@@ -14,22 +14,32 @@
 <script src="../assets/vendor/js/bootstrap.js"></script>
 <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
+<script>
+    const modal = document.getElementById("resultModal");
 
-<%--<div class="layout-page">--%>
-<%--    <div class="col-lg-4 col-md-3">--%>
-<%--        <!-- Button -->--%>
-<%--        <button--%>
-<%--                type="button"--%>
-<%--                class="btn btn-primary"--%>
-<%--                data-bs-toggle="modal"--%>
-<%--                data-bs-target="#modalScrollable"--%>
-<%--        >--%>
-<%--            Option 2--%>
-<%--        </button>--%>
+    $().ready(function () {
+        $(".resultBtn").click(function () {
+            let seatId = $(this).attr("seatId");
+            let seatName = $(this).attr("seatName");
 
+            $.ajax({
+                url: '<c:url value="/seat/result/detail"/>',
+                type: 'GET',
+                data: {seatId: seatId},
+                success: function (response) {
+                    alert(response);
+                    console.log('Server response:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', status, error);
+                }
+            });
 
-<%--    </div>--%>
-<%--</div>--%>
+            $("#modalTitle").html(seatName+"자리 선택 현황입니다.");
+            $("#modalScrollable").modal("show");
+        })
+    })
+</script>
 
 <h5>* 좌석 클릭 시 좌석을 선택한 멤버 리스트를 확인할 수 있습니다.</h5>
 
@@ -51,8 +61,6 @@
                             <c:when test="${seat.userId == 0}">
                                 <button class="btn btn-primary seat btn-lg"
                                         type="button"
-                                        canSelect="${canSelect}"
-                                        seatId="${seat.id}"
                                         style="width: 100px; height: 100px;"
                                         disabled
                                 >
@@ -62,11 +70,11 @@
                                 </button>
                             </c:when>
                             <c:otherwise>
-                                <button class="btn btn-primary btn-lg"
+                                <button class="btn btn-primary btn-lg resultBtn"
                                         type="button"
                                         style="width: 100px; height: 100px;"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalScrollable"
+                                        seatId="${seat.id}"
+                                        seatName="${seat.zone}${seat.number}"
                                 >
                                     <p class="card-text">
                                             ${seat.zone}${seat.number}
@@ -88,8 +96,6 @@
                             <c:when test="${seat.userId == 0}">
                                 <button class="btn btn-primary seat btn-lg"
                                         type="button"
-                                        canSelect="${canSelect}"
-                                        seatId="${seat.id}"
                                         style="width: 100px; height: 100px;"
                                         disabled
                                 >
@@ -99,11 +105,13 @@
                                 </button>
                             </c:when>
                             <c:otherwise>
-                                <button class="btn btn-primary btn-lg"
+                                <button class="btn btn-primary btn-lg resultBtn"
                                         type="button"
                                         style="width: 100px; height: 100px;"
+                                        seatId="${seat.id}"
+                                        seatName="${seat.zone}${seat.number}"
                                 >
-                                    <p class="card-text">
+                                <p class="card-text">
                                             ${seat.zone}${seat.number}
                                     </p>
                                     <p class="card-text">
@@ -120,6 +128,9 @@
     </tbody>
 </table>
 
+<div class="modal fade" id="resultModal">
+    dd
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
@@ -135,10 +146,7 @@
                 ></button>
             </div>
             <div class="modal-body">
-                <p>
-                    A1 좌석 선택 현황입니다.
-                </p>
-
+                <p id="modalTitle"></p>
                 <ul class="p-0 m-0">
                     <li class="d-flex mb-4 pb-1">
                         <div class="avatar flex-shrink-0 me-3">
@@ -147,7 +155,7 @@
                         </div>
                         <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                             <div class="me-2">
-                                <h6 class="mb-0" style="text">황혜림</h6>
+                                <h6 class="mb-0">황혜림</h6>
                                 <small class="text-muted">2024.04.28 13:23:02</small>
                             </div>
                             <div class="user-progress">
