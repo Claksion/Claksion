@@ -23,6 +23,9 @@ public class KakaoService {
     @Value("${app.oauth.kakao.rest-api-key}")
     String kakaoRestApiKey;
 
+    @Value("${app.url.server-url}")
+    String serverUrl;
+
     public String getAccessToken(String authorize_code) {
         String access_Token = "";
         String refresh_Token = "";
@@ -42,7 +45,7 @@ public class KakaoService {
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=").append(kakaoRestApiKey);
             sb.append("&code=" + authorize_code);
-            sb.append("&redirect_uri=").append("http://3.38.190.162:80/user/login/kakao/oauth");
+            sb.append("&redirect_uri=").append(serverUrl).append("/user/login/kakao/oauth");
             bw.write(sb.toString());
             bw.flush();
 

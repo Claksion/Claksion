@@ -38,6 +38,7 @@ logging:
 app:
   url:
     serverurl: http://127.0.0.1:80
+    server-url: http://localhost:80
   key:
     encrypt-key: ${KEY}
     encrypt-algorithm: ${ALGORITHM}

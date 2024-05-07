@@ -41,6 +41,9 @@ public class UserController {
     @Value("${app.oauth.naver.client-id}")
     String naverClientId;
 
+    @Value("${app.url.server-url}")
+    String serverUrl;
+
     final private KakaoService kakaoService;
     final private UserService userService;
     final private ClassroomService classroomService;
@@ -50,6 +53,7 @@ public class UserController {
         model.addAttribute("kakaoRestApiKey", kakaoRestApiKey);
         model.addAttribute("naverClientSecretKey", naverClientSecretKey);
         model.addAttribute("naverClientId", naverClientId);
+        model.addAttribute("serverUrl", serverUrl);
         return "login";
     }
 
