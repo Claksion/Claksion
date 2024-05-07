@@ -123,8 +123,8 @@
         <div class="mb-3">
             <label class="col-md-2 col-form-label">
                 <c:choose>
-                    <c:when test="${poll.anonymity == false}">유기명 / </c:when>
-                    <c:otherwise>무기명 / </c:otherwise>
+                    <c:when test="${poll.anonymity == false}">유기명 | </c:when>
+                    <c:otherwise>무기명 | </c:otherwise>
                 </c:choose>
                 <c:choose>
                     <c:when test="${poll.selectType == 'SINGLE'}">단일 선택</c:when>

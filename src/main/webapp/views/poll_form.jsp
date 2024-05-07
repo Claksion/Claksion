@@ -32,22 +32,39 @@
     const pollId = ${poll.id};
     function btn_poll() {
         let contents = $('.content');
-        let poll_contents = Array.from(contents).map(c => ({
-            "id": c.id,
-            "pollId": ${poll.id},
-            "selected": c.checked
-        }));
 
-        $.ajax({
-            url:'<c:url value="/poll/formimpl"/>?pollId='+pollId,
-            type:'post',
-            contentType:'application/json',
-            data: JSON.stringify(poll_contents),
-            success: (res) => {
-                location.href='<c:url value="/poll/result"/>?pollId='+pollId
-            }
+        if(check(contents)) {
+            let poll_contents = Array.from(contents).map(c => ({
+                "id": c.id,
+                "pollId": ${poll.id},
+                "selected": c.checked
+            }));
+
+            $.ajax({
+                url:'<c:url value="/poll/formimpl"/>?pollId='+pollId,
+                type:'post',
+                contentType:'application/json',
+                data: JSON.stringify(poll_contents),
+                success: (res) => {
+                    location.href='<c:url value="/poll/result"/>?pollId='+pollId
+                }
+            });
+        }
+
+    }
+
+    function check(contents) {
+        let checked = false;
+        Array.from(contents).forEach(c => {
+            if(c.checked) checked = true;
         });
-
+        if(!checked) {
+            $('#modalScrollableTitle').text("경고");
+            $('.modal-body p').text("투표할 항목을 선택하세요.");
+            $('#modalWarning').modal('show');
+            return false;
+        }
+        return true;
     }
 </script>
 
@@ -83,8 +100,8 @@
         <div class="mb-3">
             <label class="col-md-2 col-form-label">
                 <c:choose>
-                    <c:when test="${poll.anonymity == false}">유기명 / </c:when>
-                    <c:otherwise>무기명 / </c:otherwise>
+                    <c:when test="${poll.anonymity == false}">유기명 | </c:when>
+                    <c:otherwise>무기명 | </c:otherwise>
                 </c:choose>
                 <c:choose>
                     <c:when test="${poll.selectType == 'SINGLE'}">단일 선택</c:when>
@@ -107,5 +124,33 @@
 
         <button type="button" class="btn btn-primary" onclick="btn_poll()">투표</button>
 
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalWarning" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalScrollableTitle">title</h5>
+                <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    text
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
 </div>

@@ -36,8 +36,15 @@ public class RankingService {
         Map<String, String> pollContentsWithCntAndRanks = new LinkedHashMap<>();
 
         int rank = 1;
+        double lastScore = Double.POSITIVE_INFINITY;
+        int sameScoreRank = rank;
+
         for (ZSetOperations.TypedTuple<String> member : resultSet) {
-            pollContentsWithCntAndRanks.put(member.getValue(), member.getScore().intValue() + "," + rank);
+            if (member.getScore() != lastScore) {
+                sameScoreRank = rank;
+            }
+            pollContentsWithCntAndRanks.put(member.getValue(), member.getScore().intValue() + "," + sameScoreRank);
+            lastScore = member.getScore();
             rank++;
         }
         return pollContentsWithCntAndRanks;
@@ -47,7 +54,26 @@ public class RankingService {
         return (int)Math.round(redisTemplate.opsForZSet().score("poll:ranking:"+pollId, String.valueOf(pollContentId)));
     }
     public int getPollContentRank(int pollId, int pollContentId) {
-        return redisTemplate.opsForZSet().rank("poll:ranking:"+pollId, String.valueOf(pollContentId)).intValue()+1;
+        Set<ZSetOperations.TypedTuple<String>> resultSet = redisTemplate.opsForZSet()
+                .reverseRangeWithScores("poll:ranking:" + pollId, 0, -1);
+
+        int rank = 0;
+        double lastScore = Double.POSITIVE_INFINITY;
+        int numSameScore = 0;
+
+        for (ZSetOperations.TypedTuple<String> member : resultSet) {
+            if (member.getScore() != lastScore) {
+                rank += numSameScore + 1;
+                numSameScore = 0;
+            } else {
+                numSameScore++;
+            }
+            if (member.getValue().equals(String.valueOf(pollContentId))) {
+                return rank;
+            }
+            lastScore = member.getScore();
+        }
+        return -1;
     }
     public Boolean isResultSaved(int pollId) {
         return Boolean.TRUE.equals(redisTemplate.hasKey("poll:ranking:"+pollId));

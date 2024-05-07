@@ -27,7 +27,7 @@ let poll_list = {
                     <thead>
                     <tr>
                         <th>투표</th>
-                        <th>마감일자</th>
+                        <th>마감기한</th>
                         <th>진행상황</th>
                     </tr>
                     </thead>

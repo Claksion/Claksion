@@ -59,39 +59,63 @@
         let poll_anonymity = $('#anonymity').is(':checked');
         let poll_datetime = $('#datetime').val();
 
-        console.log(poll_contents);
 
-        const pollData = {
-            title: poll_title,
-            anonymity: poll_anonymity,
-            selectType: poll_multi,
-            deadline: poll_datetime
+        console.log(poll_title, poll_contents, poll_datetime);
+        if(check(poll_title, poll_contents, poll_datetime)) {
+            const pollData = {
+                title: poll_title,
+                anonymity: poll_anonymity,
+                selectType: poll_multi,
+                deadline: poll_datetime
+            }
+            let pollContentsData = [];
+            $('.content').each(function() {
+                content = {
+                    name: $(this).val(),
+                    selected: false
+                }
+                pollContentsData.push(content);
+            });
+
+            const requestData = {
+                "poll": pollData,
+                "pollContents": pollContentsData
+            };
+
+            $.ajax({
+                url:'<c:url value="/poll/creationimpl"/>',
+                type:'post',
+                contentType:'application/json',
+                data:JSON.stringify({requestData}),
+                success: pollId => {
+                    location.href="<c:url value="/poll/form"/>?pollId="+pollId;
+                }
+            });
         }
-        let pollContentsData = [];
-        $('.content').each(function() {
-            content = {
-                name: $(this).val(),
-                selected: false
+    }
+
+    function check(title, contents, datetime) {
+        $('#modalScrollableTitle').text("경고");
+
+        if (title == null || title == "") {
+            $('.modal-body p').text("제목을 입력하세요.");
+            $('#title').focus();
+            $('#modalWarning').modal('show');
+            return false;
+        }
+        for (let i = 0; i < contents.length; i++) {
+            if (contents[i] == null || contents[i] == "") {
+                $('.modal-body p').text("모든 투표 항목을 입력하세요.");
+                $('#modalWarning').modal('show');
+                return false;
             }
-            pollContentsData.push(content);
-        });
-
-        const requestData = {
-            "poll": pollData,
-            "pollContents": pollContentsData
-        };
-
-        console.log(requestData);
-
-        $.ajax({
-            url:'<c:url value="/poll/creationimpl"/>',
-            type:'post',
-            contentType:'application/json',
-            data:JSON.stringify({requestData}),
-            success: pollId => {
-                location.href="<c:url value="/poll/form"/>?pollId="+pollId;
-            }
-        });
+        }
+        if (datetime == null || datetime == "") {
+            $('.modal-body p').text("날짜를 선택하세요.");
+            $('#modalWarning').modal('show');
+            return false;
+        }
+        return true;
     }
 </script>
 
@@ -166,7 +190,34 @@
 
     <button type="button" class="btn btn-primary" onclick="btn_create_poll()">등록</button>
         </div>
+    </div>
+</div>
 
 
+
+<div class="modal fade" id="modalWarning" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalScrollableTitle">title</h5>
+                <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    text
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
 </div>
