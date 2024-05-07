@@ -17,7 +17,9 @@ public class JasyptConfig {
     String ALGORITHM;
 
 
-//    private static final String KEY = "mykey";
+
+
+//    private static final String KEY = "claksionkey";
 //    private static final String ALGORITHM =  "PBEWithMD5AndDES";
 
     @Bean("jasyptStringEncryptor")

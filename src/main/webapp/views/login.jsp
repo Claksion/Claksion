@@ -35,13 +35,13 @@
                         <p class="mb-4">간편 로그인으로 Claksion을 시작하세요!</p>
                         <!-- 카카오 로그인 -->
                         <a class="p-2"
-                           href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${kakaoRestApiKey}&redirect_uri=http://localhost:80/user/login/kakao/oauth" >
+                           href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${kakaoRestApiKey}&redirect_uri=http://3.38.190.162:80/user/login/kakao/oauth" >
                             <img src="/assets/img/login_btn_kakao.png" style="height:40px">
                         </a>
 
                         <!-- 네이버 로그인 -->
                         <a class="p-2"
-                           href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&state=1234&redirect_uri=http://localhost/user/login/naver/oauth">
+                           href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&state=1234&redirect_uri=http://3.38.190.162/user/login/naver/oauth">
                             <img src="/assets/img/login_btn_naver.png" style="height:40px">
                         </a>
 
