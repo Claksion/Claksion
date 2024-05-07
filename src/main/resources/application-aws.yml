@@ -13,9 +13,6 @@ spring:
           static: us-west-2
       parameterstore:
         enabled: true
-  config:
-    import:
-      file:.env[.properties]
   mvc:
     view:
       prefix: /views/
