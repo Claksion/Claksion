@@ -24,7 +24,7 @@ public class MainController {
     private final HttpSession httpSession;
     private final ClassroomService classroomService;
   
-    @Value("${app.url.serverurl}")
+    @Value("${app.url.server-url}")
     String severurl;
 
     @RequestMapping("/")
