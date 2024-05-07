@@ -46,16 +46,17 @@ logging:
 app:
   url:
     serverurl: http://127.0.0.1:80
+    server-url: http://3.38.190.162:80
 
   key:
-    encrypt-key: ${KEY}
-    encrypt-algorithm: ${ALGORITHM}
+    encrypt-key: claksionkey
+    encrypt-algorithm: PBEWithMD5AndDES
   oauth:
     kakao:
-      rest-api-key: ${KAKAO_REST_API_KEY}
+      rest-api-key: 525aa8be9e038a0dccd36d35dca909d8
     naver:
-      client-id: ${NAVER_CLIENT_ID}
-      client-secret-key: ${NAVER_CLIENT_SECRET_KEY}
+      client-id: Dh_4f4_hl3mf8uj6nEDr
+      client-secret-key: Z0Q_iVBEoH
 
 
 
