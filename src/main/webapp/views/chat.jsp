@@ -6,76 +6,156 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Room</title>
-    <link rel="stylesheet" href="<c:url value="//maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>">
-    <script src="<c:url value="//cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"/>"></script>
-    <script src="<c:url value="//cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"/>"></script>
-    <script src="<c:url value="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"/>"></script>
+    <link rel="stylesheet" href="<c:url value='//cdn.jsdelivr.net/npm/bootstrap@5.3.0/css/bootstrap.min.css'/>">
+    <script src="<c:url value='//cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js'/>"></script>
+    <script src="<c:url value='//cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js'/>"></script>
+    <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'/>"></script>
+    <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js'/>"></script>
+    <script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js'/>"></script>
 
     <style>
-        body {
+        :root {
+            --bg-color: #282c34;
+            --text-color: #ddd;
+            --btn-bg-color: #08a;
+            --input-bg-color: #444;
+            --msg-in-color: #595f72;
+            --msg-out-color: #4a4e69;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
             font-family: Arial, sans-serif;
         }
-        #status-indicator {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%; /* 원 모양으로 만들기 위해 */
-            display: inline-block;
-            float: right; /* 오른쪽으로 정렬 */
-            margin-left: 10px; /* 오른쪽 여백 추가 */
-        }
 
-        .connected {
-            background-color: green;
-        }
-
-        .disconnected {
-            background-color: red;
-        }
-
-        .container {
+        #wrapper {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            height: 100%;
+        }
+
+        #sidebar {
+            width: 240px;
+            background-color: #2c3e50;
+            color: white;
+            overflow-y: auto;
+        }
+
+        #search-bar input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: none;
+            background-color: #34495e;
+            color: white;
+        }
+
+        .contact {
+            display: flex;
+            padding: 10px;
+            border-bottom: 1px solid #34495e;
+            cursor: pointer;
+        }
+
+        .contact-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #16a085;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+
+        .contact-info .contact-name {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .contact-info .contact-last-msg {
+            margin: 0;
+            font-size: 0.8em;
         }
 
         #chat-window {
-            border: 1px solid #ccc;
-            padding: 10px;
-            height: 360px;
-            overflow-y: scroll;
-            margin-bottom: 10px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #ecf0f1;
         }
 
         #chat-messages {
-            overflow-y: auto;
-            border: 2px solid gray;
-            border-radius: 10px;
-            flex-direction: column-reverse; /* 컨텐츠를 역순으로 정렬 */
-            height: 390px;
+            flex-grow: 1; /* This allows the area to expand with the available space */
+            overflow-y: auto; /* Enables scrolling */
+            padding: 10px;
+            max-height: 500px; /* Set this to your desired maximum height */
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column-reverse;
+        }
+        #chat-messages::-webkit-scrollbar {
+            width: 10px;
+            background-color: black;
+        }
+        #chat-messages::-webkit-scrollbar-thumb {
+            background: rgb(3, 6, 116); /* 스크롤바 색상 */
+            border-radius: 10px; /* 스크롤바 둥근 테두리 */
+        }
+
+        #chat-messages::-webkit-scrollbar-track {
+            background: rgba(220, 20, 60, .1);  /*스크롤바 뒷 배경 색상*/
         }
 
         #input-area {
             display: flex;
-            justify-content: flex-end;
-
+            padding: 10px;
+            background-color: #bdc3c7;
         }
 
-        #message-input {
-            flex: 1;
-            padding: 5px;
-            margin-right: 5px;
+        #input-area input {
+            flex-grow: 1;
+            padding: 10px;
+            border: none;
+            margin-right: 10px;
         }
+
+        #input-area button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+        }
+
+        #input-area button:hover {
+            background-color: #2980b9;
+        }
+        .message {
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin: 5px;
+            max-width: 80%;
+            display: flex;
+            align-items: center; /* 수직 중앙 정렬 */
+            justify-content: center; /* 수평 중앙 정렬 */
+            color: white;
+        }
+        .my-message {
+            background-color: #3498db;
+            align-self: flex-end; /* 오른쪽 정렬 */
+        }
+
+        .other-message {
+            background-color: #ecf0f1;
+            align-self: flex-start; /* 왼쪽 정렬 */
+        }
+
     </style>
     <script>
         let websocket = {
             stompClient:null, //웹소켓의 클라이언트 소켓이된다. connect 누를때 만들어짐.
             init:function (){
                 this.connect()
-                let statusIndicator = $('#status-indicator')[0];
-                statusIndicator.classList.remove("disconnected");
-                statusIndicator.classList.add("connected");
-                $('#send-btn').click(function() {
+                function sendMessage() {
                     let messageContent = $('#message-input').val();
                     if (messageContent && websocket.stompClient) {
                         let chatMessage = {
@@ -85,6 +165,14 @@
                         };
                         websocket.stompClient.send("/pub/chat/send", {}, JSON.stringify(chatMessage));
                         $('#message-input').val('');
+                    }
+                }
+                $('#send-btn').click(sendMessage);
+                // 엔터 키 이벤트 핸들러
+                $('#message-input').keypress(function(event) {
+                    if (event.which == 13) {
+                        event.preventDefault();  // 폼 제출 방지
+                        sendMessage();  // 메시지 전송 함수 호출
                     }
                 });
             },
@@ -98,7 +186,12 @@
                         let msg = JSON.parse(message.body);
                         console.log("Received message:", msg);
                         let chatMessages = $("#chat-messages");
-                        chatMessages.prepend("<h5>" +msg.sendid +":"+msg.message+ "</h5>");
+                        if(msg.sendid === "${sessionScope.userName}") {
+                            messageElement = "<div class='message my-message'>" + msg.sendid + " : " + msg.message + "</div>";
+                        } else {
+                            messageElement = "<div class='message other-message'>" + msg.sendid + " : " + msg.message + "</div>";
+                        }
+                        chatMessages.prepend(messageElement);
                         chatMessages.scrollTop(chatMessages[0].scrollHeight);
                     });
                 });
@@ -119,7 +212,12 @@
                             let message = parseMsgObject(messageString);
                             // 파싱된 객체에서 필요한 데이터 추출 및 화면에 표시
                             if (message.sendid && message.message) {
-                                chatMessages.append("<h5>" + message.sendid + ": " + message.message + "</h5>");
+                                if(message.sendid === "${sessionScope.userName}") {
+                                    messageElement = "<div class='message my-message'>" + message.sendid + " : " + message.message + "</div>";
+                                } else {
+                                    messageElement = "<div class='message other-message'>" + message.sendid + " : " + message.message + "</div>";
+                                }
+                                chatMessages.append(messageElement);
                             }
                         });
                         chatMessages.scrollTop(chatMessages[0].scrollHeight);  // 스크롤을 하단으로 이동
@@ -149,23 +247,31 @@
 
 </head>
 <body>
-<div class=".container height: 100vh;
-    width: 100%;" >
-    <h2>Chat Room</h2>
-    <div>
-        <div id="chat-window">
-            <div>
-                <span style="vertical-align: middle;">실시간</span>
-                <div id="status-indicator" class="disconnected"></div>
+<div id="wrapper">
+    <div id="sidebar">
+        <div id="search-bar">
+            <input type="text" placeholder="Search...">
+        </div>
+        <div id="contact-list">
+            <!-- Repeat this block for each contact -->
+            <div class="contact">
+                <div class="contact-avatar"><!-- Avatar --></div>
+                <div class="contact-info">
+                    <p class="contact-name">Name</p>
+                    <p class="contact-last-msg">Last message...</p>
+                </div>
             </div>
-            <div id="chat-messages" style="display: flex; flex-direction: column-reverse; max-height: 300px; overflow-y: auto;"></div>
+            <!-- End contact block -->
+        </div>
+    </div>
+    <div id="chat-window">
+        <div id="chat-messages">
         </div>
         <div id="input-area">
-            <input type="text" id="message-input" placeholder="메시지를 입력하세요...">
-            <button id="send-btn" type="button" class="btn btn-primary">전송</button>
+            <input type="text" id="message-input" placeholder="메세지를 입력하세요">
+            <button id="send-btn" type="button">보내기</button>
         </div>
     </div>
 </div>
-
 </body>
 </html>

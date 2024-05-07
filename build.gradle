@@ -77,7 +77,8 @@ dependencies {
     implementation 'redis.clients:jedis:4.3.0'
     implementation group: 'it.ozimov', name: 'embedded-redis', version: '0.7.2'
 
-
+    // Cloud
+//    implementation 'org.springframework.cloud:spring-cloud-starter-aws-parameter-store-config'
 }
 
 tasks.named('test') {

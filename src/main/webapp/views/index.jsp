@@ -1,7 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!-- JSTL -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<!DOCTYPE html>
+<html lang="ko">
+<script src="<c:url value=" https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"/>"></script>
 
 <%-- Favicon --%>
 <link rel="icon" type="image/x-icon" href="<c:url value="/assets/img/favicon/favicon.ico"/> "/>
@@ -183,3 +186,4 @@
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
 </div>
+</html>

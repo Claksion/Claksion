@@ -31,8 +31,8 @@ spring:
       port: 6379
       password: aaaaa
   datasource:
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:mysql://${DB_URL}/claksion?characterEncoding=utf8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://sb2.cvsae4w4e5vl.ap-northeast-2.rds.amazonaws.com:3306/claksion?characterEncoding=utf8&serverTimezone=Asia/Seoul
     username: ENC(8zHAipN8VZRabgMYzlv+aQ==)
     password: ENC(pMfm/sTsuKdwEahE+DIoXqThtaSKXXdG)
 mybatis:
@@ -46,7 +46,7 @@ logging:
 app:
   url:
     serverurl: http://127.0.0.1:80
-    chatboturl: http://172.16.21.147
+
   key:
     encrypt-key: ${KEY}
     encrypt-algorithm: ${ALGORITHM}
