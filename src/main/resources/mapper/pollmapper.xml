@@ -4,21 +4,30 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.claksion.app.repository.PollRepository">
     <insert id="insert" parameterType="com.claksion.app.data.entity.PollEntity">
-        INSERT INTO poll (classroom_id, title, anonymity, select_type, deadline, created_at, updated_at, status) VALUES (#{classroomId},#{title},#{anonymity},#{selectType},#{deadline},NOW(),NOW(),'ACTIVE')
+        INSERT INTO poll (classroom_id, title, anonymity, select_type, deadline, finished, made_by_id, made_by_name, created_at, updated_at, status) VALUES (#{classroomId},#{title},#{anonymity},#{selectType},#{deadline},false,#{madeById},#{madeByName},NOW(),NOW(),'ACTIVE')
     </insert>
     <delete id="delete" parameterType="Integer">
         DELETE FROM poll WHERE id=#{id}
     </delete>
     <update id="update" parameterType="com.claksion.app.data.entity.PollEntity">
-        UPDATE poll SET classroom_id=#{classroomId}, title=#{title}, anonymity=#{anonymity}, select_type=#{selectType}, deadline=#{deadline} WHERE id=#{id}
+        UPDATE poll SET classroom_id=#{classroomId}, title=#{title}, anonymity=#{anonymity}, select_type=#{selectType}, deadline=#{deadline}, finished=#{finished}, ranking=#{ranking} WHERE id=#{id}
     </update>
     <select id="select" resultType="com.claksion.app.data.entity.PollEntity">
-        SELECT * FROM poll
+        SELECT * FROM poll WHERE classroom_id=1 ORDER BY finished ASC, deadline ASC
     </select>
     <select id="selectOne" parameterType="Integer" resultType="com.claksion.app.data.entity.PollEntity">
         SELECT * FROM poll WHERE id=#{id}
     </select>
+    <update id="isPollFinished">
+        UPDATE poll SET finished = (NOW() > deadline);
+    </update>
     <select id="selectPollId" parameterType="com.claksion.app.data.entity.PollEntity" resultType="Integer">
-        SELECT id FROM poll WHERE classroom_id=#{classroomId} AND title=#{title} AND anonymity=#{anonymity} AND select_type=#{selectType}
+        SELECT id FROM poll WHERE classroom_id=#{classroomId} AND title=#{title} AND anonymity=#{anonymity} AND select_type=#{selectType} AND finished=#{finished}
+    </select>
+    <select id="selectRecentlyAddedPollId" resultType="Integer">
+        SELECT MAX(id) AS max_id FROM poll
+    </select>
+    <select id="selectFinishedPoll" resultType="com.claksion.app.data.entity.PollEntity">
+        SELECT * FROM poll WHERE finished=true
     </select>
 </mapper>

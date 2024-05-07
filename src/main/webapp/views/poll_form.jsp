@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
 <!-- Core CSS -->
@@ -28,33 +29,47 @@
         poll_form.init();
     });
 
+    const pollId = ${poll.id};
     function btn_poll() {
         let contents = $('.content');
-        let poll_contents = Array.from(contents).map(c => ({
-            "id": c.id,
-            "pollId": ${poll.id},
-            "name": c.name,
-            "numOfVote": c.value,
-            "selected": c.checked
-        }));
 
-        const pollId = ${poll.id};
-        $.ajax({
-            url:'<c:url value="/poll/formimpl"/>',
-            type:'post',
-            contentType:'application/json',
-            data: JSON.stringify(poll_contents),
-            success: () => {
-                location.href="<c:url value="/poll/result"/>?pollId="+pollId;
-            }
+        if(check(contents)) {
+            let poll_contents = Array.from(contents).map(c => ({
+                "id": c.id,
+                "pollId": ${poll.id},
+                "selected": c.checked
+            }));
+
+            $.ajax({
+                url:'<c:url value="/poll/formimpl"/>?pollId='+pollId,
+                type:'post',
+                contentType:'application/json',
+                data: JSON.stringify(poll_contents),
+                success: (res) => {
+                    location.href='<c:url value="/poll/result"/>?pollId='+pollId
+                }
+            });
+        }
+
+    }
+
+    function check(contents) {
+        let checked = false;
+        Array.from(contents).forEach(c => {
+            if(c.checked) checked = true;
         });
-
+        if(!checked) {
+            $('#modalScrollableTitle').text("경고");
+            $('.modal-body p').text("투표할 항목을 선택하세요.");
+            $('#modalWarning').modal('show');
+            return false;
+        }
+        return true;
     }
 </script>
 
-<%--<div class="row">--%>
 
-<h1>투표</h1>
+<h2 class="card-header">투표</h2>
 <div class="card mb-4">
     <div class="card-body">
         <div class="col-lg-12 mb-1 order-0">
@@ -62,67 +77,80 @@
                 <h3 for="title" class="form-label">제목</h3>
                 <h1 class="mb-0"><small class="text-muted">${poll.title}</small></h1>
             </div>
-
         </div>
-    </div>
 
-    <hr class="m-0"><br/>
+        <hr class="m-0"><br/>
 
-
-            <div class="card-body">
-                <div class="row gy-3">
-                    <div class="col-md">
-                        <div class="mb-3">
-
-                            <small class="text-light fw-semibold">
-                                <c:choose>
-                                    <c:when test="${poll.anonymity == false}">유기명 / </c:when>
-                                    <c:otherwise>무기명 / </c:otherwise>
-                                </c:choose>
-                            </small>
-                            <small class="text-light fw-semibold">
-                                <c:choose>
-                                    <c:when test="${poll.selectType == 'SINGLE'}">단일 선택</c:when>
-                                    <c:otherwise>다중 선택</c:otherwise>
-                                </c:choose>
-                            </small>
-                        </div>
-
-                        <form id="contents">
-                            <c:forEach var="p" items="${pollContents}">
-                                <div class="form-check">
-                                    <input
-                                            name="${p.name}"
-                                            class="form-check-input content"
-                                            type="radio"
-                                            value="${p.numOfVote}"
-                                            id="${p.id}"
-                                            <c:if test="${p.selected == true}">checked</c:if>
-                                    />
-                                    <label class="form-check-label" for="${p.id}">${p.name}</label>
-                                </div>
-                            </c:forEach>
-                        </form>
-                    </div>
+        <label class="col-md-2 col-form-label">투표 항목</label>
+        <form id="contents">
+            <c:forEach var="p" items="${pollContents}">
+                <div class="form-check">
+                    <input name="poll"
+                           class="form-check-input content"
+                           id="${p.id}"
+                           type="${poll.selectType == 'SINGLE' ? 'radio' : 'checkbox'}"
+                            ${p.selected ? 'checked' : ''}/>
+                    <label class="form-check-label" for="${p.id}">${p.name}</label>
                 </div>
-            </div>
+            </c:forEach>
+        </form>
 
-    <br/><hr class="m-0"><br/>
+        <hr class="m-0"><br/>
 
-
-
-    <div class="card-body">
-        <div class="mb-3 col-md-6">
-            <h3 for="title" class="form-label">마감</h3>
-            <h5 class="mb-0"><small class="text-muted">${poll.deadline}</small></h5>
+        <div class="mb-3">
+            <label class="col-md-2 col-form-label">
+                <c:choose>
+                    <c:when test="${poll.anonymity == false}">유기명 | </c:when>
+                    <c:otherwise>무기명 | </c:otherwise>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${poll.selectType == 'SINGLE'}">단일 선택</c:when>
+                    <c:otherwise>다중 선택</c:otherwise>
+                </c:choose>
+            </label>
+            <br/>
+            <label class="form-label">마감</label> &nbsp;
+            <small class="text-muted">
+                <fmt:parseDate value="${poll.deadline}"
+                               pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+                <fmt:formatDate pattern="yyyy년 MM월 dd일 HH시 mm분" value="${ parsedDateTime }" />
+            </small>
+            <br/>
+            <label class="form-label">게시자</label> &nbsp;
+            <small class="text-muted"> @${poll.madeById} | ${poll.madeByName} </small>
         </div>
+
+        <hr class="m-0"><br/>
+
+        <button type="button" class="btn btn-primary" onclick="btn_poll()">투표</button>
+
     </div>
+</div>
 
-            <hr class="m-0"><br/>
 
-    <button type="button" class="btn btn-primary" onclick="btn_poll()">투표</button>
+<div class="modal fade" id="modalWarning" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalScrollableTitle">title</h5>
+                <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    text
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
         </div>
-
-
     </div>
 </div>
