@@ -69,9 +69,10 @@
 </script>
 
 
-<h2 class="card-header">투표</h2>
 <div class="card mb-4">
     <div class="card-body">
+        <h2 class="card-title text-primary">투표</h2>
+        <hr class="m-0"><br/>
         <div class="col-lg-12 mb-1 order-0">
             <div class="mb-3 col-md-6">
                 <h3 for="title" class="form-label">제목</h3>
