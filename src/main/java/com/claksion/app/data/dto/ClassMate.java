@@ -14,5 +14,7 @@ public class ClassMate {
     private UserType type;
     private String profileImg;
     private String email;
+
+    @Setter
     private boolean online;
 }

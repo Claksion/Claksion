@@ -3,6 +3,42 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
+
+<script>
+    let poll_form = {
+        init: function () {
+            const eventSource = new EventSource('<c:url value="/user/get"/>?classroomId=${classroom.id}');
+            eventSource.onmessage = function (event) {
+                console.log('New event:', event.data);
+                const data = JSON.parse(event.data);
+
+                for (key in data) {
+                    console.log(key + ", " + data[key]);
+
+                    const mateId = 'mate' + key;
+
+                    if(data[key]){ // 로그인 상태
+                        document.getElementById(mateId + "_profile").className = "avatar small avatar-online";
+                        document.getElementById(mateId + "_status").innerHTML = "<span class='badge bg-label-success me-1'>ACTIVE</span>";
+                    } else { // 로그아웃 상태
+                        document.getElementById(mateId + "_profile").className = "avatar small avatar-offline";
+                        document.getElementById(mateId + "_status").innerHTML = "<span class='badge bg-label-secondary'>Inactive</span>";
+                    }
+                }
+
+            };
+            eventSource.onerror = function (error) {
+                console.log('Error:', error);
+                eventSource.close();
+            };
+        }
+    };
+
+    $(function () {
+        poll_form.init();
+    });
+</script>
+
 <div class="row">
 
     <!-- About Me -->
@@ -27,7 +63,6 @@
                         <span class="badge bg-label-PRIMARY rounded">Class</span> ${classroom.name}
 
                     </div>
-                    <%--                                        <div class="text-center">--%>
                     <div class="card-body ">
                         <img
                                 src="<c:url value="/assets/img/illustrations/man-with-laptop-light.png"/>"
@@ -38,7 +73,6 @@
                                 data-app-light-img="illustrations/man-with-laptop-light.png"
                         />
                     </div>
-                    <%--                                        </div>--%>
                 </div>
             </div>
         </div>
@@ -59,37 +93,42 @@
                         </thead>
                         <tbody class="table-border-bottom-0">
                         <c:forEach var="mate" items="${classMates}">
-                            <tr>
-                                <td>
-                                    <ul class="navbar-nav flex-row align-items-center ms-auto">
-                                        <li class="nav-item lh-1 me-3">
-                                            <div
-                                                    <c:if test="${mate.online}">class="avatar small avatar-online"</c:if>
-                                                    <c:if test="${!mate.online}">class="avatar small avatar-offline"</c:if>
-                                                    style="width: 30px; height: 30px;">
-                                                <img
-                                                        src="${mate.profileImg}" alt=""
-                                                        class="w-px-30 rounded-circle prifile-img-full"
-                                                >
-                                            </div>
-                                        </li>
-                                        <li class="nav-item lh-1 me-3">
-                                            <span>${mate.name}</span>
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td>${mate.email}</td>
-                                <td>
-                                    <c:if test="${mate.online}"><span class="badge bg-label-success me-1">Active</span></c:if>
-                                    <c:if test="${!mate.online}"><span class="badge bg-label-secondary">Inactive</span></c:if>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+                        <tr>
+                            <td>
+                                <ul class="navbar-nav flex-row align-items-center ms-auto">
+                                    <li class="nav-item lh-1 me-3">
+                                        <div id="mate${mate.id}_profile"
+                                             <c:if test="${mate.online}">class="avatar small avatar-online"</c:if>
+                                             <c:if test="${!mate.online}">class="avatar small avatar-offline"</c:if>
+                                             style="width: 30px; height: 30px;">
+                                            <img
+                                                    src="${mate.profileImg}" alt=""
+                                                    class="w-px-30 rounded-circle prifile-img-full"
+                                            >
+                                        </div>
+                                    </li>
+                                    <li class="nav-item lh-1 me-3">
+                                        <span>${mate.name}</span>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>${mate.email}</td>
+                            <td>
+                                <div id="mate${mate.id}_status">
+                                    <c:if test="${mate.online}"><span
+                                            class="badge bg-label-success me-1">Active</span></c:if>
+                                    <c:if test="${!mate.online}"><span
+                                            class="badge bg-label-secondary">Inactive</span></c:if>
+                                </div>
                 </div>
+                </td>
+                </tr>
+                </c:forEach>
+                </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 
 </div>
