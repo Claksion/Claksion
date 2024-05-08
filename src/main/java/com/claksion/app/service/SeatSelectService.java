@@ -8,6 +8,9 @@ import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -54,6 +57,29 @@ public class SeatSelectService {
         redisTemplate.opsForSet().add("completedSeat:" + seatKey.split(":")[1], seatKey);
     }
 
+
+    public Map<String, Object> getMemberScore(int classroomId, int seatId) {
+        System.out.println("selected:seat:"+classroomId+":"+seatId);
+        Set<ZSetOperations.TypedTuple<Object>> resultSet = redisTemplate.opsForZSet()
+                .reverseRangeWithScores("selected:seat:"+classroomId+":"+seatId, 0, -1);
+        Map<String, Object> pollContentsWithCntAndRanks = new LinkedHashMap<>();
+
+        System.out.println(resultSet.toString());
+
+        int rank = 1;
+        double lastScore = Double.POSITIVE_INFINITY;
+        int sameScoreRank = rank;
+
+        for (ZSetOperations.TypedTuple<Object> member : resultSet) {
+            if (member.getScore() != lastScore) {
+                sameScoreRank = rank;
+            }
+            pollContentsWithCntAndRanks.put(member.getValue().toString(),sameScoreRank);
+            lastScore = member.getScore();
+            rank++;
+        }
+        return pollContentsWithCntAndRanks;
+    }
 }
 
 

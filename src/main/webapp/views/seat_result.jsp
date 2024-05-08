@@ -26,7 +26,7 @@
             $.ajax({
                 url: '<c:url value="/seat/result/detail"/>',
                 type: 'GET',
-                data: {seatId: seatId},
+                data: {seatId: seatId, classroomId: ${classroom.id}},
                 success: function (data) {
                     console.log(data);
                     $('#modalScrollableTitle').text(data.title);
@@ -171,7 +171,7 @@
     </div>
 </div>
 
-<!-- Modal -->
+<%--<!-- Modal -->--%>
 <%--<div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">--%>
 <%--    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">--%>
 <%--        <div class="modal-content">--%>
