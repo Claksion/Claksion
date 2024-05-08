@@ -61,11 +61,13 @@
                     beforeSend: function () {
                         loading_modal();
                     },
-                    complete: function (response) {
+                    success: function (response) {
+                        console.log(response);
                         if (response) {
                             success_modal();
                             document.getElementById("canSelect").value = "false";
                             setTimeout(() => location.reload(true), 1000);
+
                         } else {
                             fail_modal();
                         }
