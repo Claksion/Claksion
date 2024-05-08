@@ -45,7 +45,6 @@
 
 
             if (canSelect == false) {
-                alert('이미 자리를 선택하셨습니다.');
                 alert_modal();
             } else {
             console.log("start ajax")
