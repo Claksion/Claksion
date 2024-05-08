@@ -99,6 +99,7 @@
             flex-direction: column;
             background-color: white;
             border-radius: 15px;
+            width: calc(100vw - 600px);
         }
 
         #chat-messages {
@@ -209,9 +210,10 @@
                         console.log("Received message:", msg);
                         let chatMessages = $("#chat-messages");
                         if(msg.sendid === "${sessionScope.userName}") {
-                            messageElement = "<div class='message my-message'>" + msg.sendid + " : " + msg.message + "</div>";
+                            messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-end;'><span style='margin-bottom: 4px;'>"+ msg.sendid +"</span><div class='message my-message'>" + msg.message + "</div></div>";
                         } else {
-                            messageElement = "<div class='message other-message'>" + msg.sendid + " : " + msg.message + "</div>";
+                            messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-start;'><span style='margin-bottom: 4px;'>"+ msg.sendid +"</span><div class='message other-message '>" + msg.message + "</div></div>";
+                            // messageElement = "<div class='message other-message'>" + msg.sendid + " : " + msg.message + "</div>";
                         }
                         chatMessages.prepend(messageElement);
                         chatMessages.scrollTop(chatMessages[0].scrollHeight);
@@ -235,9 +237,9 @@
                             // 파싱된 객체에서 필요한 데이터 추출 및 화면에 표시
                             if (message.sendid && message.message) {
                                 if(message.sendid === "${sessionScope.userName}") {
-                                    messageElement = "<div class='message my-message'>" + message.sendid + " : " + message.message + "</div>";
+                                    messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-end;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message my-message'>" + message.message + "</div></div>";
                                 } else {
-                                    messageElement = "<div class='message other-message'>" + message.sendid + " : " + message.message + "</div>";
+                                    messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-start;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message other-message '>" + message.message + "</div></div>";
                                 }
                                 chatMessages.append(messageElement);
                             }
@@ -256,6 +258,7 @@
             websocket.init();
         });
         function parseMsgObject(msgStr) {
+            console.log(msgStr)
             const content = msgStr.slice(msgStr.indexOf('(') + 1, msgStr.lastIndexOf(')'));
             const properties = content.split(', ');
             const msgObject = {};
