@@ -99,6 +99,7 @@
             flex-direction: column;
             background-color: white;
             border-radius: 15px;
+            width: calc(100vw - 600px);
         }
 
         #chat-messages {
@@ -106,7 +107,6 @@
             overflow-y: auto; /* Enables scrolling */
             padding: 10px;
             height: calc(100vh - 200px);
-            width: calc(100vw - 600px);
             background: #ffffff;
             display: flex;
             flex-direction: column-reverse;
@@ -212,7 +212,7 @@
                         if(msg.sendid === "${sessionScope.userName}") {
                             messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-end;'><span style='margin-bottom: 4px;'>"+ msg.sendid +"</span><div class='message my-message'>" + msg.message + "</div></div>";
                         } else {
-                            messageElement = "<img src='" + message.profileImg + "' alt='Profile Image' style='width: 35px; height: 35px; border-radius: 50%; margin-bottom: 4px; align-self: flex-start;'><div class='message other-message'>" + msg.sendid + " : " + msg.message + "</div>";
+                            messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-start;'><span style='margin-bottom: 4px;'>"+ msg.sendid +"</span><div class='message other-message '>" + msg.message + "</div></div>";
                             // messageElement = "<div class='message other-message'>" + msg.sendid + " : " + msg.message + "</div>";
                         }
                         chatMessages.prepend(messageElement);
@@ -239,7 +239,7 @@
                                 if(message.sendid === "${sessionScope.userName}") {
                                     messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-end;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message my-message'>" + message.message + "</div></div>";
                                 } else {
-                                    messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-start;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message other-message'>" + message.message + "</div></div>";
+                                    messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-start;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message other-message '>" + message.message + "</div></div>";
                                 }
                                 chatMessages.append(messageElement);
                             }
