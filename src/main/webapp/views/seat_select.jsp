@@ -77,35 +77,6 @@
                 });
             }
         });
-
-        $("#btn-reset").click(function () {
-            Swal.fire({
-                title: '좌석 정보를 초기화하겠습니까?',
-                showCancelButton: true,
-                showLoaderOnConfirm: true,
-                preConfirm: () => {
-                    return $.ajax({
-                        url: '<c:url value="seat/reset"/>',
-                        data: {classroomId: ${classroom.id}},
-                        type: 'POST'
-                    });
-                },
-                allowOutsideClick: () => !Swal.isLoading()
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: '좌석이 초기화되었습니다.'
-                    }).then(() => {
-                        location.reload(true);
-                    });
-                }
-            })
-        })
-
-        $("#btn-result").click(function () {
-            location.href = "<c:url value="/seat/result"/> ";
-        })
     })
 </script>
 
