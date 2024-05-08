@@ -1,19 +1,19 @@
 package com.claksion.controller;
 
+import com.claksion.app.data.dto.SeatUser;
 import com.claksion.app.data.dto.request.SelectSeatRequest;
 import com.claksion.app.data.entity.SeatEntity;
 import com.claksion.app.service.SeatSelectService;
 import com.claksion.app.service.SeatService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.oxm.ValidationFailureException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,7 +32,7 @@ public class SeatRestController {
     @PostMapping("/reset")
     public boolean resetSeat(@RequestParam(name = "classroomId") int classroomId) throws Exception {
         // REDIS reset
-        Set<String> keys = redisTemplate.keys("seat:" + classroomId + ":*");
+        Set<String> keys = redisTemplate.keys("selected:seat:" + classroomId + ":*");
         for (String key : keys) {
             redisTemplate.delete(key);
         }
@@ -78,8 +78,8 @@ public class SeatRestController {
     }
 
     @GetMapping("/result/detail")
-    public ResponseEntity<?> resultDetail(@RequestParam(name = "seatId") int seatId, @RequestParam(name = "classroomId") int classroomId, HttpSession session) {
-        Map<String, String> result = new HashMap<>();
+    public List<SeatUser> resultDetail(@RequestParam(name = "seatId") int seatId, @RequestParam(name = "classroomId") int classroomId) {
+        List<SeatUser> seatUserList = new ArrayList<>();
 
         StringBuilder resultText = new StringBuilder();
 
@@ -89,13 +89,7 @@ public class SeatRestController {
             System.out.println(id+" "+ranking);
             resultText.append(id+":"+ranking+",");
         });
-        if (resultText.length() > 0) {
-            resultText.deleteCharAt(resultText.length() - 1);
-        }
-        resultText.append("}");
 
-        result.put("text", resultText.toString());
-
-        return ResponseEntity.ok(result);
+        return seatUserList;
     }
 }
