@@ -88,7 +88,7 @@
                 contentType:'application/json',
                 data:JSON.stringify({requestData}),
                 success: pollId => {
-                    location.href="<c:url value="/poll/form"/>?pollId="+pollId;
+                    location.replace("<c:url value="/poll/form"/>?pollId="+pollId);
                 }
             });
         }

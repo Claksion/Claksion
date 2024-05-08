@@ -46,8 +46,7 @@
                 contentType:'application/json',
                 data: JSON.stringify(poll_contents),
                 success: (res) => {
-                    console.log(res)
-                    location.href='<c:url value="/poll/result"/>?pollId='+pollId
+                    location.replace('<c:url value="/poll/result"/>?pollId='+pollId);
                 }
             });
         }
