@@ -112,6 +112,7 @@
                         </thead>
                         <tbody class="table-border-bottom-0">
                         <c:forEach var="mate" items="${classMates}">
+
                             <tr>
                                 <td style="width: 30%">
                                     <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -145,6 +146,7 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
     </div>
