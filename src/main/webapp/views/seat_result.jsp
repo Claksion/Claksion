@@ -34,6 +34,7 @@
                 data: {seatId: seatId, classroomId: ${classroom.id}},
                 success: function (userList) {
                     console.log(userList);
+                    document.getElementById('userListDiv').innerHTML = '';
 
                     userList.forEach(function (seatUser) {
                         console.log("*** "+seatUser);
