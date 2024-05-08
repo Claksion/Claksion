@@ -51,10 +51,6 @@ public class UserService implements BaseService<Integer, UserEntity> {
         return userRepository.selectByOauthId(oauthId);
     }
 
-    public List<UserEntity> getByClassroomId(int classroomId) throws Exception {
-        return userRepository.selectByClassroomId(classroomId);
-    }
-
     public List<ClassMate> getClassMates(int classroomId) throws Exception {
         List<UserEntity> users = userRepository.selectByClassroomId(classroomId);
         List<ClassMate> classMates = new ArrayList<>();
