@@ -37,12 +37,14 @@ public class RedisConfig {
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(connectionFactory);
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
-        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
+        // Key와 HashKey는 문자열이므로 StringRedisSerializer 사용
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
+
+        // Value와 HashValue는 객체이므로 GenericJackson2JsonRedisSerializer 또는 Jackson2JsonRedisSerializer 사용
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }

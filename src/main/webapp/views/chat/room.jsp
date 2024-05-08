@@ -38,7 +38,6 @@
                 alert("방 제목을 입력해 주십시오.");
                 return;
             }
-            console.log(">>>>>>>>>>>>")
             $.ajax({
                 url: '/chat/room2',
                 type: 'POST',
@@ -60,7 +59,7 @@
             if(sender !== "") {
                 localStorage.setItem('wschat.sender', sender);
                 localStorage.setItem('wschat.roomId', roomId);
-                location.href = "/chat/room/enter/" + roomId;
+                location.href="<c:url value="/chat/room/enter"/>?roomId="+roomId
             }
         }
     </script>

@@ -7,6 +7,7 @@ import com.claksion.app.data.dto.msg.ChatRoom;
 import com.claksion.app.service.chat.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,8 @@ import java.util.List;
 @RequestMapping("/chat")
 @Slf4j
 public class ChatRoomController {
+    @Value("${app.url.server-url}")
+    String severurl;
 
     private final ChatRoomRepository chatRoomRepository;
 
@@ -39,15 +42,15 @@ public class ChatRoomController {
     @PostMapping("/room2")
     @ResponseBody
     public ChatRoom createRoom(@RequestParam("name") String name) {
-        log.info("넘어오나?");
-        log.info("넘어갔나?");
         return chatRoomRepository.createChatRoom(name);
     }
     // 채팅방 입장 화면
-    @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId) {
+    @GetMapping("/room/enter")
+    public String roomDetail(Model model, @RequestParam("roomId") String roomId) {
         model.addAttribute("roomId", roomId);
-        return "/chat/roomdetail";
+        model.addAttribute("serverurl",severurl);
+        model.addAttribute("center","chat/roomdetail");
+        return "index";
     }
     // 특정 채팅방 조회
     @GetMapping("/room/{roomId}")
