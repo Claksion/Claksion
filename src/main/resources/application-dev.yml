@@ -18,7 +18,7 @@ spring:
     redis:
       host: localhost
       port: 6379
-      password: aaaa
+      password: aaaaa
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://sb2.cvsae4w4e5vl.ap-northeast-2.rds.amazonaws.com:3306/claksion?characterEncoding=utf8&serverTimezone=Asia/Seoul
