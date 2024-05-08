@@ -29,8 +29,8 @@
     let alert_modal = function () {
         Swal.fire({
             icon: 'warning',
-            title: '오류',
-            text: '이미 선택한 좌석이 있습니다.',
+            title: '실패',
+            text: '욕심쟁이! 이미 선택한 좌석이 있어요.',
         });
     };
 
@@ -39,11 +39,9 @@
         $("#fail").click(fail_modal);
 
         $(".seat").click(function () {
+            let canSelect = document.getElementById("canSelect").value;
 
-            let canSelect = ${canSelect};
-            let seatId = $(this).attr("seatId");
-
-            if (canSelect == false) {
+            if (canSelect === "false") {
                 alert_modal();
             } else {
                 let seatId = $(this).attr("seatId");
@@ -63,6 +61,8 @@
                         console.error('Error:', status, error);
                     }
                 });
+                document.getElementById("canSelect").value = "false";
+                setTimeout(() => location.reload(true), 1000);
             }
         });
 
@@ -85,7 +85,7 @@
                         icon: 'success',
                         title: '좌석이 초기화되었습니다.'
                     }).then(() => {
-                        location.reload(true)
+                        location.reload(true);
                     });
                 }
             })
@@ -158,6 +158,8 @@
     </c:forEach>
     </tbody>
 </table>
+
+<input hidden="hidden" id="canSelect" value="${canSelect}"/>
 
 <%--<button id="success">Success Test</button>--%>
 <%--<button id="fail">Fail Test</button>--%>
