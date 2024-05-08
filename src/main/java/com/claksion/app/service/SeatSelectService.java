@@ -4,8 +4,6 @@ import com.claksion.app.data.dto.request.UpdateSeatUserRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
-import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -21,18 +19,27 @@ public class SeatSelectService {
     private final SeatService seatService;
     private final UserService userService;
 
-    public boolean addQueue(int classroomId, int seatId, int userId) {
+    public boolean addQueue(int classroomId, int seatId, int userId) throws InterruptedException {
         String seatRedisKey = "seat:"+classroomId+":"+seatId;
 
-        // 이미 선택된 좌석이라면 대기열에 추가하지 않음
-        Set<Object> completedSeat = redisTemplate.opsForSet().members("completedSeat:" + classroomId);
-        if (completedSeat.contains(seatRedisKey)) {
-            return false;
-        }
+//        // 이미 선택된 좌석이라면 대기열에 추가하지 않음
+//        Set<Object> completedSeat = redisTemplate.opsForSet().members("completedSeat:" + classroomId);
+//        if (completedSeat.contains(seatRedisKey)) {
+//            return false;
+//        }
 
         final long now = System.currentTimeMillis();
         redisTemplate.opsForZSet().add(seatRedisKey, String.valueOf(userId), (int) now);
         log.info("{} 유저가 {} 자리를 선택했습니다. ({}초)", userId, seatId, now);
+
+        Thread.sleep(1000);
+
+        // 첫 번째가 아니라면 false 반환
+        Set<Object> users = redisTemplate.opsForZSet().range(seatRedisKey, 0, 0);
+        Object owner = users.stream().toList().get(0);
+        if(userId != (Integer)owner){
+            return false;
+        }
 
         return true;
     }

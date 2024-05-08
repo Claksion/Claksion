@@ -26,6 +26,14 @@
             text: '잠시 후 다시 시도해주세요.',
         });
     };
+
+    let loading_modal = function () {
+        swal.fire({
+            html: "<div class='spinner-border spinner-border-lg text-primary' role='status'><span class='visually-hidden'>Loading...</span></div>",
+            title: '로딩중',
+            showConfirmButton: false
+        });
+    };
     let alert_modal = function () {
         Swal.fire({
             icon: 'warning',
@@ -49,9 +57,15 @@
                     url: '<c:url value="seat/select"/>',
                     type: 'POST',
                     data: {seatId: seatId},
-                    success: function (response) {
+                    async: true,
+                    beforeSend: function () {
+                        loading_modal();
+                    },
+                    complete: function (response) {
                         if (response) {
                             success_modal();
+                            document.getElementById("canSelect").value = "false";
+                            setTimeout(() => location.reload(true), 1000);
                         } else {
                             fail_modal();
                         }
@@ -61,39 +75,8 @@
                         console.error('Error:', status, error);
                     }
                 });
-                document.getElementById("canSelect").value = "false";
-                setTimeout(() => location.reload(true), 1000);
             }
         });
-
-        $("#btn-reset").click(function () {
-            Swal.fire({
-                title: '좌석 정보를 초기화하겠습니까?',
-                showCancelButton: true,
-                showLoaderOnConfirm: true,
-                preConfirm: () => {
-                    return $.ajax({
-                        url: '<c:url value="seat/reset"/>',
-                        data: {classroomId: ${classroom.id}},
-                        type: 'POST'
-                    });
-                },
-                allowOutsideClick: () => !Swal.isLoading()
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: '좌석이 초기화되었습니다.'
-                    }).then(() => {
-                        location.reload(true);
-                    });
-                }
-            })
-        })
-
-        $("#btn-result").click(function () {
-            location.href = "<c:url value="/seat/result"/> ";
-        })
     })
 </script>
 
