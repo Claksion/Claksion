@@ -1,7 +1,6 @@
 package com.claksion.controller;
 
 import com.claksion.app.data.entity.SeatEntity;
-import com.claksion.app.service.RankingService;
 import com.claksion.app.service.SeatSelectService;
 import com.claksion.app.service.SeatService;
 import jakarta.servlet.http.HttpSession;
@@ -9,16 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -29,15 +21,8 @@ public class SeatRestController {
     final SeatService seatService;
     final SeatSelectService seatSelectService;
 
-    final RedisTemplate<String, Object> redisTemplate;
-    private final ConcurrentMap<String, ScheduledFuture<?>> tasks = new ConcurrentHashMap<>();
-    int seatNum = 10;
-    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(seatNum);
-
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    private final ConcurrentHashMap<String, Boolean> connections = new ConcurrentHashMap<>();
     @Autowired
-    private RankingService rankingService;
+    RedisTemplate<String, Object> redisTemplate;
 
     @PostMapping("/reset")
     public boolean resetSeat(@RequestParam(name = "classroomId") int classroomId) throws Exception {
@@ -69,80 +54,20 @@ public class SeatRestController {
         return true;
     }
 
-
-    @RequestMapping("/firstselect")
-    public String firstSelectSeat(@RequestParam(name = "seatId") int seatId, HttpSession session) throws Exception {
+    @PostMapping("/select")
+    public boolean selectSeat(@RequestParam(name = "seatId") int seatId, HttpSession session) throws Exception {
         log.info("seatId:" + seatId);
         SeatEntity seat = seatService.get(seatId);
-
-//        seatSelectService.addToSet(seatId, session.getAttribute("userId").toString());
-
-        String currentId = "task-" + seatId;
-        ScheduledFuture<?> scheduledFuture = scheduler.schedule(() -> {
-            seatSelectService.addQueue(
-                    seat.getClassroomId(),
-                    seatId,
-                    (Integer) session.getAttribute("userId"));
-
-            tasks.remove(currentId);
-        }, 1, TimeUnit.SECONDS);
-
-
-        try {
-            scheduledFuture.get();
-            SeatEntity seatEntity = SeatEntity.builder().id(seatId).userId((int) session.getAttribute("userId")).build();
-            System.out.println(seatEntity.toString());
-            try {
-                seatService.updateUserSelected(seatEntity);
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        scheduler.shutdown();
-
-        tasks.put(currentId, scheduledFuture);
-        System.out.println(scheduledFuture.toString());
-
-        return currentId;
-    }
-
-    @RequestMapping("/checkselect")
-    public boolean checkSelectSeat(@RequestParam("seatId") String  seatId, HttpSession session) throws Exception {
-        SeatEntity seat = seatService.get(Integer.valueOf(seatId));
-        tasks.forEach((id, future) -> {
-            System.out.println(id.toString()+" "+future.toString());
-            log.info(id.toString(), future.toString());
-        });
-        seatSelectService.addQueue(
+        return seatSelectService.addQueue(
                 seat.getClassroomId(),
-                Integer.parseInt(seatId),
-                (Integer) session.getAttribute("userId"));
-        return tasks.containsKey("task-"+seatId) && !tasks.get("task-"+seatId).isDone();
+                seatId,
+                (Integer) session.getAttribute("userId")
+        );
     }
-
 
     @GetMapping("/result/detail")
-    public ResponseEntity<?> resultDetail(@RequestParam(name = "seatId") int seatId, HttpSession session) throws Exception {
-        Map<String, String> result = new HashMap<>();
-
-        SeatEntity seat = seatService.get(seatId);
-        Set<Object> userSet = seatSelectService.getAllMembersFromZSet(seat.getClassroomId(), seatId);
-
-        StringBuilder resultText = new StringBuilder();
-        userSet.forEach(u -> {
-            System.out.println(u.toString());
-            resultText.append(u);
-            resultText.append("\n");
-        });
-
-        if (resultText.length() > 0) {
-            resultText.deleteCharAt(resultText.length() - 1);
-        }
-        result.put("text", resultText.toString());
-
-        return ResponseEntity.ok(result);
+    public boolean resultDetail(@RequestParam(name = "seatId") int seatId, HttpSession session) throws Exception {
+        log.info("seatId:" + seatId);
+        return true;
     }
 }
