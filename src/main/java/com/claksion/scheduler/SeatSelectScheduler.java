@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 @Component
@@ -27,27 +26,5 @@ public class SeatSelectScheduler {
         for (String seatKey : keys) {
             seatSelectService.publish(seatKey);
         }
-    }
-
-
-
-
-    private final AtomicBoolean stop = new AtomicBoolean(false);
-
-    @Scheduled(fixedRate = 1000)
-    public void executeTask() {
-        if(stop.get()) {
-            // Task execution logic here
-            System.out.println("Task executed");
-            stop.set(false); // Reset the stop flag
-        }
-    }
-
-    public void startTask() {
-        stop.set(true);
-    }
-
-    public void stopTask() {
-        stop.set(false);
     }
 }
