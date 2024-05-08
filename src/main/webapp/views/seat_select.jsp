@@ -56,7 +56,7 @@
                 $.ajax({
                     url: '<c:url value="seat/select"/>',
                     type: 'POST',
-                    data: {seatId: seatId},
+                    data: {seatId: seatId, classroomId: ${classroom.id}, userId: ${user.id}},
                     async: true,
                     beforeSend: function () {
                         loading_modal();

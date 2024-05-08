@@ -33,6 +33,9 @@
     <select id="updateUserId" parameterType="com.claksion.app.data.dto.request.UpdateSeatUserRequest">
         UPDATE seat SET user_id=#{userId} WHERE id=#{seatId}
     </select>
+    <select id="existUserId" parameterType="Integer" resultType="Boolean">
+        SELECT user_id is not null FROM seat where id=#{seatId}
+    </select>
     <select id="getCountByUserId" parameterType="Integer">
         SELECT count(*) FROM seat WHERE user_id=#{userId}
     </select>

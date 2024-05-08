@@ -1,5 +1,6 @@
 package com.claksion.controller;
 
+import com.claksion.app.data.dto.request.SelectSeatRequest;
 import com.claksion.app.data.entity.SeatEntity;
 import com.claksion.app.service.SeatSelectService;
 import com.claksion.app.service.SeatService;
@@ -8,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.oxm.ValidationFailureException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -59,14 +60,21 @@ public class SeatRestController {
     }
 
     @PostMapping("/select")
-    public boolean selectSeat(@RequestParam(name = "seatId") int seatId, HttpSession session) throws Exception {
-        log.info("seatId:" + seatId);
-        SeatEntity seat = seatService.get(seatId);
-        return seatSelectService.addQueue(
-                seat.getClassroomId(),
-                seatId,
-                (Integer) session.getAttribute("userId")
-        );
+    public boolean selectSeat(@RequestParam(name = "seatId") int seatId,
+                              @RequestParam(name = "classroomId") int classroomId,
+                              @RequestParam(name = "userId") int userId
+    ) {
+        try{
+            SelectSeatRequest selectRequest = new SelectSeatRequest(seatId,classroomId,userId);
+            seatSelectService.addSeatUserOnRedis(selectRequest);
+            seatSelectService.setSeatOwner(selectRequest);
+            seatSelectService.completeSeatOnRedis(selectRequest);
+            log.info("=============> "+true);
+            return true;
+        }catch (ValidationFailureException e) {
+            log.info("=============> "+false);
+            return false;
+        }
     }
 
     @GetMapping("/result/detail")
