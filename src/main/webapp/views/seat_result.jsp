@@ -17,8 +17,9 @@
 <script>
     const modal = document.getElementById("resultModal");
 
-    $().ready(function () {
+    $().ready(function() {
         $(".resultBtn").click(function () {
+            console.log("hi")
             let seatId = $(this).attr("seatId");
             let seatName = $(this).attr("seatName");
 
@@ -26,19 +27,23 @@
                 url: '<c:url value="/seat/result/detail"/>',
                 type: 'GET',
                 data: {seatId: seatId},
-                success: function (response) {
-                    alert(response);
-                    console.log('Server response:', response);
+                success: function (data) {
+                    console.log(data);
+                    $('#modalScrollableTitle').text(data.title);
+                    $('.modal-body p').text(data.text);
+
+                    $('#modalSelected').modal('show');
                 },
-                error: function (xhr, status, error) {
-                    console.error('Error:', status, error);
+                error: function (error) {
+                    console.error('Error fetching data: ', error);
                 }
             });
 
-            $("#modalTitle").html(seatName+"자리 선택 현황입니다.");
-            $("#modalScrollable").modal("show");
-        })
-    })
+            // $("#modalTitle").html(seatName+"자리 선택 현황입니다.");
+            // $("#modalScrollable").modal("show");
+        });
+
+    });
 </script>
 
 <h5>* 좌석 클릭 시 좌석을 선택한 멤버 리스트를 확인할 수 있습니다.</h5>
@@ -59,7 +64,8 @@
                                items="${seat}">
                         <c:choose>
                             <c:when test="${seat.userId == 0}">
-                                <button class="btn btn-primary seat btn-lg"
+                                <button style="width: 80px; height: 100px; padding: 0;"
+                                        class="btn btn-primary seat btn-lg"
                                         type="button"
                                         style="width: 100px; height: 100px;"
                                         disabled
@@ -70,7 +76,8 @@
                                 </button>
                             </c:when>
                             <c:otherwise>
-                                <button class="btn btn-primary btn-lg resultBtn"
+                                <button style="width: 80px; height: 100px; padding: 0;"
+                                        class="btn btn-primary btn-lg resultBtn"
                                         type="button"
                                         style="width: 100px; height: 100px;"
                                         seatId="${seat.id}"
@@ -94,7 +101,8 @@
                                items="${seatList[status.index+1]}">
                         <c:choose>
                             <c:when test="${seat.userId == 0}">
-                                <button class="btn btn-primary seat btn-lg"
+                                <button style="width: 80px; height: 100px; padding: 0;"
+                                        class="btn btn-primary seat btn-lg"
                                         type="button"
                                         style="width: 100px; height: 100px;"
                                         disabled
@@ -105,7 +113,8 @@
                                 </button>
                             </c:when>
                             <c:otherwise>
-                                <button class="btn btn-primary btn-lg resultBtn"
+                                <button style="width: 80px; height: 100px; padding: 0;"
+                                        class="btn btn-primary btn-lg resultBtn"
                                         type="button"
                                         style="width: 100px; height: 100px;"
                                         seatId="${seat.id}"
@@ -132,12 +141,14 @@
     dd
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">
+
+
+
+<div class="modal fade" id="modalSelected" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalScrollableTitle">좌석 선택 현황</h5>
+                <h5 class="modal-title" id="modalScrollableTitle">title</h5>
                 <button
                         type="button"
                         class="btn-close"
@@ -146,67 +157,9 @@
                 ></button>
             </div>
             <div class="modal-body">
-                <p id="modalTitle"></p>
-                <ul class="p-0 m-0">
-                    <li class="d-flex mb-4 pb-1">
-                        <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-primary"><i
-                                    class="bx bx-mobile-alt"></i></span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <h6 class="mb-0">황혜림</h6>
-                                <small class="text-muted">2024.04.28 13:23:02</small>
-                            </div>
-                            <div class="user-progress">
-                                <span class="badge bg-success">성공</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="d-flex mb-4 pb-1">
-                        <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <h6 class="mb-0">김민수</h6>
-                                <small class="text-muted">2024.04.28 13:23:06</small>
-                            </div>
-                            <div class="user-progress">
-                                <span class="badge bg-danger rounded-pill">실패</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="d-flex mb-4 pb-1">
-                        <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <h6 class="mb-0">이지은</h6>
-                                <small class="text-muted">2024.04.28 13:23:17</small>
-                            </div>
-                            <div class="user-progress">
-                                <span class="badge bg-danger rounded-pill">실패</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="d-flex">
-                        <div class="avatar flex-shrink-0 me-3">
-                            <span class="avatar-initial rounded bg-label-secondary"><i
-                                    class="bx bx-football"></i></span>
-                        </div>
-                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="me-2">
-                                <h6 class="mb-0">박준호</h6>
-                                <small class="text-muted">2024.04.28 13:23:29</small>
-                            </div>
-                            <div class="user-progress">
-                                <span class="badge bg-danger rounded-pill">실패</span>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                <p>
+                    text
+                </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary"
@@ -217,3 +170,89 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<%--<div class="modal fade" id="modalScrollable" tabindex="-1" aria-hidden="true">--%>
+<%--    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">--%>
+<%--        <div class="modal-content">--%>
+<%--            <div class="modal-header">--%>
+<%--                <h5 class="modal-title" id="modalScrollableTitle">좌석 선택 현황</h5>--%>
+<%--                <button--%>
+<%--                        type="button"--%>
+<%--                        class="btn-close"--%>
+<%--                        data-bs-dismiss="modal"--%>
+<%--                        aria-label="Close"--%>
+<%--                ></button>--%>
+<%--            </div>--%>
+<%--            <div class="modal-body">--%>
+<%--                <p id="modalTitle"></p>--%>
+<%--                <ul class="p-0 m-0">--%>
+<%--                    <li class="d-flex mb-4 pb-1">--%>
+<%--                        <div class="avatar flex-shrink-0 me-3">--%>
+<%--                            <span class="avatar-initial rounded bg-label-primary"><i--%>
+<%--                                    class="bx bx-mobile-alt"></i></span>--%>
+<%--                        </div>--%>
+<%--                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">--%>
+<%--                            <div class="me-2">--%>
+<%--                                <h6 class="mb-0">황혜림</h6>--%>
+<%--                                <small class="text-muted">2024.04.28 13:23:02</small>--%>
+<%--                            </div>--%>
+<%--                            <div class="user-progress">--%>
+<%--                                <span class="badge bg-success">성공</span>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </li>--%>
+<%--                    <li class="d-flex mb-4 pb-1">--%>
+<%--                        <div class="avatar flex-shrink-0 me-3">--%>
+<%--                            <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>--%>
+<%--                        </div>--%>
+<%--                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">--%>
+<%--                            <div class="me-2">--%>
+<%--                                <h6 class="mb-0">김민수</h6>--%>
+<%--                                <small class="text-muted">2024.04.28 13:23:06</small>--%>
+<%--                            </div>--%>
+<%--                            <div class="user-progress">--%>
+<%--                                <span class="badge bg-danger rounded-pill">실패</span>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </li>--%>
+<%--                    <li class="d-flex mb-4 pb-1">--%>
+<%--                        <div class="avatar flex-shrink-0 me-3">--%>
+<%--                            <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>--%>
+<%--                        </div>--%>
+<%--                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">--%>
+<%--                            <div class="me-2">--%>
+<%--                                <h6 class="mb-0">이지은</h6>--%>
+<%--                                <small class="text-muted">2024.04.28 13:23:17</small>--%>
+<%--                            </div>--%>
+<%--                            <div class="user-progress">--%>
+<%--                                <span class="badge bg-danger rounded-pill">실패</span>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </li>--%>
+<%--                    <li class="d-flex">--%>
+<%--                        <div class="avatar flex-shrink-0 me-3">--%>
+<%--                            <span class="avatar-initial rounded bg-label-secondary"><i--%>
+<%--                                    class="bx bx-football"></i></span>--%>
+<%--                        </div>--%>
+<%--                        <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">--%>
+<%--                            <div class="me-2">--%>
+<%--                                <h6 class="mb-0">박준호</h6>--%>
+<%--                                <small class="text-muted">2024.04.28 13:23:29</small>--%>
+<%--                            </div>--%>
+<%--                            <div class="user-progress">--%>
+<%--                                <span class="badge bg-danger rounded-pill">실패</span>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </li>--%>
+<%--                </ul>--%>
+<%--            </div>--%>
+<%--            <div class="modal-footer">--%>
+<%--                <button type="button" class="btn btn-outline-secondary"--%>
+<%--                        data-bs-dismiss="modal">--%>
+<%--                    Close--%>
+<%--                </button>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>

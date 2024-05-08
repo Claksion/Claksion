@@ -100,8 +100,8 @@
                         <div data-i18n="Analytics">홈</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="<c:url value="seat"/>" class="menu-link">
+                <li class="${center == "seat"?"menu-item active":"menu-item"}">
+                    <a href="<c:url value="/seat"/>" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-layout"></i>
                         <div data-i18n="Layouts">자리배치</div>
                     </a>
