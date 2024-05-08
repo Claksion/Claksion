@@ -8,8 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -66,8 +70,24 @@ public class SeatRestController {
     }
 
     @GetMapping("/result/detail")
-    public boolean resultDetail(@RequestParam(name = "seatId") int seatId, HttpSession session) throws Exception {
-        log.info("seatId:" + seatId);
-        return true;
+    public ResponseEntity<?> resultDetail(@RequestParam(name = "seatId") int seatId, @RequestParam(name = "classroomId") int classroomId, HttpSession session) {
+        Map<String, String> result = new HashMap<>();
+
+        StringBuilder resultText = new StringBuilder();
+
+        resultText.append("{");
+        Map<String, Object> rankings = seatSelectService.getMemberScore(classroomId, seatId);
+        rankings.forEach((id, ranking) -> {
+            System.out.println(id+" "+ranking);
+            resultText.append(id+":"+ranking+",");
+        });
+        if (resultText.length() > 0) {
+            resultText.deleteCharAt(resultText.length() - 1);
+        }
+        resultText.append("}");
+
+        result.put("text", resultText.toString());
+
+        return ResponseEntity.ok(result);
     }
 }
