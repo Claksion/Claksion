@@ -99,6 +99,7 @@
             flex-direction: column;
             background-color: white;
             border-radius: 15px;
+            width: calc(100vw - 600px);
         }
 
         #chat-messages {
@@ -106,7 +107,6 @@
             overflow-y: auto; /* Enables scrolling */
             padding: 10px;
             height: calc(100vh - 200px);
-            width: calc(100vw - 600px);
             background: #ffffff;
             display: flex;
             flex-direction: column-reverse;
@@ -237,9 +237,9 @@
                             // 파싱된 객체에서 필요한 데이터 추출 및 화면에 표시
                             if (message.sendid && message.message) {
                                 if(message.sendid === "${sessionScope.userName}") {
-                                    messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-end;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message my-message'>" + message.message + "</div></div>";
+                                    messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-end;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message other-message'>" + message.message + "</div></div>";
                                 } else {
-                                    messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-start;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message other-message'>" + message.message + "</div></div>";
+                                    messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-start;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message my-message '>" + message.message + "</div></div>";
                                 }
                                 chatMessages.append(messageElement);
                             }
