@@ -6,8 +6,8 @@
 <style>
     table tbody {
         display: block;
-        max-height: 450px;
-        overflow-y: scroll;
+        height: calc(100vh - 300px);
+        overflow-y: auto;
     }
 
     table thead {
