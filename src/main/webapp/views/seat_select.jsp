@@ -39,12 +39,11 @@
         $("#fail").click(fail_modal);
 
         $(".seat").click(function () {
-            // let canSelect = $("#canSelect").val();
 
+            let canSelect = ${canSelect};
             let seatId = $(this).attr("seatId");
 
 
-            console.log(canSelect);
             if (canSelect == false) {
                 alert('이미 자리를 선택하셨습니다.');
                 alert_modal();
