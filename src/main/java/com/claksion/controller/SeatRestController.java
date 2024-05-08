@@ -12,9 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.oxm.ValidationFailureException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -78,18 +76,10 @@ public class SeatRestController {
     }
 
     @GetMapping("/result/detail")
-    public List<SeatUser> resultDetail(@RequestParam(name = "seatId") int seatId, @RequestParam(name = "classroomId") int classroomId) {
-        List<SeatUser> seatUserList = new ArrayList<>();
+    public List<SeatUser> resultDetail(@RequestParam(name = "seatId") int seatId, @RequestParam(name = "classroomId") int classroomId) throws Exception {
+        List<SeatUser> redisUserList = seatSelectService.getRedisUserList(classroomId, seatId);
+        log.info(redisUserList.toString());
 
-        StringBuilder resultText = new StringBuilder();
-
-        resultText.append("{");
-        Map<String, Object> rankings = seatSelectService.getMemberScore(classroomId, seatId);
-        rankings.forEach((id, ranking) -> {
-            System.out.println(id+" "+ranking);
-            resultText.append(id+":"+ranking+",");
-        });
-
-        return seatUserList;
+        return redisUserList;
     }
 }

@@ -1,7 +1,9 @@
 package com.claksion.app.service;
 
+import com.claksion.app.data.dto.SeatUser;
 import com.claksion.app.data.dto.request.SelectSeatRequest;
 import com.claksion.app.data.dto.request.UpdateSeatUserRequest;
+import com.claksion.app.data.entity.UserEntity;
 import com.claksion.app.service.aop.AroundValidSeatOnRedis;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +13,8 @@ import org.springframework.oxm.ValidationFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -24,28 +24,52 @@ public class SeatSelectService {
     private final SeatService seatService;
 
     private static int DIV_VALUE = 1000000; // 시간 계산용
+    private final UserService userService;
 
-    public Map<String, Object> getMemberScore(int classroomId, int seatId) {
-        System.out.println("selected:seat:" + classroomId + ":" + seatId);
+    public List<SeatUser> getRedisUserList(int classroomId, int seatId) throws Exception {
+        // key 찾기
+        String redisKeyPattern = "selected:seat:" + classroomId + ":" + seatId+":*";
+        String redisKey = "";
+
+        Set<String> keys = redisTemplate.keys(redisKeyPattern);
+        for (String key : keys) {
+            redisKey = key;
+        }
+        log.info("redisKey - "+redisKey);
+
+        // 시간 계산용 숫자
+        long timeValue = Long.parseLong(redisKey.split(":")[4]);
+
+        List<SeatUser> seatUserList = new ArrayList<>();
+
         Set<ZSetOperations.TypedTuple<Object>> resultSet = redisTemplate.opsForZSet()
-                .reverseRangeWithScores("selected:seat:" + classroomId + ":" + seatId, 0, -1);
-        Map<String, Object> pollContentsWithCntAndRanks = new LinkedHashMap<>();
+                .rangeWithScores(redisKey, 0, -1);
 
-        System.out.println(resultSet.toString());
-
-        int rank = 1;
-        double lastScore = Double.POSITIVE_INFINITY;
-        int sameScoreRank = rank;
+        boolean isFirst = true;
 
         for (ZSetOperations.TypedTuple<Object> member : resultSet) {
-            if (member.getScore() != lastScore) {
-                sameScoreRank = rank;
-            }
-            pollContentsWithCntAndRanks.put(member.getValue().toString(), sameScoreRank);
-            lastScore = member.getScore();
-            rank++;
+            int userId = Integer.parseInt((String) member.getValue());
+            Double score = member.getScore();
+
+            UserEntity user = userService.get(userId);
+
+            long millTime = (long) (score + timeValue);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
+            Date date = new Date();
+            date.setTime(millTime);
+            String stringTime = simpleDateFormat.format(date);
+
+            SeatUser seatUser = SeatUser.builder()
+                    .name(user.getName())
+                    .profileImg(user.getProfileImg())
+                    .time(stringTime)
+                    .result(isFirst)
+                    .build();
+
+            seatUserList.add(seatUser);
+            isFirst = false;
         }
-        return pollContentsWithCntAndRanks;
+        return seatUserList;
     }
 
     @Transactional(rollbackFor = ValidationFailureException.class)
