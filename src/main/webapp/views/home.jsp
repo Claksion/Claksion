@@ -120,7 +120,6 @@
                                     <c:if test="${!mate.online}"><span
                                             class="badge bg-label-secondary">Inactive</span></c:if>
                                 </div>
-                </div>
                 </td>
                 </tr>
                 </c:forEach>

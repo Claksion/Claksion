@@ -107,17 +107,17 @@
                     </a>
                 </li>
                 <li class="${center == "chat"?"menu-item active":"menu-item"}">
-                    <a href="<c:url value="/chat"/>" class="menu-link">
+                    <a href="<c:url value="/allchat"/>" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-chat"></i>
                         <div data-i18n="Layouts">단체채팅방</div>
                     </a>
                 </li>
-                <li class="${center == "chatroom"?"menu-item active":"menu-item"}">
-                    <a href="<c:url value="/chatroom"/>" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-chat"></i>
-                        <div data-i18n="Layouts">채팅방만들기</div>
-                    </a>
-                </li>
+<%--                <li class="${center == "chatroom"?"menu-item active":"menu-item"}">--%>
+<%--                    <a href="<c:url value="/chat/room"/>" class="menu-link">--%>
+<%--                        <i class="menu-icon tf-icons bx bx-chat"></i>--%>
+<%--                        <div data-i18n="Layouts">채팅방만들기</div>--%>
+<%--                    </a>--%>
+<%--                </li>--%>
                 <li class="${center == "poll_list"?"menu-item active":"menu-item"}">
                     <a href="<c:url value="/poll"/>" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-box"></i>

@@ -9,6 +9,8 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class ChatRoom implements Serializable {
+    private static final long serialVersionUID = 6494678977089006639L;
+
     private String roomId;  // 채팅방의 고유 ID
     private String name;    // 채팅방 이름
 

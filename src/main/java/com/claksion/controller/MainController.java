@@ -45,7 +45,7 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping("/chat")
+    @RequestMapping("/allchat")
     public String chat(Model model, HttpSession session) throws Exception {
         model.addAttribute("serverurl",severurl);
         model.addAttribute("center","chat");
