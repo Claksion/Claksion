@@ -39,8 +39,11 @@
         $("#fail").click(fail_modal);
 
         $(".seat").click(function () {
-            let canSelect = $(this).attr("canSelect");
-            if (canSelect == "false") {
+
+            let canSelect = ${canSelect};
+            let seatId = $(this).attr("seatId");
+
+            if (canSelect == false) {
                 alert_modal();
             } else {
                 let seatId = $(this).attr("seatId");
