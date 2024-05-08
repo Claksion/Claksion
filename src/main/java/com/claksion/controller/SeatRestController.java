@@ -30,7 +30,7 @@ public class SeatRestController {
     @PostMapping("/reset")
     public boolean resetSeat(@RequestParam(name = "classroomId") int classroomId) throws Exception {
         // REDIS reset
-        Set<String> keys = redisTemplate.keys("selected:seat:" + classroomId + ":*");
+        Set<String> keys = redisTemplate.keys("seat:" + classroomId + ":*");
         for (String key : keys) {
             redisTemplate.delete(key);
         }

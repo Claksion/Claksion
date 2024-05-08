@@ -27,18 +27,10 @@ public class SeatSelectService {
     private final UserService userService;
 
     public List<SeatUser> getRedisUserList(int classroomId, int seatId) throws Exception {
-        // key 찾기
-        String redisKeyPattern = "selected:seat:" + classroomId + ":" + seatId+":*";
-        String redisKey = "";
+        // time header (시간 계산용 숫자)
+        String redisKey = "seat:" + classroomId + ":" + seatId;
+        long timeHeader = Long.parseLong(String.valueOf(redisTemplate.opsForValue().get(redisKey+":timeHeader")));
 
-        Set<String> keys = redisTemplate.keys(redisKeyPattern);
-        for (String key : keys) {
-            redisKey = key;
-        }
-        log.info("redisKey - "+redisKey);
-
-        // 시간 계산용 숫자
-        long timeValue = Long.parseLong(redisKey.split(":")[4]);
 
         List<SeatUser> seatUserList = new ArrayList<>();
 
@@ -53,7 +45,7 @@ public class SeatSelectService {
 
             UserEntity user = userService.get(userId);
 
-            long millTime = (long) (score + timeValue);
+            long millTime = (long) (score + timeHeader);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
             Date date = new Date();
             date.setTime(millTime);
@@ -116,9 +108,7 @@ public class SeatSelectService {
         long now = System.currentTimeMillis();
         long timeHeader = (now / DIV_VALUE) * (long) DIV_VALUE;
 
-        if (redisTemplate.hasKey(seatRedisKey)) {
-            redisTemplate.rename(seatRedisKey, "selected:" + seatRedisKey + ":" + timeHeader);
-        }
+        redisTemplate.opsForValue().set(seatRedisKey + ":timeHeader", String.valueOf(timeHeader));
     }
 }
 
