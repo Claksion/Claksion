@@ -52,7 +52,6 @@
             if (canSelect === "false") {
                 alert_modal();
             } else {
-                // error_modal();
                 let seatId = $(this).attr("seatId");
                 $.ajax({
                     url: '<c:url value="seat/select"/>',
