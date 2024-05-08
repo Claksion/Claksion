@@ -43,6 +43,22 @@
             overflow-y: auto;
             border-radius: 15px;
             margin-right: 20px;
+            overflow-y: auto;
+            height: calc(100vh - 128px);
+        }
+        #sidebar::-webkit-scrollbar {
+            width: 10px;
+            background-color: black;
+            border-radius: 10px;
+        }
+        #sidebar::-webkit-scrollbar-thumb {
+            background: #696cff;; /* 스크롤바 색상 */
+            border-radius: 10px; /* 스크롤바 둥근 테두리 */
+        }
+
+        #sidebar::-webkit-scrollbar-track {
+            background: white;  /*스크롤바 뒷 배경 색상*/
+            border-radius: 10px;
         }
 
         #search-bar input {
@@ -52,6 +68,7 @@
             border:  1px solid #7577fc;
             background-color: white;;
             color: white;
+
         }
 
         .contact {
@@ -60,7 +77,9 @@
             border-bottom: 2px solid gray;;
             cursor: pointer;
             align-items: center; /* 수직 중앙 정렬 */
+            justify-content: center; /* 수평 중앙 정렬 */
             margin-bottom: 2px;
+
         }
 
 
@@ -90,10 +109,12 @@
             background: #ffffff;
             display: flex;
             flex-direction: column-reverse;
+            border-radius: 20px;
         }
         #chat-messages::-webkit-scrollbar {
             width: 10px;
             background-color: black;
+            border-radius: 10px;
         }
         #chat-messages::-webkit-scrollbar-thumb {
             background: #696cff;; /* 스크롤바 색상 */
@@ -102,6 +123,7 @@
 
         #chat-messages::-webkit-scrollbar-track {
             background: white;  /*스크롤바 뒷 배경 색상*/
+            border-radius: 10px;
         }
 
         #input-area {
@@ -250,18 +272,14 @@
 <div id="wrapper">
     <div id="sidebar">
         <div class="contact">
-            <div class="avatar avatar-online">
-                <img
-                        src="${userProfileImg}" alt=""
-                        class="w-px-40 rounded-circle prifile-img-full"
-                >
-            </div>
-            <p style="font-weight:bold;">${userName}</p>
+            <h3 class="card-title text-primary" style="margin: 0">
+                <span class="fw-bold" >${classroom.name}</span>
+            </h3>
         </div>
         <table class="table">
             <tbody class="table-border-bottom-0">
             <c:forEach var="mate" items="${classMates}">
-                <tr style="background: #95b6de">
+                <tr >
                     <td>
                         <div class="d-flex justify-content-start align-items-center user-name">
                             <div class="avatar-wrapper" style="margin-right: 10px">
@@ -270,15 +288,15 @@
                                         <c:if test="${!mate.online}">class="avatar small avatar-offline"</c:if>
                                         class="avatar avatar-sm me-2">
                                     <img src="${mate.profileImg}" alt=""
-                                            class="w-px-35 rounded-circle prifile-img-full"
-                                />
+                                         class="w-px-35 rounded-circle prifile-img-full"
+                                    />
                                 </div>
                             </div>
                             <div class="d-flex flex-column" style="margin-right: 10px">
                                 <span class="fw-medium">${mate.name}</span>
                             </div>
-                        <c:if test="${mate.online}"><span class="badge bg-label-success me-1">Active</span></c:if>
-                        <c:if test="${!mate.online}"><span class="badge bg-label-secondary">Inactive</span></c:if>
+                            <c:if test="${mate.online}"><span class="badge bg-label-success me-1">Active</span></c:if>
+                            <c:if test="${!mate.online}"><span class="badge bg-label-secondary">Inactive</span></c:if>
                     </td>
                 </tr>
             </c:forEach>
@@ -296,4 +314,3 @@
 </div>
 </body>
 </html>
-

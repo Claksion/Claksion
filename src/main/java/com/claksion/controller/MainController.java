@@ -53,6 +53,8 @@ public class MainController {
         int userId = (int) session.getAttribute("userId");
         UserEntity user = userService.get(userId);
         model.addAttribute("user", user);
+        ClassroomEntity classroom = classroomService.get(user.getClassroomId());
+        model.addAttribute("classroom", classroom);
 
         List<ClassMate> classMates = userService.getClassMates(user.getClassroomId());
         model.addAttribute("classMates", classMates);

@@ -1,6 +1,7 @@
 package com.claksion.config;
 
 import com.claksion.app.data.dto.msg.Msg;
+import com.claksion.app.service.chat.RedisService;
 import com.claksion.app.service.chat.RedisSubscriber;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -32,17 +32,16 @@ public class RedisConfig {
     @Value("${spring.data.redis.password}")
     private String redisPwd;
 
+    private RedisService redisServer;
     @Bean
     @Primary
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
+    public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(connectionFactory);
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setHashValueSerializer(new StringRedisSerializer());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
@@ -84,16 +83,13 @@ public class RedisConfig {
         return redisTemplateMessage;
     }
 
+
     /*
         Redis에 Session 값 저장 시 룬문자로 작성 방지 함수
          */
     @Bean
     public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
         return new GenericJackson2JsonRedisSerializer();
-    }
-    @Bean
-    public HashOperations<String, String, Object> opsHashChatRoom(RedisTemplate<String, Object> redisTemplate) {
-        return redisTemplate.opsForHash();
     }
 
 }
