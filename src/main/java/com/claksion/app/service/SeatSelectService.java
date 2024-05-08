@@ -4,6 +4,8 @@ import com.claksion.app.data.dto.request.UpdateSeatUserRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -44,6 +46,13 @@ public class SeatSelectService {
         redisTemplate.delete(seatKey);
         redisTemplate.opsForSet().add("completedSeat:" + seatKey.split(":")[1], seatKey);
     }
+
+    public Set<Object> getAllMembersFromZSet(int classroomId, int seatId) {
+        String key = "seat:"+classroomId+":"+seatId;
+        ZSetOperations<String, Object> zSetOperations = redisTemplate.opsForZSet();
+        return zSetOperations.range(key, 0, -1);
+    }
+
 }
 
 

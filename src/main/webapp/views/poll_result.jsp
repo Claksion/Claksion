@@ -29,13 +29,11 @@
                 console.log('New event:', event.data);
                 const data = JSON.parse(event.data);
                 for(d in data) {
-                    console.log(d);
                     const cntId = 'cnt'+d;
                     const rankId = 'rank'+d;
-                    console.log(cntId, rankId);
+
                     const parts = data[d].split(',');
-                    console.log(parts);
-                    console.log(document.getElementById(cntId));
+
                     document.getElementById(cntId).innerHTML=parts[0]+"표";
                     document.getElementById(rankId).innerHTML=parts[1]+"등";
                 }
