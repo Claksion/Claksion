@@ -24,46 +24,45 @@
         }
 
         body, html {
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
         }
 
         #wrapper {
+            border-radius: 10px;
             display: flex;
             height: 100%;
         }
 
         #sidebar {
-            width: 240px;
-            background-color: #2c3e50;
+            width: 20vw;
+            background-color: white;;
             color: white;
             overflow-y: auto;
+            border-radius: 15px;
+            margin-right: 20px;
         }
 
         #search-bar input {
             width: 100%;
             padding: 10px;
             box-sizing: border-box;
-            border: none;
-            background-color: #34495e;
+            border:  1px solid #7577fc;
+            background-color: white;;
             color: white;
         }
 
         .contact {
             display: flex;
             padding: 10px;
-            border-bottom: 1px solid #34495e;
+            border-bottom: 2px solid gray;;
             cursor: pointer;
+            align-items: center; /* 수직 중앙 정렬 */
+            margin-bottom: 2px;
         }
 
-        .contact-avatar {
-            width: 40px;
-            height: 40px;
-            background-color: #16a085;
-            border-radius: 20px;
-            margin-right: 10px;
-        }
 
         .contact-info .contact-name {
             margin: 0;
@@ -79,16 +78,16 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            background-color: #ecf0f1;
+            background-color: white;
+            border-radius: 15px;
         }
 
         #chat-messages {
             flex-grow: 1; /* This allows the area to expand with the available space */
             overflow-y: auto; /* Enables scrolling */
             padding: 10px;
-            max-height: 500px; /* Set this to your desired maximum height */
-            height: 100%;
-            background: var(--bg-color);
+            height: calc(100vh - 200px);
+            background: #ffffff;
             display: flex;
             flex-direction: column-reverse;
         }
@@ -97,18 +96,18 @@
             background-color: black;
         }
         #chat-messages::-webkit-scrollbar-thumb {
-            background: rgb(3, 6, 116); /* 스크롤바 색상 */
+            background: #696cff;; /* 스크롤바 색상 */
             border-radius: 10px; /* 스크롤바 둥근 테두리 */
         }
 
         #chat-messages::-webkit-scrollbar-track {
-            background: rgba(220, 20, 60, .1);  /*스크롤바 뒷 배경 색상*/
+            background: white;  /*스크롤바 뒷 배경 색상*/
         }
 
         #input-area {
             display: flex;
             padding: 10px;
-            background-color: #bdc3c7;
+            background-color: white;
         }
 
         #input-area input {
@@ -121,7 +120,7 @@
         #input-area button {
             padding: 10px 20px;
             border: none;
-            background-color: #3498db;
+            background-color: #696cff;
             color: white;
             cursor: pointer;
         }
@@ -137,15 +136,16 @@
             display: flex;
             align-items: center; /* 수직 중앙 정렬 */
             justify-content: center; /* 수평 중앙 정렬 */
-            color: white;
         }
         .my-message {
-            background-color: #3498db;
+            color: white;
+            background-color: #696cff;
             align-self: flex-end; /* 오른쪽 정렬 */
         }
 
         .other-message {
-            background-color: #ecf0f1;
+            color:  #696cff;
+            background-color: rgba(105, 108, 255, 0.16);
             align-self: flex-start; /* 왼쪽 정렬 */
         }
 
@@ -249,29 +249,51 @@
 <body>
 <div id="wrapper">
     <div id="sidebar">
-        <div id="search-bar">
-            <input type="text" placeholder="Search...">
-        </div>
-        <div id="contact-list">
-            <!-- Repeat this block for each contact -->
-            <div class="contact">
-                <div class="contact-avatar"><!-- Avatar --></div>
-                <div class="contact-info">
-                    <p class="contact-name">Name</p>
-                    <p class="contact-last-msg">Last message...</p>
-                </div>
+        <div class="contact">
+            <div class="avatar avatar-online">
+                <img
+                        src="${userProfileImg}" alt=""
+                        class="w-px-40 rounded-circle prifile-img-full"
+                >
             </div>
-            <!-- End contact block -->
+            <p style="font-weight:bold;">${userName}</p>
         </div>
+        <table class="table">
+            <tbody class="table-border-bottom-0">
+            <c:forEach var="mate" items="${classMates}">
+                <tr style="background: #95b6de">
+                    <td>
+                        <div class="d-flex justify-content-start align-items-center user-name">
+                            <div class="avatar-wrapper" style="margin-right: 10px">
+                                <div
+                                        <c:if test="${mate.online}">class="avatar small avatar-online"</c:if>
+                                        <c:if test="${!mate.online}">class="avatar small avatar-offline"</c:if>
+                                        class="avatar avatar-sm me-2">
+                                    <img src="${mate.profileImg}" alt=""
+                                            class="w-px-35 rounded-circle prifile-img-full"
+                                />
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column" style="margin-right: 10px">
+                                <span class="fw-medium">${mate.name}</span>
+                            </div>
+                        <c:if test="${mate.online}"><span class="badge bg-label-success me-1">Active</span></c:if>
+                        <c:if test="${!mate.online}"><span class="badge bg-label-secondary">Inactive</span></c:if>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
     </div>
     <div id="chat-window">
-        <div id="chat-messages">
+        <div id="chat-messages" >
         </div>
         <div id="input-area">
             <input type="text" id="message-input" placeholder="메세지를 입력하세요">
-            <button id="send-btn" type="button">보내기</button>
+            <button id="send-btn" type="button" class="btn btn-primary"><i class="bx bx-paper-plane mx-1"></i></button>
         </div>
     </div>
 </div>
 </body>
 </html>
+
