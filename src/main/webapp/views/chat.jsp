@@ -270,15 +270,15 @@
                                         <c:if test="${!mate.online}">class="avatar small avatar-offline"</c:if>
                                         class="avatar avatar-sm me-2">
                                     <img src="${mate.profileImg}" alt=""
-                                            class="w-px-35 rounded-circle prifile-img-full"
-                                />
+                                         class="w-px-35 rounded-circle prifile-img-full"
+                                    />
                                 </div>
                             </div>
                             <div class="d-flex flex-column" style="margin-right: 10px">
                                 <span class="fw-medium">${mate.name}</span>
                             </div>
-                        <c:if test="${mate.online}"><span class="badge bg-label-success me-1">Active</span></c:if>
-                        <c:if test="${!mate.online}"><span class="badge bg-label-secondary">Inactive</span></c:if>
+                            <c:if test="${mate.online}"><span class="badge bg-label-success me-1">Active</span></c:if>
+                            <c:if test="${!mate.online}"><span class="badge bg-label-secondary">Inactive</span></c:if>
                     </td>
                 </tr>
             </c:forEach>
@@ -296,4 +296,3 @@
 </div>
 </body>
 </html>
-
