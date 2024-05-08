@@ -26,6 +26,14 @@
             text: '잠시 후 다시 시도해주세요.',
         });
     };
+
+    let loading_modal = function () {
+        swal.fire({
+            html: "<div class='spinner-border spinner-border-lg text-primary' role='status'><span class='visually-hidden'>Loading...</span></div>",
+            title: '로딩중',
+            showConfirmButton: false
+        });
+    };
     let alert_modal = function () {
         Swal.fire({
             icon: 'warning',
@@ -44,14 +52,21 @@
             if (canSelect === "false") {
                 alert_modal();
             } else {
+                // error_modal();
                 let seatId = $(this).attr("seatId");
                 $.ajax({
                     url: '<c:url value="seat/select"/>',
                     type: 'POST',
                     data: {seatId: seatId},
-                    success: function (response) {
+                    async: true,
+                    beforeSend: function () {
+                        loading_modal();
+                    },
+                    complete: function (response) {
                         if (response) {
                             success_modal();
+                            document.getElementById("canSelect").value = "false";
+                            setTimeout(() => location.reload(true), 1000);
                         } else {
                             fail_modal();
                         }
@@ -61,8 +76,6 @@
                         console.error('Error:', status, error);
                     }
                 });
-                document.getElementById("canSelect").value = "false";
-                setTimeout(() => location.reload(true), 1000);
             }
         });
 
