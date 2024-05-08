@@ -23,7 +23,7 @@ public class MainController {
     final private UserService userService;
     private final HttpSession httpSession;
     private final ClassroomService classroomService;
-  
+
     @Value("${app.url.server-url}")
     String severurl;
 

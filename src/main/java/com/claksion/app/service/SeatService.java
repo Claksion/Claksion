@@ -6,6 +6,7 @@ import com.claksion.app.data.entity.SeatEntity;
 import com.claksion.app.frame.BaseService;
 import com.claksion.app.repository.SeatRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.oxm.ValidationFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,10 +42,6 @@ public class SeatService implements BaseService<Integer, SeatEntity> {
         return seatRepository.select();
     }
 
-    public int updateUserSelected(SeatEntity seatEntity) {
-        return seatRepository.updateUserSelected(seatEntity);
-    }
-
     public boolean deleteByClassroomId(Integer classroomId) throws Exception {
         seatRepository.deleteByClassroomId(classroomId);
         return true;
@@ -58,7 +55,14 @@ public class SeatService implements BaseService<Integer, SeatEntity> {
         return seatRepository.selectSeatAndUserByClassroomId(classroomId);
     }
 
-    public void modifyUserId(UpdateSeatUserRequest request) throws Exception {
+    public void setUserOnEmptySeat(UpdateSeatUserRequest request) throws ValidationFailureException {
+        // 이미 선택된 좌석이 있다면 에러 처리
+        boolean existUserId = seatRepository.existUserId(request.getSeatId());
+        if(existUserId){
+            throw new ValidationFailureException("NOT_AVAILABLE_SEAT");
+        }
+
+        // 좌석에 주인으로 지정
         seatRepository.updateUserId(request);
     }
 
