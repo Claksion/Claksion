@@ -41,6 +41,10 @@ public class SeatService implements BaseService<Integer, SeatEntity> {
         return seatRepository.select();
     }
 
+    public int updateUserSelected(SeatEntity seatEntity) {
+        return seatRepository.updateUserSelected(seatEntity);
+    }
+
     public boolean deleteByClassroomId(Integer classroomId) throws Exception {
         seatRepository.deleteByClassroomId(classroomId);
         return true;
