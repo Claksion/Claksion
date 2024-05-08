@@ -212,7 +212,7 @@
                         if(msg.sendid === "${sessionScope.userName}") {
                             messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-end;'><span style='margin-bottom: 4px;'>"+ msg.sendid +"</span><div class='message my-message'>" + msg.message + "</div></div>";
                         } else {
-                            messageElement = "<img src='" + message.profileImg + "' alt='Profile Image' style='width: 35px; height: 35px; border-radius: 50%; margin-bottom: 4px; align-self: flex-start;'><div class='message other-message'>" + msg.sendid + " : " + msg.message + "</div>";
+                            messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-start;'><span style='margin-bottom: 4px;'>"+ msg.sendid +"</span><div class='message other-message '>" + msg.message + "</div></div>";
                             // messageElement = "<div class='message other-message'>" + msg.sendid + " : " + msg.message + "</div>";
                         }
                         chatMessages.prepend(messageElement);
@@ -237,9 +237,9 @@
                             // 파싱된 객체에서 필요한 데이터 추출 및 화면에 표시
                             if (message.sendid && message.message) {
                                 if(message.sendid === "${sessionScope.userName}") {
-                                    messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-end;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message other-message'>" + message.message + "</div></div>";
+                                    messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-end;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message my-message'>" + message.message + "</div></div>";
                                 } else {
-                                    messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-start;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message my-message '>" + message.message + "</div></div>";
+                                    messageElement = "<div style='display: flex; flex-direction: column; align-items: flex-start;'><span style='margin-bottom: 4px;'>"+ message.sendid +"</span><div class='message other-message '>" + message.message + "</div></div>";
                                 }
                                 chatMessages.append(messageElement);
                             }
