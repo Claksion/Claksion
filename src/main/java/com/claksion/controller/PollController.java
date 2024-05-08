@@ -116,6 +116,14 @@ public class PollController {
                 pollContentService.addToSet(pollId, content.getId(), httpSession.getAttribute("userId").toString());
             }
         });
+        pollContentList.forEach(content -> {
+            try {
+                content.setSelected(false);
+                pollContentService.modify(content);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
         return ResponseEntity.ok("success");
     }
     @RequestMapping("/result")

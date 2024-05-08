@@ -15,19 +15,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @RequiredArgsConstructor
 public class SeatSelectScheduler {
 
-//    private final SeatSelectService seatSelectService;
-//    private final RedisTemplate<String, Object> redisTemplate;
-//
-//    @Scheduled(fixedDelay = 1000)
-//    private void seatSelectScheduler() throws Exception {
-//        // 스케줄러가 참고해야 하는 빈 자리 key 가져오기
-//        Set<String> keys = redisTemplate.keys("seat:*");
-//        log.info("keys: {}", keys);
-//
-//        for (String seatKey : keys) {
-//            seatSelectService.publish(seatKey);
-//        }
-//    }
+    private final SeatSelectService seatSelectService;
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    @Scheduled(fixedDelay = 1000)
+    private void seatSelectScheduler() throws Exception {
+        // 스케줄러가 참고해야 하는 빈 자리 key 가져오기
+        Set<String> keys = redisTemplate.keys("seat:*");
+        log.info("keys: {}", keys);
+
+        for (String seatKey : keys) {
+            seatSelectService.publish(seatKey);
+        }
+    }
 
 
 

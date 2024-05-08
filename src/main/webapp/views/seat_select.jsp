@@ -39,56 +39,32 @@
         $("#fail").click(fail_modal);
 
         $(".seat").click(function () {
-            // let canSelect = $("#canSelect").val();
 
+            let canSelect = ${canSelect};
             let seatId = $(this).attr("seatId");
 
-
-            console.log(canSelect);
             if (canSelect == false) {
-                alert('이미 자리를 선택하셨습니다.');
                 alert_modal();
             } else {
-            console.log("start ajax")
+                let seatId = $(this).attr("seatId");
                 $.ajax({
-                    url: '<c:url value="/seat/checkselect"/>',
+                    url: '<c:url value="seat/select"/>',
                     type: 'POST',
                     data: {seatId: seatId},
                     success: function (response) {
-                        if(!response) {
-
-                            $.ajax({
-                                url: '<c:url value="/seat/firstselect"/>',
-                                type: 'POST',
-                                data: {seatId: seatId},
-                                success: function (response) {
-
-                                    if (response) {
-                                        document.getElementById(response).disabled = true;
-                                        success_modal();
-                                        canSelect = false;
-                                        // location.reload(true);
-                                    } else {
-                                        fail_modal();
-                                    }
-                                    console.log('Server response:', response);
-                                },
-                                error: function (xhr, status, error) {
-                                    console.error('Error:', status, error);
-                                }
-                            });
+                        if (response) {
+                            success_modal();
                         } else {
-                            alert("already clicked")
+                            fail_modal();
                         }
+                        console.log('Server response:', response);
                     },
-                    error: function (error) {
-
+                    error: function (xhr, status, error) {
+                        console.error('Error:', status, error);
                     }
-                })
-
+                });
             }
-        }
-        );
+        });
 
         $("#btn-reset").click(function () {
             Swal.fire({
@@ -141,7 +117,6 @@
                                 <button class="btn btn-primary seat btn-lg"
                                         type="button"
                                         canSelect="${canSelect}"
-                                        id="task-${seat.id}"
                                         seatId="${seat.id}">
                                         ${seat.zone}${seat.number}
                                 </button>
@@ -165,7 +140,6 @@
                                 <button class="btn btn-primary seat btn-lg"
                                         type="button"
                                         canSelect="${canSelect}"
-                                        id="task-${seat.id}"
                                         seatId="${seat.id}">
                                         ${seat.zone}${seat.number}
                                 </button>
@@ -184,7 +158,6 @@
     </c:forEach>
     </tbody>
 </table>
-<%--<input id="canSelect" value="${canSelect}"/>--%>
 
 <%--<button id="success">Success Test</button>--%>
 <%--<button id="fail">Fail Test</button>--%>
