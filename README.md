@@ -1,4 +1,5 @@
 # Claksion 💥🚗💨
+- [프로젝트 소개](#-프로젝트-소개)
 
 <br/>
 
@@ -171,6 +172,4 @@
 <br/>
 
 ## 🦸🏻‍ Contributor
-| [![](https://avatars.githubusercontent.com/u/90179774?v=4)](https://github.com/yhkkkkxx) | [![](https://avatars.githubusercontent.com/u/91041488?v=4)](https://github.com/Wonhee0221) |[![](https://avatars.githubusercontent.com/u/70644449?v=4)](https://github.com/hyerimmy)| 
-|:----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------:|:---:|
-|                                           김하영                                            |                                         한원희                                         | 황혜림 |
+
