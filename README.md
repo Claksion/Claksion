@@ -178,4 +178,7 @@
 <br/>
 
 ## 🦸🏻‍ Contributor
+| **김하영** | **한원희** | **황혜림** |
+| :------: |  :------: | :------: |
+|[<img src="https://avatars.githubusercontent.com/u/90179774?v=4"  height=150 width=150> ](https://github.com/yhkkkkxx)| [<img src="https://avatars.githubusercontent.com/u/91041488?v=4"  height=150 width=150>](https://github.com/Wonhee0221) | [<img src="https://avatars.githubusercontent.com/u/70644449?v=4"  height=150 width=150>](https://github.com/hyerimmy) |
 
