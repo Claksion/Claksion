@@ -21,10 +21,149 @@
 - **Redis를 Session Storage로 사용**함으로써 빠른 응답속도의 장점을 취하고, 현재 서비스에 로그인돼 있는 클라이언트 정보를 출력한다.
 
 ### 🧑🏻‍💻 기술 스택
+<div style="text-align: left;">
+    <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🛠️ Tech Stacks </h2> <br> 
+    <div style="margin: 5px; text-align: left;"> 
+            <h2>Environment</h2>
+            <img src="https://img.shields.io/badge/intellijidea-000000?style=flat&logo=intellijidea&logoColor=white">
+            <h2>Development</h2>    
+            <img src="https://img.shields.io/badge/Java-007396?style=flat&logo=Java&logoColor=white">
+          <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat&logo=Spring Boot&logoColor=white">
+          <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=Bootstrap&logoColor=white">
+          <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat&logo=Javascript&logoColor=white">
+            <h2>DataBase</h2>   
+          <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white">
+          <img src="https://img.shields.io/badge/Redis-DC382D?style=flat&logo=Redis&logoColor=white">
+        <h2>Communication</h2>
+<img src="https://img.shields.io/badge/Slack-4A154B?style=flat&logo=Slack&logoColor=white">
+          <img src="https://img.shields.io/badge/Notion-000000?style=flat&logo=Notion&logoColor=white">
+          </div>
+        <br/>
+    </div>
 
+```
+📦 
+└─ src
+   ├─ main
+   │  ├─ java
+   │  │  └─ com
+   │  │     └─ claksion
+   │  │        ├─ ClaksionApplication.java
+   │  │        ├─ ServletInitializer.java
+   │  │        ├─ app
+   │  │        │  ├─ data
+   │  │        │  │  ├─ dto
+   │  │        │  │  │  ├─ ClassMate.java
+   │  │        │  │  │  ├─ LoginUser.java
+   │  │        │  │  │  ├─ OauthType.java
+   │  │        │  │  │  ├─ SeatUser.java
+   │  │        │  │  │  ├─ UserInfo.java
+   │  │        │  │  │  ├─ enums
+   │  │        │  │  │  │  └─ MessageType.java
+   │  │        │  │  │  ├─ msg
+   │  │        │  │  │  │  ├─ AdminMsg.java
+   │  │        │  │  │  │  ├─ ChatRoom.java
+   │  │        │  │  │  │  └─ Msg.java
+   │  │        │  │  │  ├─ request
+   │  │        │  │  │  │  ├─ ChatMessageRequest.java
+   │  │        │  │  │  │  ├─ SelectSeatRequest.java
+   │  │        │  │  │  │  └─ UpdateSeatUserRequest.java
+   │  │        │  │  │  └─ response
+   │  │        │  │  │     ├─ GetChatMessageResponse.java
+   │  │        │  │  │     └─ GetSeatAndUserResponse.java
+   │  │        │  │  └─ entity
+   │  │        │  │     ├─ BaseEntity.java
+   │  │        │  │     ├─ ClassroomEntity.java
+   │  │        │  │     ├─ PollContentEntity.java
+   │  │        │  │     ├─ PollEntity.java
+   │  │        │  │     ├─ SeatEntity.java
+   │  │        │  │     ├─ UserEntity.java
+   │  │        │  │     └─ UserType.java
+   │  │        │  ├─ frame
+   │  │        │  │  ├─ BaseRepository.java
+   │  │        │  │  └─ BaseService.java
+   │  │        │  ├─ repository
+   │  │        │  │  ├─ ClassroomRepository.java
+   │  │        │  │  ├─ LoginUserRepository.java
+   │  │        │  │  ├─ PollContentRepository.java
+   │  │        │  │  ├─ PollRepository.java
+   │  │        │  │  ├─ SeatRepository.java
+   │  │        │  │  └─ UserRepository.java
+   │  │        │  └─ service
+   │  │        │     ├─ ClassroomService.java
+   │  │        │     ├─ PollContentService.java
+   │  │        │     ├─ PollService.java
+   │  │        │     ├─ RankingService.java
+   │  │        │     ├─ RedisMessageSubscriber.java
+   │  │        │     ├─ SeatSelectService.java
+   │  │        │     ├─ SeatService.java
+   │  │        │     ├─ UserService.java
+   │  │        │     ├─ WebSocketHandler.java
+   │  │        │     ├─ aop
+   │  │        │     │  ├─ AroundValidSeatOnRedis.java
+   │  │        │     │  └─ SeatValidAop.java
+   │  │        │     ├─ chat
+   │  │        │     │  ├─ ChatRoomRepository.java
+   │  │        │     │  ├─ MessageService.java
+   │  │        │     │  ├─ RedisMessageStorage.java
+   │  │        │     │  ├─ RedisPublisher.java
+   │  │        │     │  ├─ RedisService.java
+   │  │        │     │  └─ RedisSubscriber.java
+   │  │        │     └─ oauth
+   │  │        │        ├─ KakaoService.java
+   │  │        │        └─ NaverService.java
+   │  │        ├─ config
+   │  │        │  ├─ JasyptConfig.java
+   │  │        │  ├─ RedisConfig.java
+   │  │        │  ├─ SecurityConfig.java
+   │  │        │  └─ StomWebSocketConfig.java
+   │  │        └─ controller
+   │  │           ├─ ChatController.java
+   │  │           ├─ ChatRoomController.java
+   │  │           ├─ MainController.java
+   │  │           ├─ MessageController.java
+   │  │           ├─ PollController.java
+   │  │           ├─ RedisController.java
+   │  │           ├─ SeatController.java
+   │  │           ├─ SeatRestController.java
+   │  │           ├─ UserController.java
+   │  │           └─ UserRestController.java
+   │  ├─ resources
+   │  │  ├─ application-aws.yml
+   │  │  ├─ application-dev.yml
+   │  │  ├─ application.yml
+   │  │  ├─ log4jdbc.log4j2
+   │  │  ├─ logback.properties
+   │  │  ├─ mapper
+   │  │  │  ├─ classroommapper.xml
+   │  │  │  ├─ pollcontentmapper.xml
+   │  │  │  ├─ pollmapper.xml
+   │  │  │  ├─ seatmapper.xml
+   │  │  │  └─ usermapper.xml
+   │  └─ webapp
+   │     └─ views
+   │        ├─ chat.jsp
+   │        ├─ chat
+   │        │  ├─ room.jsp
+   │        │  └─ roomdetail.jsp
+   │        ├─ chatTest.jsp
+   │        ├─ home.jsp
+   │        ├─ index.jsp
+   │        ├─ login.jsp
+   │        ├─ loginother.jsp
+   │        ├─ poll_creation.jsp
+   │        ├─ poll_final_result.jsp
+   │        ├─ poll_form.jsp
+   │        ├─ poll_list.jsp
+   │        ├─ poll_result.jsp
+   │        ├─ register.jsp
+   │        ├─ reservation.jsp
+   │        ├─ seat.jsp
+   │        ├─ seat_result.jsp
+   │        └─ seat_select.jsp
+```
 
 ### 🦸🏻‍ Contributor
-
 | [![](https://avatars.githubusercontent.com/u/90179774?v=4)](https://github.com/yhkkkkxx) | [![](https://avatars.githubusercontent.com/u/91041488?v=4)](https://github.com/Wonhee0221) |[![](https://avatars.githubusercontent.com/u/70644449?v=4)](https://github.com/hyerimmy)| 
 |:----------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------:|:---:|
 |                                           김하영                                            |                                         한원희                                         | 황혜림 |
