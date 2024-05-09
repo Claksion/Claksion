@@ -1,15 +1,20 @@
 package com.claksion.app.service;
 
+import com.claksion.app.data.dto.SeatUser;
+import com.claksion.app.data.dto.request.SelectSeatRequest;
 import com.claksion.app.data.dto.request.UpdateSeatUserRequest;
+import com.claksion.app.data.entity.UserEntity;
+import com.claksion.app.service.aop.AroundValidSeatOnRedis;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.oxm.ValidationFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -17,75 +22,93 @@ import java.util.Set;
 public class SeatSelectService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final SeatService seatService;
+
+    private static int DIV_VALUE = 1000000; // 시간 계산용
     private final UserService userService;
 
-    public boolean addQueue(int classroomId, int seatId, int userId) throws InterruptedException {
-        String seatRedisKey = "seat:"+classroomId+":"+seatId;
-
-//        // 이미 선택된 좌석이라면 대기열에 추가하지 않음
-//        Set<Object> completedSeat = redisTemplate.opsForSet().members("completedSeat:" + classroomId);
-//        if (completedSeat.contains(seatRedisKey)) {
-//            return false;
-//        }
-
-        final long now = System.currentTimeMillis();
-        redisTemplate.opsForZSet().add(seatRedisKey, String.valueOf(userId), (int) now);
-        log.info("{} 유저가 {} 자리를 선택했습니다. ({}초)", userId, seatId, now);
-
-        Thread.sleep(1000);
-
-        // 첫 번째가 아니라면 false 반환
-        Set<Object> users = redisTemplate.opsForZSet().range(seatRedisKey, 0, 0);
-        Object owner = users.stream().toList().get(0);
-        if(userId != (Integer)owner){
-            return false;
-        }
-
-        return true;
-    }
-
-    public void publish(String seatKey) throws Exception {
-        Set<Object> users = redisTemplate.opsForZSet().range(seatKey, 0, 0);
-        log.info("users :: "+users.toString());
-        Object userId = users.stream().toList().get(0);
-        int classroomId = Integer.parseInt(seatKey.split(":")[1]);
-        int seatId = Integer.parseInt(seatKey.split(":")[2]);
-
-        UpdateSeatUserRequest request = new UpdateSeatUserRequest(seatId, Integer.parseInt((String) userId));
-        seatService.modifyUserId(request);
-
-        log.info("✅'{}'님이 {} 자리 선택에 성공했습니다!", userId, seatKey);
-
-        String key = "seat:"+classroomId+":"+seatId;
-        System.out.println(key);
-        if (redisTemplate.hasKey(key)) {
-            redisTemplate.rename(key, "selected:"+key);
-        }
-        redisTemplate.opsForSet().add("completedSeat:" + seatKey.split(":")[1], seatKey);
-    }
+    public List<SeatUser> getRedisUserList(int classroomId, int seatId) throws Exception {
+        // time header (시간 계산용 숫자)
+        String redisKey = "seat:" + classroomId + ":" + seatId;
+        long timeHeader = Long.parseLong(String.valueOf(redisTemplate.opsForValue().get(redisKey+":timeHeader")));
 
 
-    public Map<String, Object> getMemberScore(int classroomId, int seatId) {
-        System.out.println("selected:seat:"+classroomId+":"+seatId);
+        List<SeatUser> seatUserList = new ArrayList<>();
+
         Set<ZSetOperations.TypedTuple<Object>> resultSet = redisTemplate.opsForZSet()
-                .reverseRangeWithScores("selected:seat:"+classroomId+":"+seatId, 0, -1);
-        Map<String, Object> pollContentsWithCntAndRanks = new LinkedHashMap<>();
+                .rangeWithScores(redisKey, 0, -1);
 
-        System.out.println(resultSet.toString());
-
-        int rank = 1;
-        double lastScore = Double.POSITIVE_INFINITY;
-        int sameScoreRank = rank;
+        boolean isFirst = true;
 
         for (ZSetOperations.TypedTuple<Object> member : resultSet) {
-            if (member.getScore() != lastScore) {
-                sameScoreRank = rank;
-            }
-            pollContentsWithCntAndRanks.put(member.getValue().toString(),sameScoreRank);
-            lastScore = member.getScore();
-            rank++;
+            int userId = Integer.parseInt((String) member.getValue());
+            Double score = member.getScore();
+
+            UserEntity user = userService.get(userId);
+
+            long millTime = (long) (score + timeHeader);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
+            Date date = new Date();
+            date.setTime(millTime);
+            String stringTime = simpleDateFormat.format(date);
+
+            SeatUser seatUser = SeatUser.builder()
+                    .name(user.getName())
+                    .profileImg(user.getProfileImg())
+                    .time(stringTime)
+                    .result(isFirst)
+                    .build();
+
+            seatUserList.add(seatUser);
+            isFirst = false;
         }
-        return pollContentsWithCntAndRanks;
+        return seatUserList;
+    }
+
+    @Transactional(rollbackFor = ValidationFailureException.class)
+    @AroundValidSeatOnRedis // 동시성 Aspect 시그니처 어노테이션
+    public void setSeatOwner(SelectSeatRequest selectSeatRequest) {
+        // 빈자리일 경우만 DB 데이터 등록
+        addSeatOwnerOnSql(selectSeatRequest);
+    }
+
+    public void addSeatOwnerOnSql(SelectSeatRequest request) throws ValidationFailureException {
+        UpdateSeatUserRequest updateRequest = new UpdateSeatUserRequest(request.getSeatId(), request.getUserId());
+        seatService.setUserOnEmptySeat(updateRequest);
+
+        log.info("💽 SQL 저장 - '{}'님이 {} 자리 선택", request.getUserId(), request.getSeatId());
+    }
+
+    public void checkSeatOwnerOnRedis(SelectSeatRequest request) throws ValidationFailureException {
+        String seatRedisKey = "seat:" + request.getClassroomId() + ":" + request.getSeatId();
+
+        // Redis에 첫 번째 값이 맞는지 검증
+        Set<Object> userSet = redisTemplate.opsForZSet().range(seatRedisKey, 0, 0);
+        List<Object> userList = userSet.stream().toList();
+        if (!userList.isEmpty() && request.getUserId() != Integer.parseInt((String) userList.get(0))) {
+            throw new ValidationFailureException("NOT_AVAILABLE_SEAT");
+        }
+
+        log.info("✅ REDIS 검증 성공 - '{}'님이 {} 자리 선택", request.getUserId(), request.getSeatId());
+    }
+
+    public void addSeatUserOnRedis(SelectSeatRequest request) throws ValidationFailureException {
+        String seatRedisKey = "seat:" + request.getClassroomId() + ":" + request.getSeatId();
+
+        final long now = System.currentTimeMillis();
+        int intNow = (int) (now % DIV_VALUE);
+        redisTemplate.opsForZSet().add(seatRedisKey, String.valueOf(request.getUserId()), intNow);
+
+        log.info("💥 REDIS 히스토리에 추가 - '{}'님이 {} 자리 선택", request.getUserId(), request.getSeatId());
+    }
+
+    public void completeSeatOnRedis(SelectSeatRequest request) {
+        String seatRedisKey = "seat:" + request.getClassroomId() + ":" + request.getSeatId();
+
+        // 시간 계산하기 위해 저장
+        long now = System.currentTimeMillis();
+        long timeHeader = (now / DIV_VALUE) * (long) DIV_VALUE;
+
+        redisTemplate.opsForValue().set(seatRedisKey + ":timeHeader", String.valueOf(timeHeader));
     }
 }
 

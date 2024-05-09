@@ -43,6 +43,7 @@ public class RedisConfig {
         redisTemplate.setValueSerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         redisTemplate.afterPropertiesSet();
+//        redisTemplate.setEnableTransactionSupport(true); // transactional 처리
         return redisTemplate;
     }
 

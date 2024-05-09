@@ -22,7 +22,7 @@ public class SeatServiceTests {
     @Test
     public void testString() throws Exception {
         UpdateSeatUserRequest request = new UpdateSeatUserRequest(1475, 2);
-        seatService.modifyUserId(request);
+        seatService.setUserOnEmptySeat(request);
     }
 
     @DisplayName("Seat Service - existSeatByUserId")
