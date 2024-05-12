@@ -177,6 +177,11 @@
 
 <br/>
 
+# 단체채팅방(With Redis)
+<p align="center">
+<img src="https://github.com/Claksion/Claksion/assets/91041488/8929c759-7e68-41f9-9902-3e9f599d0ad7">
+</p>
+
 ## 🦸🏻‍ Contributor
 | **김하영** | **한원희** | **황혜림** |
 | :------: |  :------: | :------: |
