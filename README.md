@@ -110,6 +110,8 @@
 ## 🏕️ 아키텍처
 추가예정입니다.
 
+<br/>
+
 ## 🛠️ 기술 스택
 
 #### Environment
@@ -257,14 +259,15 @@
    │        └─ seat_select.jsp
 ```
 
-<br/>
-
 </details>
+
+
+<br/>
 
 ## 🦸🏻‍ 팀원 및 역할
 
 |                                                        **김하영**                                                         |                                                         **한원희**                                                         |                                                        **황혜림**                                                        |
 |:----------------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------:|
 | [<img src="https://avatars.githubusercontent.com/u/90179774?v=4"  height=150 width=150> ](https://github.com/yhkkkkxx) | [<img src="https://avatars.githubusercontent.com/u/91041488?v=4"  height=150 width=150>](https://github.com/Wonhee0221) | [<img src="https://avatars.githubusercontent.com/u/70644449?v=4"  height=150 width=150>](https://github.com/hyerimmy) |
-|                                                           투표 순위 및 투표 유저 관리<br/>실시간 투표 현황                                                            |                                                            Websocket, Stomp, Redis Pub/Sub<br/>실시간 채팅 구현<br/>   Redis 세션관리                                                         |                            소셜 로그인 및 Redis 세션 관리<br/>실시간 접속 유저 현황<br/>자리 선착순 선택 및 결과 확인                            |
+|                                                           투표 순위 및 투표 유저 관리<br/>실시간 투표 현황                                                            |                                                            Websocket, Stomp, Redis Pub/Sub<br/>실시간 채팅 구현<br/>   Redis 세션관리                                                         |                            소셜 로그인 및 Redis 세션 관리<br/>Redis, SSE 실시간 접속 유저 현황<br/>Redis 자리 선착순 선택 및 결과 확인                            |
 
